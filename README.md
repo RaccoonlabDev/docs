@@ -1,88 +1,108 @@
 
-# Inno.Uavcan.Node.Bin
+# Uavcan nodes
 
-This repositiory contains a set of binaries for flashing Node.
+This repository consist of set of uavcan devices binaries and description how to use UAVCAN nodes.
 
-# (windows) st-link utility:
+Uavcan nodes based on [UAVCAN v0 protocol](https://legacy.uavcan.org/).
 
-1. Download utility from st.com using [link](https://www.st.com/en/development-tools/stsw-link004.html)
-2. ... run .exe file ...
-3. ...
+## Existing UAVCAN devices
+
+At this time the list of well tested uavcan devices are:
 
 
-# (linux) st-link
+| № | Uavcan node        | Node default ID | Version    |
+| - | ------------------ |:---------------:| ---------- |
+| 1 | programmer-sniffer | -               | v0.3       |
+| 2 | can-pwm            | 50-69           | v0.3       |
+| 3 | airspeed           | 74              | v0.3       |
 
-You can use [official instructions](https://github.com/stlink-org/stlink#installation).
+Several nodes in development process now:
 
-In ubuntu 18.04 the following set of instructions should also works:
+| № | Uavcan node        | Node default ID | Version    |
+| - | ------------------ |:---------------:| ---------- |
+| 1 | ice                | 70              | v0.3alpha  |
+| 2 | charger            | 80              | v0.3alpha  |
+| 3 | inclinometer       | 80              | v0.3alpha  |
+| 4 | fuel_tank          | 75              | v0.3alpha  |
+| 5 | pmu_cover          | 72              | v0.2alpha  |
+| 6 | gps_mag_baro       | 71              | v0.1beta   |
+| 7 | rangefinder        | 73              | v0.1alpha  |
+| 8 | wifi_bridge        | -               | v0.1alpha  |
 
-1. Clone st-link repository somewhere
 
-```
-git clone https://github.com/stlink-org/stlink.git
-```
+## 1. programmer-sniffer
 
-2. Create a temporary directory, where you want to put the generated Makefiles, project files as well the object files and output binaries and enter there
+Programmer-sniffer is a single device that has capability of programmer and UAVCAN sniffer.
 
-```
-cd stlink
-mkdir -p _build && cd _build
-```
+**1. How to program a node**
 
-3. Configuring. Run cmake
+It is suggested to use st-link utility
 
-```
-cmake -D CMAKE_INSTALL_PREFIX=$HOME/software/stlink ..
-```
+**1.1. Windows**
 
-4. Build. From build directory execute make, it is recommended to do this in several threads
+1. Install it from [st.com](https://www.st.com/en/development-tools/stsw-link004.html)
+2. Use GUI to program a node with desired .bin file
 
-```
-make -j4
-```
 
-4. Install. Execute the following command from build directory 
+**1.2. Linux**
 
-```
-sudo make install
-```
+You need to connect `programmer-sniffer` with  your UAVCAN node via SWD socket and with your PC via USB. Be carefull, don't use CAN socket!
 
-5. Set right and path to executable file
-
-```
-sudo chown -R `whoami`:`whoami` ~/software/stlink
-export PATH="$HOME/software/stlink/bin:$PATH"
-```
-
-6. Add LD_LIBRARY_PATH
-
-If you try to execute `st-flash --version` you will probably receive
-   
-```
-st-flash: error while loading shared libraries: libstlink.so.1: cannot open shared object file: No such file or directory
-```
-
-so you should execute:
+1. Install stlink using [official instructions](https://github.com/stlink-org/stlink#installation)
+2. Type following to program it with desired .bin file:
 
 ```
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/software/stlink/lib"
+st-flash write desired_bin_file.bin 0x8000000
 ```
 
-(you should change `$HOME/software/stlink` on your stlink path)
+where `desired_bin_file.bin` is the the name of binary file
 
-7. (optional) you can also add these line to your .bashrc, so as not to register them every time in a new session
+**2. How to use sniffer**
 
-```
-export PATH="$HOME/software/stlink/bin:$PATH"
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/software/stlink/lib"
-```
+You need to connect `programmer-sniffer` with  your UAVCAN node via CAN socket and with your PC via USB.
 
-(you should change `$HOME/software/stlink` on your stlink path)
+There are 2 different CAN sockets. You can use any of them. Be carefull, don't use SWD socket!
 
-8. Flash your STM32
+After that you can use [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool) utility or something other.
 
-```
-st-flash write node.bin 0x8000000
-```
+## 2. can-pwm
 
-where `node.bin` is the the name of binary file
+
+The main goal of this board is to map [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) messages into PWM. Additionally it indicate own state using [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) messages and led.
+
+The structure scheme illustrated algorithm shown below.
+
+![scheme](doc/can_pwm/can_pwm_scheme.png?raw=true "scheme")
+
+**RawCommand mapping into PWM**
+
+Configuration of mapping can be performed using 4 UAVCAN parameters for each channel via uavcan_gui_tool or QGC as well. UAVCAN message format allows up to 20 channels. This node allows up to 4 PWM pins. These 4 parameters are:
+
+- channel - choose which RawCommand channel you want to map into particular PWM pin
+- min - PWM duration corresponded RawCommand=0
+- max - PWM duration corresponded RawCommand=8191
+- def - initial value of PWM duration or the value to be set when there is no RawCommand for few seconds.
+
+You can see parameters list below.
+
+![scheme](doc/can_pwm/can_pwm_params.png?raw=true "scheme")
+
+**Led blink**
+
+This board has internal led that may allows you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting number of blinks you can define the code of current status.
+
+| Number of blinks | Uavcan helth   | Description                     |
+| ---------------- | -------------- | ------------------------------- |
+| 1                | OK             | Everything is ok.                |
+| 2                | OK             | There is no RawCommand at least for last 0.5 seconds, PWM state is resetet to default state. |
+| 3                | WARNING        | This node can't see any other nodes in UAVCAN network, check your cables. |
+| 4                | ERROR          | There is a problem with circuit voltage, look at circuit status message to get details. It may happend when you power it from SWD, otherwise be carefull with power supply. |
+| 5                | CRITICAL       | There is a problem on periphery initialization level. Probably you load wrong firmware. |
+
+
+**Circuit status**
+
+This node as well as other nodes sends Circuit status messages that has 5V and Vin voltages measurements.
+
+**Usage examples**
+It is recommended to use it firtly with [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool).
