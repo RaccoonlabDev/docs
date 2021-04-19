@@ -20,14 +20,14 @@ Several nodes in development process now:
 
 | № | Uavcan node        | Node default ID | Version    |
 | - | ------------------ |:---------------:| ---------- |
-| 1 | ice                | 70              | v0.3alpha  |
-| 2 | charger            | 80              | v0.3alpha  |
-| 3 | inclinometer       | 80              | v0.3alpha  |
-| 4 | fuel_tank          | 75              | v0.3alpha  |
-| 5 | pmu_cover          | 72              | v0.2alpha  |
-| 6 | gps_mag_baro       | 71              | v0.1beta   |
-| 7 | rangefinder        | 73              | v0.1alpha  |
-| 8 | wifi_bridge        | -               | v0.1alpha  |
+| 4 | ice                | 70              | v0.3alpha  |
+| 5 | charger            | 80              | v0.3alpha  |
+| 6 | inclinometer       | 80              | v0.3alpha  |
+| 7 | fuel_tank          | 75              | v0.3alpha  |
+| 8 | pmu_cover          | 72              | v0.2alpha  |
+| 9 | gps_mag_baro       | 71              | v0.1beta   |
+| 10| rangefinder        | 73              | v0.1alpha  |
+| 11| wifi_bridge        | -               | v0.1alpha  |
 
 
 ## 1. programmer-sniffer
@@ -106,3 +106,127 @@ This node as well as other nodes sends Circuit status messages that has 5V and V
 
 **Usage examples**
 It is recommended to use it firtly with [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool).
+
+## 3. airspeed
+
+This board is a wrapper under [MS4525DO airspeed sensor](https://www.te.com/commerce/DocumentDelivery/DDEController?Action=showdoc&DocId=Data+Sheet%7FMS4525DO%7FB2%7Fpdf%7FEnglish%7FENG_DS_MS4525DO_B2.pdf%7FCAT-BLPS0002) that allow use it through UAVCAN network.
+
+It read measurements from i2c and publishes temperature and differential pressure.
+
+Uavcan message type: [uavcan.equipment.air_data.RawAirData](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawairdata).
+
+**Message example**
+
+![scheme](doc/airspeed/airspeed_message.png?raw=true "scheme")
+
+**Parameters**
+
+![scheme](doc/airspeed/airspeed_params.png?raw=true "scheme")
+
+## 4. internal combustion engine
+
+This board performs inernal combstion engine control and engine speed measurements. It may be usefull for such application as VTOL.
+
+1. Measuring engine speed
+Using interrupts and input capture it remembers the time when last and previous impulses were captured.
+Every 10 ms it calculates the frequncy of impulses using current and previous time and put this value to some ring buffer with size 20.
+Every 100 ms it gets median value from this buffer and publishes `esc_status` uavcan msg. This frequency and `esc index` can be modified using parameters.
+2. Controlling engine
+Usually starter, ignition and throttle are used to control engine. They all use RawCommand as control input. In any way, if last RawCommand with corresponding channel value message is received more than 2 seconds ago, all states of controlled devices will be switched to default.
+- The throttle state is directly controlled by RawCommand. It means that input command value is one-to-one mapped into pwm duration. The lower and higher borders of duration are defined in corresponding parameters.
+- The engine ignition has 2 states. When it is enabled it has max pwm duration, else it has min duration. The value of RawCommand of corresponding channel higher than some offset means enabled. You can setup offset in parameters.
+- The starter has 2 states like ignition but logic is a little harder. If input channel value is greater than offset, it will perform an attempt to run engine with duration up to certain time. If attempt is unsuccessful, it will turn off for certain time (to signalize that it's unsuccessful), and then try again. If median speed for last second is greater than some certain value it will stop attempt. Durations and offsets can be setup in parameters.
+
+## 5. charger
+
+This board allows to automatically charge a battery.
+
+Algorithm of charging is following:
+
+0. At initialization stage it perform calibration of zero current value for 3 seconds.
+
+1. After that it goes to the WAITING stage where it is trying to detect connected battery by measuring voltage and comparing it with offset value.
+
+2. When battery is detected, it goes to the SIGNALING stage, where it just blinks leds for 2 seconds to signals us about start charging. 
+
+3. Then it goes to the CHARGING stage where it tries to maintains the target current level by regulating dc-dc voltage using control loop shown below.
+
+4. If current is less than some offset value that could mean that battery is charged or disconnected it goes into FINISH stage. If voltage is less than some offset value it returns to the CHARGING stage again.
+
+![scheme](doc/charger/charger.png?raw=true "scheme")
+
+**Parameters**
+
+![scheme](doc/charger/charger_params.png?raw=true "scheme")
+
+## 6. inclinometer
+
+...
+
+
+## 7. fuel_tank
+
+This board is dedicated for measuring level of fuel.
+
+It publishes [uavcan.equipment.ice.FuelTankStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#fueltankstatus).
+
+**Message example**
+
+![scheme](doc/fuel_tank/fuel_tank_message.png?raw=true "msg")
+
+**Parameters**
+
+![scheme](doc/fuel_tank/fuel_tank_params.png?raw=true "params")
+
+## 8. pmu cover
+
+This board allow to measure voltage and current of battery using ADC.
+It publishes [uavcan.equipment.power.BatteryInfo](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#batteryinfo) via UAVCAN with adjustable rate.
+
+## 9. gps_mag_baro
+
+This board can work with 4 sensors:
+
+1. u-blox gps can use one of 2 protocols (depending on his firmware): `nmea` and [ublox protocol](https://www.u-blox.com/sites/default/files/products/documents/u-blox8-M8_ReceiverDescrProtSpec_%28UBX-13003221%29.pdf).
+It allows to switch desired protocol using parameters in runtime. As second protocols in a test stage showed better performance, at this moment we used, debuged and tested enough only second version.
+Anyway we communicate with GPS using UART and publish [uavcan.equipment.gnss.Fix](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#fix) via UAVCAN with adjustable rate. You can setup zero rate in parameters to publish messages in gps rate (~ 7 msgs per second).
+
+2. barometer [BMP280](https://cdn-shop.adafruit.com/datasheets/BST-BMP280-DS001-11.pdf)
+Communication with sensor is carried out using I2C.
+It publishes 2 messages:
+   - [uavcan.equipment.air_data.StaticPressure](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#staticpressure)
+   - [uavcan.equipment.air_data.StaticTemperature](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#statictemperature)
+
+3. [RM3100](https://ekb.terraelectronica.ru/pdf/show?pdf_file=%252Fds%252Fpdf%252FR%252FRM3100.pdf) and [HMC5883L](https://cdn-shop.adafruit.com/datasheets/HMC5883L_3-Axis_Digital_Compass_IC.pdf) magnetometrs
+The first works via SPI and the second works via I2C.
+In both ways we publish [uavcan.equipment.ahrs.MagneticFieldStrength2](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#magneticfieldstrength2).
+
+Also it has external leds. They show the system state at this moment.
+
+If you want details of external leds working, look at Sensors/leds.c module.
+
+## 10. rangefinder
+
+Sensor: [LW20](https://www.mouser.com/datasheet/2/321/28055-LW20-SF20-LiDAR-Manual-Rev-7-1371848.pdf), connected via i2c.
+
+Published data: range in meters.
+
+Uavcan message type: [uavcan.equipment.range_sensor.Measurement](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#measurement).
+
+Algorithm: just measure and publish.
+
+### 11. can_uart_bridge
+
+This board aimed at converting all received messages from UART to corresponded frames in CAN and
+send them, and the same from CAN to UART.
+
+Led description:
+
+- this node blinks from 1 to 5 times for 2 seconds, then waits for 2 seconds
+- number of blinking indicates the current state of board
+- 1 pulse means that all is ok: UART and CAN are receiving and working ok at least for the last 4
+seconds
+- 2 pulses means that there is no RX data from uart for last period of time
+- 3 pulses means that there is no RX data from CAN for last period of time
+- 4 pulses means that there is no RX data at all for last period of time
+- 5 pulses are reserved for future usage
