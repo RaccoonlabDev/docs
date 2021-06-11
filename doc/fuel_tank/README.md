@@ -6,8 +6,8 @@ It publishes [uavcan.equipment.ice.FuelTankStatus](https://legacy.uavcan.org/Spe
 
 **Message example**
 
-![scheme](doc/fuel_tank/fuel_tank_message.png?raw=true "msg")
+![scheme](fuel_tank_message.png?raw=true "msg")
 
 **Parameters**
 
-![scheme](doc/fuel_tank/fuel_tank_params.png?raw=true "params")
+![scheme](fuel_tank_params.png?raw=true "params")
