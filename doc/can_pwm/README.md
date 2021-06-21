@@ -1,16 +1,23 @@
 ## can-pwm
 
-The main goal of this board is to map [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) messages into PWM. Additionally it indicate own state using [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) messages and led.
+The main goal of this board is to map [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) messages into PWM with frequency 50 Hz and duration from 900 to 2000 us that is what typical servo needs. This board supports up to 4 channels named A1, A2, B1, B2.
 
-The structure scheme illustrated algorithm shown below.
+It also sends [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) messages with measured `5V` and `Vin`.
 
-![scheme](can_pwm_scheme.png?raw=true "scheme")
+The illustration of this board and pin numeration shown below.
+
+![scheme](can_pwm.png?raw=true "scheme")
+
+You can power this board using one of 2 CAN-sockets:
+
+- the little one - it has 5V
+- the big one - it up to 20V
 
 **RawCommand mapping into PWM**
 
-Configuration of mapping can be performed using 4 UAVCAN parameters for each channel via uavcan_gui_tool or QGC as well. UAVCAN message format allows up to 20 channels. This node allows up to 4 PWM pins. These 4 parameters are:
+Configuration of mapping can be performed using 4 UAVCAN parameters for each channel via `uavcan_gui_tool` or `QGC` as well. UAVCAN message format allows up to 20 channels. This node allows up to 4 PWM pins. These 4 parameters are:
 
-- channel - choose which RawCommand channel you want to map into particular PWM pin
+- channel - choose which `RawCommand` channel you want to map into particular PWM pin
 - min - PWM duration corresponded RawCommand=0
 - max - PWM duration corresponded RawCommand=8191
 - def - initial value of PWM duration or the value to be set when there is no RawCommand for few seconds.
@@ -37,4 +44,7 @@ This board has internal led that may allows you to understand possible problems.
 This node as well as other nodes sends Circuit status messages that has 5V and Vin voltages measurements.
 
 **Usage examples**
-It is recommended to use it firtly with [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool).
+
+It is recommended to use it firtly with [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool). You can setup parameters, connect servo to one of the channel and check it using `ESC panel` as shown below.
+
+![esc_panel](esc_panel.png?raw=true "esc_panel")
