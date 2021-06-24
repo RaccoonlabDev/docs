@@ -1,6 +1,12 @@
 ## programmer-sniffer
 
-Programmer-sniffer is a single device that has capability of programmer and UAVCAN sniffer.
+Programmer-sniffer is a single device with capability of programmer and UAVCAN sniffer.
+
+![programmer_sniffer](programmer_sniffer.png?raw=true "programmer_sniffer")
+
+```
+WARNING: Be carefull, CAN and SWD sockets look similar, but wrong connection may cause to some problems. These sockets are marked on the back side of the board.
+```
 
 **1. How to program a node**
 
@@ -32,3 +38,7 @@ You need to connect `programmer-sniffer` with  your UAVCAN node via CAN socket a
 There are 2 different CAN sockets. You can use any of them. Be carefull, don't use SWD socket!
 
 After that you can use [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool) utility or something other.
+
+![app_setup](app_setup.png?raw=true "app_setup")
+
+![uavcan_gui_tool](uavcan_gui_tool.png?raw=true "uavcan_gui_tool")
