@@ -70,9 +70,12 @@ This board has internal led that may allows you to understand possible problems.
 
 It is recommended to debug it with [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool). You can check message sended by this node.
 
-Example of the message shown below.
+Example of the message when there is no air shown below.
 
 ![scheme](airspeed_message.png?raw=true "scheme")
+
+![airspeed_plot](airspeed_plot.png?raw=true "airspeed_plot")
+
 
 ## 8. UAV usage example
 
