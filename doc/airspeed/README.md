@@ -48,11 +48,19 @@ It also has SWD socket that is dedicated for updating firmware using [programmer
 
 ## 4. Main function description
 
-(in process)
+This node measures differential pressure and temperature with high rate (100 hz by default) and publish averaged data with low rate (10 hz should be enough for PX4 Autopilot otherwise it will anyway perform average filter). Publication and measurement rates might be configured using node parameters, but it is reccomended to use default values.
 
-Parameters:
+Available list of parameters is shown on the picture below:
 
 ![scheme](airspeed_params.png?raw=true "scheme")
+
+According to `ms4525do datasheet` this node has following range of measured data:
+- differential pressure is from -1 psi to +1 psi or from -6894.757 pa to +6894.757 pa.
+- temperature is from -50 to +150 Celcius or from 223 to 423 Kelvin.
+
+If we consider temperature ~288 Kelvin and pressure 101325 Pa according to ISA model differential pressure interval above should be enough up to 100 m/sec airspeed that might be suitable for wide area of small VTOL application.
+
+
 
 ## 5. Auxiliary functions description
 
@@ -76,6 +84,7 @@ Example of the message when there is no air shown below.
 
 ![airspeed_plot](airspeed_plot.png?raw=true "airspeed_plot")
 
+Here we have an offset in measurements. It might be calibrated during PX4 calibration process.
 
 ## 8. UAV usage example
 
