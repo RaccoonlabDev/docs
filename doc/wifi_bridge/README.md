@@ -2,6 +2,8 @@
 
 This board is a bridge between UAVCAN/CAN and UDP/WiFi.
 
+![wifi_bridge](wifi_bridge.png?raw=true "wifi_bridge")
+
 ## Content
   - [1. UAVCAN interface](#1-uavcan-interface)
   - [2. Hardware specification](#2-hardware-specification)
@@ -41,7 +43,9 @@ You can power this board using one of 2 CAN-sockets:
 
 ## 4. Main function description
 
-(in process)
+This node is suitable for remote configuration UAVCAN network nodes or logging data stream.
+
+![params](params.png?raw=true "params")
 
 ## 5. Auxiliary functions description
 
