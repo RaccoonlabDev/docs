@@ -81,6 +81,27 @@ It also sends [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/S
 
 If you use esc firmware, it will sends [uavcan.equipment.esc.Status](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#status-2) message with rpm, voltage and current given as feedback from `esc flame` via uart.
 
+**Node name customization**
+
+By default this node have general purpose name `inno.can.pwm_node`.
+This name might be changed to more specific name by changing the parameter `name`.
+
+List of avaliable names shown below.
+
+| Param value | Node name            |
+| ----------- | -------------------- |
+| 0           | default              |
+| 1           | esc.left             |
+| 2           | esc.right            |
+| 3           | esc.forward          |
+| 4           | esc.backward         |
+| 5           | servos.aileron_left  |
+| 6           | servos.aileron_right |
+| 7           | servos.elevators     |
+| 8           | servos.rudders       |
+
+You should send the corresponded number of your desired name, store parameter inside the node and restart it.
+
 ## 6. Led indication
 
 This board has internal led that may allows you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting number of blinks you can define the code of current status.
