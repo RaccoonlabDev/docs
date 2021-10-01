@@ -48,7 +48,7 @@ It also has SWD socket that is dedicated for updating firmware using [programmer
 
 ## 4. Main function description
 
-This node measures differential pressure and temperature with high rate (100 hz by default) and publish averaged data with low rate (10 hz should be enough for PX4 Autopilot otherwise it will anyway perform average filter). Publication and measurement rates might be configured using node parameters, but it is reccomended to use default values.
+This node measures differential pressure and temperature with high rate (100 hz by default) and publishes averaged data with low rate (10 hz should be enough for PX4 Autopilot otherwise it will anyway perform average filter). Publication and measurement rates might be configured using node parameters, but it is recommended to use default values.
 
 Available list of parameters is shown on the picture below:
 
@@ -58,8 +58,7 @@ According to `ms4525do datasheet` this node has following range of measured data
 - differential pressure is from -1 psi to +1 psi or from -6894.757 pa to +6894.757 pa.
 - temperature is from -50 to +150 Celcius or from 223 to 423 Kelvin.
 
-If we consider temperature ~288 Kelvin and pressure 101325 Pa according to ISA model differential pressure interval above should be enough up to 100 m/sec airspeed that might be suitable for wide area of small VTOL application.
-
+If we consider temperature ~288 Kelvin and pressure 101325 Pa according to ISA model differential pressure interval above should be enough for up to 100 m/sec airspeed that is suitable for wide area of small VTOL application.
 
 
 ## 5. Auxiliary functions description
@@ -72,7 +71,14 @@ It also sends [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/S
 
 This board has internal led that may allows you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting number of blinks you can define the code of current status.
 
-(in process)
+| Number of blinks | Uavcan helth   | Description                     |
+| ---------------- | -------------- | ------------------------------- |
+| 1                | OK             | Everything is ok.                |
+| 2                | OK             | There is no RawCommand at least for last 0.5 seconds. |
+| 3                | WARNING        | This node can't see any other nodes in UAVCAN network, check your cables. |
+| 4                | ERROR          | There is a problem with circuit voltage, look at circuit status message to get details. It may happend when you power it from SWD, otherwise be carefull with power supply. This check might be turned off using params. |
+| 5                | CRITICAL       | There is a problem on periphery initialization level. Probably you load a wrong firmware. |
+
 
 ## 7. Usage example on a table
 
