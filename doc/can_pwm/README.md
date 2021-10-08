@@ -2,9 +2,9 @@
 
 This board is dedicated for controlling servos and ESCs. It maps [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) UAVCAN messages given from CAN bus into PWM signal (frequency 50 Hz and duration from 900 to 2000 us).
 
-It has 2 channels (A1 and A2) which might be directly connected to an actuator. Depending on firmware it also has:
-1. either 2 auxiliary channels named B1, B2,
-2. (experimental) or 2 auxiliary UART channels for getting feedback from [esc flame](https://store.tmotor.com/category.php?id=20)  with RPM and voltage.
+It has 2 main channels (A1 and A2) which might be directly connected to a servo/esc. It also has 2 auxilliary channels (B1 and B2) which might be used depending on firmware as:
+1. just additional can->pwm channels,
+2. (experimental) UART channels for getting feedback from [esc flame](https://store.tmotor.com/category.php?id=20) with RPM and voltage.
 
 The illustration of this board and pin numeration shown below.
 
@@ -46,14 +46,24 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 
 You can power this board using one of 2 CAN-sockets:
 
-- the little one - it has 5V
-- the big one - it up to 60V
+1. UCANPHY Micro (JST-GH 4).
+```
+UAVCAN/CAN Physical Layer Specification note.
+Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal.
+Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not
+exceed 1 A per connector.
+```
+2. 6-pin Molex series 502585 connector ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670) and [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600))
+
+```
+Up to 100 V, 2 A per contact
+```
 
 It also has SWD socket that is dedicated for updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
 
 ## 4. Main function description
 
-This node receives [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) which has array with up to 20 channels and it is able to process up to 4 of them.
+This node receives [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) that has an array with up to 20 channels and it is able to process up to 4 of them.
 
 Configuration of such mapping might be done using 4 sets (named A1, A2, B1, B2) of following params:
 - channel - choose which `RawCommand` channel you want to map into particular PWM pin; -1 means disable, 0-20 - specific channel
@@ -88,17 +98,21 @@ This name might be changed to more specific name by changing the parameter `name
 
 List of avaliable names shown below.
 
-| Param value | Node name            |
-| ----------- | -------------------- |
-| 0           | default              |
-| 1           | esc.left             |
-| 2           | esc.right            |
-| 3           | esc.forward          |
-| 4           | esc.backward         |
-| 5           | servos.aileron_left  |
-| 6           | servos.aileron_right |
-| 7           | servos.elevators     |
-| 8           | servos.rudders       |
+| Param value | Node name                 |
+| ----------- | ------------------------- |
+| 0           | default                   |
+| 1           | inno.esc.right_front      |
+| 2           | inno.esc.left_rear        |
+| 3           | inno.esc.left_front       |
+| 4           | inno.esc.right_rear       |
+| 5           | inno.esc.left             |
+| 6           | inno.esc.right            |
+| 7           | inno.esc.front            |
+| 8           | inno.esc.rear             |
+| 9           | inno.servos.aileron_left  |
+| 10          | inno.servos.aileron_right |
+| 11          | inno.servos.elevators     |
+| 12          | inno.servos.rudders       |
 
 You should send the corresponded number of your desired name, store parameter inside the node and restart it.
 
