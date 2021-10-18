@@ -1,8 +1,8 @@
-## airspeed
+## UAVCAN Airspeed Sensor
 
 This board is a wrapper under [MS4525DO airspeed sensor](https://www.te.com/commerce/DocumentDelivery/DDEController?Action=showdoc&DocId=Data+Sheet%7FMS4525DO%7FB2%7Fpdf%7FEnglish%7FENG_DS_MS4525DO_B2.pdf%7FCAT-BLPS0002) that allows to use it through UAVCAN network.
 
-It read measurements from the sensor via i2c and publishes temperature and differential pressure.
+It reads measurements from the sensor via i2c and publishes temperature and differential pressure.
 
 ![airspeed](airspeed.png?raw=true "airspeed")
 
@@ -41,14 +41,24 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 
 You can power this board using one of 2 CAN-sockets:
 
-- the little one - it has 5V
-- the big one - it up to 60V
+1. UCANPHY Micro (JST-GH 4).
+```
+UAVCAN/CAN Physical Layer Specification note.
+Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal.
+Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not
+exceed 1 A per connector.
+```
+2. 6-pin Molex series 502585 connector ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670) and [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600))
+
+```
+Up to 100 V, 2 A per contact
+```
 
 It also has SWD socket that is dedicated for updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
 
 ## 4. Main function description
 
-This node measures differential pressure and temperature with high rate (100 hz by default) and publishes averaged data with low rate (10 hz should be enough for PX4 Autopilot otherwise it will anyway perform average filter). Publication and measurement rates might be configured using node parameters, but it is recommended to use default values.
+This node measures differential pressure and temperature with high rate (100 hz by default) and publishes averaged data with a low rate (10 hz should be enough for PX4 Autopilot otherwise it will anyway perform average filter). Publication and measurement rates might be configured using node parameters, but it is recommended to use default values.
 
 Available list of parameters is shown on the picture below:
 
@@ -69,24 +79,26 @@ It also sends [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/S
 
 ## 6. Led indication
 
-This board has internal led that may allows you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting number of blinks you can define the code of current status.
+There is an internal led that may allows you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting number of blinks you can define the current status of the node.
 
 | Number of blinks | Uavcan helth   | Description                     |
 | ---------------- | -------------- | ------------------------------- |
 | 1                | OK             | Everything is ok.                |
-| 2                | OK             | There is no RawCommand at least for last 0.5 seconds. |
+| 2                | OK             | There is no RawCommand at least for last 0.5 seconds (it's ok, just in case). |
 | 3                | WARNING        | This node can't see any other nodes in UAVCAN network, check your cables. |
-| 4                | ERROR          | There is a problem with circuit voltage, look at circuit status message to get details. It may happend when you power it from SWD, otherwise be carefull with power supply. This check might be turned off using params. |
+| 4                | ERROR          | There is a problem with circuit voltage, look at circuit status message to get details. It may happend when you power it from SWD since it has only 3.3 V, otherwise be carefull with power supply. This check might be turned off using params. |
 | 5                | CRITICAL       | There is a problem on periphery initialization level. Probably you load a wrong firmware. |
 
 
 ## 7. Usage example on a table
 
-It is recommended to debug it with [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool). You can check message sended by this node.
+You may initially try this device on a table using [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool). You can check message sended by this node.
 
-Example of the message when there is no air shown below.
+Here you can see an example of a message when a devices is on a table and there is no wind.
 
 ![scheme](airspeed_message.png?raw=true "scheme")
+
+And plot created in the same conditions:
 
 ![airspeed_plot](airspeed_plot.png?raw=true "airspeed_plot")
 
@@ -94,4 +106,8 @@ Here we have an offset in measurements. It might be calibrated during PX4 calibr
 
 ## 8. UAV usage example
 
-(in process)
+This node has been tested several timers on VTOL application.
+
+Here you may see the screenshot from the log from the real flight in FW mode.
+
+![airspeed_plot](px4_log_airspeed_2021_10_18.png?raw=true "airspeed_plot")
