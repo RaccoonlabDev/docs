@@ -1,15 +1,14 @@
 
 # Uavcan nodes
 
-This repository has description fo existing UAVCAN nodes and their binaries files.
+This repository has a description of existing [UAVCAN v0](https://legacy.uavcan.org/) nodes and their binaries files.
 
-Last release you can find in [Releases section](https://github.com/InnopolisAero/inno_uavcan_node_binaries/releases).
+Last binaries files you can find in the [Releases section](https://github.com/InnopolisAero/inno_uavcan_node_binaries/releases).
 
-Uavcan nodes based on [UAVCAN v0 protocol](https://legacy.uavcan.org/).
 
 ## Existing UAVCAN devices
 
-At this time the list of well tested uavcan devices are:
+Following devices are already well tested and are being used in real application:
 
 | № | Uavcan node name                                  | Node default ID   |
 | - | ------------------------------------------------- |:-----------------:|
@@ -18,7 +17,7 @@ At this time the list of well tested uavcan devices are:
 | 3 | [can-pwm-esc](doc/can_pwm/README.md)              | 50-69             |
 | 4 | [airspeed](doc/airspeed/README.md)                | 74                |
 | 5 | [rangefinder](doc/rangefinder/README.md)          | 73                |
-| 6 | [can_uart_bridge](doc/wifi_bridge/README.md)      | -                 |
+| 6 | [wifi node](doc/wifi_bridge/README.md)            | 90                |
 | 7 | [internal_combustion_engine](doc/ice/README.md)   | 70                |
 
 Several nodes in development process now:
