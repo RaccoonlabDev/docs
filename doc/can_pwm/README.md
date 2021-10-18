@@ -1,14 +1,15 @@
-# can-pwm
+# UAVCAN-PWM node
 
-This board is dedicated for controlling servos and ESCs. It maps [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) UAVCAN messages given from CAN bus into PWM signal (frequency 50 Hz and duration from 900 to 2000 us).
+UAVCAN-PWM node is dedicated for controlling servos and ESCs. It receives [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) UAVCAN messages from CAN bus and maps it into typical for servos and ESC controllers PWM signal.
 
-It has 2 main channels (A1 and A2) which might be directly connected to a servo/esc. It also has 2 auxilliary channels (B1 and B2) which might be used depending on firmware as:
+This node has 2 main channels (A1 and A2) which are dedicated for direct connection with servos or ESC controllers. It also may have (depending on the board) 2 auxilliary channels (B1 and B2) which might be used for some additional purpose:
 1. just additional can->pwm channels,
-2. (experimental) UART channels for getting feedback from [esc flame](https://store.tmotor.com/category.php?id=20) with RPM and voltage.
+2. (experimental) UART channels for getting feedback from [esc flame](https://store.tmotor.com/category.php?id=20) with RPM and voltage,
+3. any other goal in future.
 
-The illustration of this board and pin numeration shown below.
+At that moment we have 2 types of such UAVCAN-pwm nodes, so called `Micro` and `Nano`. They are illustrated below.
 
-![scheme](can_pwm.png?raw=true "scheme")
+![scheme](can_pwm_nodes.png?raw=true "scheme")
 
 ## Content
   - [1. UAVCAN interface](#1-uavcan-interface)
@@ -40,7 +41,7 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 
 ## 2. Hardware specification
 
-(in process)
+![scheme](pinout.png?raw=true "scheme")
 
 ## 3. Wire
 
@@ -63,15 +64,18 @@ It also has SWD socket that is dedicated for updating firmware using [programmer
 
 ## 4. Main function description
 
-This node receives [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) that has an array with up to 20 channels and it is able to process up to 4 of them.
+This node receives [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) that has an array with up to 20 channels and it is able to process up to 4 of any of them. Each channel is normalized into [-8192, 8191].
 
-Configuration of such mapping might be done using 4 sets (named A1, A2, B1, B2) of following params:
-- channel - choose which `RawCommand` channel you want to map into particular PWM pin; -1 means disable, 0-20 - specific channel
-- min - PWM duration corresponded lower value of RawCommand
-- max - PWM duration corresponded highest level of RawCommand
-- def - default value of PWM; the corresponded channel will have this PWM duration if there is no RawCommand for few seconds or this command has negative value 
+Output for each disared RawCommand channel is PWM signal with frequency 50 Hz and duration from 900 to 2000 us. Typically, 900 us means minimal position of servo or stopped motor on the ESC and 2000 us is a maximum. But this range might be different depending on your actuator and desired angle of control of your servo. You also may want to inverse the output of your servo and set a default position of your servo other than just a min or max, for example a middle.
 
-Note, that value of `min` param might be more than value of `max` param and `def` value might be out of `min`/`max` range. It's up to you.
+Configuration of such mapping might be done using following 4 parameters that exist for each PWM-channel:
+
+| № | Parameter name | Description  |
+| - | -------------- | -------- |
+| 1 | channel        | Specify here a desired `RawCommand` channel you want to map into particular PWM pin. Default value -1 means disable. |
+| 2 | min            | PWM duration when RawCommand = 0. |
+| 3 | max            | PWM duration when RawCommand = 8191. |
+| 4 | def            | PWM duration when RawCommand < 0 or when there is no RawCommand for few seconds. |
 
 Below you can see visualization of this mapping.
 
@@ -118,7 +122,7 @@ You should send the corresponded number of your desired name, store parameter in
 
 ## 6. Led indication
 
-This board has internal led that may allows you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting number of blinks you can define the code of current status.
+This board has an internal led that may allows you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting number of blinks you can define the code of current status.
 
 | Number of blinks | Uavcan helth   | Description                     |
 | ---------------- | -------------- | ------------------------------- |
@@ -136,4 +140,4 @@ It is recommended to debug it with [uavcan_gui_tool](https://github.com/UAVCAN/g
 
 ## 8. UAV usage example
 
-(in process)
+This node is tested multiple times on several multicopters and VTOL.
