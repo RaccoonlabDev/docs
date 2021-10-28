@@ -29,3 +29,4 @@ Several nodes in development process now:
 | 10| [fuel_tank](doc/fuel_tank/README.md)              | 75                |
 | 11| [pmu_cover](doc/pmu_cover/README.md)              | 72                |
 | 12| [gps_mag_baro](doc/gps_mag_baro/README.md)        | 71                |
+| 13| [ui_leds](doc/ui_leds/README.md)                  | 92                |
