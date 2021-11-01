@@ -20,7 +20,11 @@ This node interracts with following messages:
 
 | № | type      | message  |
 | - | --------- | -------- |
-| 1 | publisher   | [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) |
+| 1 | publisher   | inno_msgs.charging_status |
+| 2 | publisher   | inno_msgs.charging_response |
+| 3 | publisher   | [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) |
+| 4 | subscriber   | inno_msgs.charging_control |
+| 5 | subscriber   | [uavcan.equipment.power.BatteryInfo](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#batteryinfo) |
 
 Beside required and hightly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports following application level functions:
 
@@ -29,6 +33,30 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 | 1 | service consumer | [uavcan.protocol.param](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#uavcanprotocolparam) |
 | 2 | service consumer   | [uavcan.protocol.RestartNode](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#restartnode) |
 | 3 | service consumer   | [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) |
+
+Note. Custom messages description
+
+1. inno_msgs.ChargingControl
+- uint8 cmd
+
+| № | type  | name        | meaning                                     |
+| - | ----- | ----------- | ------------------------------------------- |
+| 1 | uint8 | cmd | 0 - disable, 1 - calibrate, 2 - enable normal charging, 3 - enable extream charging, 4 - enable saving mode, 5 - do nothing |
+
+1. inno_msgs.ChargingStatus is published by this node with constant rate that might be configured using uavcan parameters. The table below describes his fields:
+
+| № | type                    | name        | meaning                                     |
+| - | ----------------------- | ----------- | ------------------------------------------- |
+| 1 |inno_msgs.ChargingControl|executing_cmd| command being executed at this moment       |
+| 2 | uint8   | stage                       | stage of the state machine at that moment   |
+| 3 | uint8   | state_of_charge_pct         | soc in %, 127 if unknown                    |
+| 4 | uint16  | dac_value                   | DAC raw value from o to 4095                |
+| 5 | float16 | capacity                    | integrated capacity during charging, mAh    |
+| 6 | float16 | received_battery_voltage    | voltage received from BatteryInfo, volts    |
+| 7 | float16 | measured_dc_dc_voltage      | dc-dc output voltage measured using ADC     |
+| 8 | float16 | mesured_battery_current     | dc-dc output current measured using ADC     |
+| 9 | float16 | measured_shunt_current      | dc-dc input current measured using ADC      |
+| 10| float16 | measured_temperature        | not implemented yet                         |
 
 ## 2. Hardware specification
 
@@ -55,19 +83,25 @@ It also has SWD socket that is dedicated for updating firmware using [programmer
 
 ## 4. Main function description
 
-Algorithm of charging is following:
+This node might be discribed using state machine.
 
-1. At initialization stage it perform calibration of zero current value for 3 seconds.
+After boot the node is in the `calibration` stage - it measures dc-dc output current using ADC multiple times and calucates average raw adc value - the offset corresponded to the zero current. After calibration stage the node goes to the `waiting` stage where it is ready for further work. The calibration stage may be repeated only by a specific charing command.
 
-2. After that it goes to the WAITING stage where it is trying to detect connected battery by measuring voltage and comparing it with offset value.
+If node receives start charging command, it goes into `signaling` stage and then starts charging process.
 
-3. When battery is detected, it goes to the SIGNALING stage, where it just blinks leds for 2 seconds to signals us about start charging. 
+The charging process is divided into 2 main stages. It starts with `charging with constant current (CC)` stage then goes into `charging with constant voltage (CV)`.
 
-4. Then it goes to the CHARGING stage where it tries to maintains the target current level by regulating dc-dc voltage using control loop shown below.
+If battery voltage more then maximum voltage (battery is charged) or less then some specific voltage (battary is not connected) or data receiving stops in goes into `check finish` stage. After some checks it goes into `finish` or `waiting` stages or even goes into previous stage.
 
-5. If current is less than some offset value that could mean that battery is charged or disconnected it goes into FINISH stage. If voltage is less than some offset value it returns to the CHARGING stage again.
+The whole state machine might be illustarted using following flowchart diagram:
 
-![scheme](charger_algorithm.png?raw=true "scheme")
+![charger](state_machine.png?raw=true "charger")
+
+The typical 2-stages charging process might me illustrated using following plot:
+
+![scheme](normal_charging_process.png?raw=true "scheme")
+
+During both stages this node uses I-regulator to keep constand current/voltage.
 
 The table with parameters shown below.
 
