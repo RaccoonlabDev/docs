@@ -1,4 +1,4 @@
-## UAVCAN Airspeed Sensor
+## UAVCAN Airspeed node
 
 This board is a wrapper under [MS4525DO airspeed sensor](https://www.te.com/commerce/DocumentDelivery/DDEController?Action=showdoc&DocId=Data+Sheet%7FMS4525DO%7FB2%7Fpdf%7FEnglish%7FENG_DS_MS4525DO_B2.pdf%7FCAT-BLPS0002) that allows to use it through UAVCAN network.
 
@@ -106,7 +106,7 @@ Here we have an offset in measurements. It might be calibrated during PX4 calibr
 
 ## 8. UAV usage example
 
-This node has been tested several timers on VTOL application.
+This node has been tested several times on VTOL application.
 
 Here you may see the screenshot from the log from the real flight in FW mode.
 

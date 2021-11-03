@@ -1,4 +1,4 @@
-# UI LEDS node
+# UAVCAN UI LEDS node
 
 This node sets the same color as autopilot has ([ui leds](https://docs.px4.io/master/en/getting_started/led_meanings.html#ui-led)) during disarm and sets a specific solid/blinking color ([aviation navigation lights](https://en.wikipedia.org/wiki/Navigation_light#Aviation_navigation_lights)) when armed.
 

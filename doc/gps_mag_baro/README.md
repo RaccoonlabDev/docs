@@ -1,4 +1,4 @@
-## gps_mag_baro
+## UAVCAN Gps + Magnetometer + Barometer node
 
 This board can work with 4 sensors:
 

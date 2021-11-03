@@ -1,8 +1,8 @@
-## rangefinder
+## UAVCAN Rangefinder
 
 This board is a wrapper under [LW20/C](https://www.mouser.com/datasheet/2/321/28055-LW20-SF20-LiDAR-Manual-Rev-7-1371848.pdf) that allows to use it through UAVCAN network.
 
-It reads measurements from the sensor via i2c and publishes range im meters.
+It reads measurements from the sensor via i2c and publishes range in meters.
 
 ![rangefinder](rangefinder.jpg?raw=true "rangefinder")
 
@@ -59,6 +59,7 @@ Using parameters you may specify type of sensor (now it supports only LW20/C)
 | rangefinder_type value | corresponded sensor type  |
 | ---------------------- | ------------------------- |
 | 0                      | LW20/C                    |
+| 1                      | vl53l0x                   |
 
 ## 5. Auxiliary functions description
 

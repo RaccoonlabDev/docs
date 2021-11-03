@@ -1,8 +1,8 @@
-# internal combustion engine
+# UAVCAN Internal Combustion Engine node
 
-This board is dedicated for controlling the internal combsution engine.
+This board is dedicated for controlling the internal combsution engine such as [DLE-20](http://rcstv.ru/static/fileunit/107b61373aea5dbedd58c2029d3c781fe909c3d9/DLE%2020%20Hobbico%20Manual%20Best.pdf).
 
-It to map particular channels of [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) messages into 3 control signals:
+It maps particular channels of [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) messages into 3 control signals:
 1. Throttle PWM (frequency 50 Hz and duration from 900 to 2000),
 2. Ignition GPIO output pin.
 3. Starter GPIO output pin.
@@ -51,9 +51,40 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 
 ## 3. Wire
 
-(in process)
+**Power socket**
+
+This board consumes more power than a typical UAVCAN node, so it is powered using additional socket.
+
+**CAN interface.**
+
+You can connect this board to the CAN bus using on of following sockets:
+
+1. UCANPHY Micro (JST-GH 4).
+```
+UAVCAN/CAN Physical Layer Specification note.
+Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal.
+Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not
+exceed 1 A per connector.
+```
+2. 6-pin Molex series 502585 connector ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670) and [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600))
+
+```
+Up to 100 V, 2 A per contact
+```
+
+**Programming socket.**
 
 It also has SWD socket that is dedicated for updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
+
+**Inputs and outputs**
+
+1. Fuel tank sensor
+2. Starter
+3. Spark ignition
+4. Throttle
+
+(in process)
+
 
 ## 4. Main function description
 
@@ -63,7 +94,56 @@ Below you can see the list of existance parameters.
 
 ![parameters](parameters.png?raw=true "parameters")
 
+In the tables below you can see the detailed description of such parameters.
+
+**Fuel tank parameters**
+
+| № | Parameter name       | Description  |
+| - | -------------------  | ------------ |
+| 1 | fuel_tank_pub_period | Period between fuel tank message publication |
+| 2 | fuel_tank_pub_min_press | Calibration value of diff pressure corresponded 0% of fuel tank |
+| 3 | fuel_tank_pub_max_press | Calibration value of diff pressure corresponded 100% of fuel tank |
+
+**Spark ignition parameters**
+
+| № | Parameter name         | Description  |
+| - | ---------------------- | ------------ |
+| 4 | spark_ignition_offset  | If raw command more than that value, spark ignition will be turned on, otherwise turned off |
+| 5 | spark_ignition_ch/mode | Index of RawCommand channel; -1 means disable this feature |
+| 6 | spark_ignition_min     | Depricated. Pwm duration corresponded to turned off state |
+| 7 | spark_ignition_max     | Depricated. Pwm duration corresponded to turned on state |
+| 8 | spark_ignition_default | Depricated. Pwm duration corresponded to state when there is no RawCommand for last half second |
+
+**Starter parameters**
+
+| № | Parameter name                | Description  |
+| - | ----------------------------- | ------------ |
+| 9 | starter_offset                | If raw command more than that value, spark ignition will be turned on, otherwise turned off |
+| 10| starter_ch/mode               | Index of RawCommand channel; -1 means disable this feature |
+| 11| starter_min_rpm_treshold      | Starter might be turned on only if rpm less then that value |
+| 12| starter_max_rpm_treshold      | Depricated |
+| 13| starter_try_duration          | Starter algorithm parameter descibed the period during which the starter will try to run the engine |
+| 14| starter_delay_before_next_try | Starter algorithm parameter descibed the period during which the starter will wait before next try |
+
+**ESC status publication paramters**
+| № | Parameter name | Description  |
+| - | -------------- | ------------ |
+| 15| esc_pub_period | Period between EscStatus publication. It has info about starter voltage and current |
+| 16| esc_index      | Index of corresponded EscStatus message; -1 means disable publication |
+
+**Throttle**
+| № | Parameter name   | Description  |
+| - | ---------------- | ------------ |
+| 17| throttle_ch/mode | Index of RawCommand channel; -1 means disable this feature |
+| 18| throttle_min     | Pwm duration corresponded to RawCommand=0 |
+| 19| throttle_max     | Pwm duration corresponded to RawCommand=8191 |
+| 20| throttle_default | Pwm duration corresponded to RawCommand < 0 or when there is no RawCommand for last half second |
+
 ### 4.2. RPM measurement algorithm
+
+2 types of RPM measurement algorithms and filtration are implemented.
+
+
 
 ```
 Old algorithm:
@@ -97,4 +177,6 @@ In any way, if last RawCommand with corresponding channel value message is recei
 
 ## 8. UAV usage example
 
-(in process)
+This node has been sucessfully tested on VTOL. Here is an example of RPM and RawCommand values collected from one of the flight logs.
+
+![parameters](rpm_from_rc.png?raw=true "parameters")

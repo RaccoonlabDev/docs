@@ -1,4 +1,4 @@
-## uavcan_wifi_bridge
+## UAVCAN WiFi Bridge node
 
 This board is a bridge between UAVCAN/CAN and UDP/WiFi.
 

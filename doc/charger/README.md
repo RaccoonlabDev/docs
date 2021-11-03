@@ -1,4 +1,4 @@
-## CHARGER node
+## UAVCAN Charger node
 
 This board allows to automatically charge a battery.
 
@@ -34,16 +34,15 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 | 2 | service consumer   | [uavcan.protocol.RestartNode](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#restartnode) |
 | 3 | service consumer   | [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) |
 
-Note. Custom messages description
+**Custom messages description**
 
 1. inno_msgs.ChargingControl
-- uint8 cmd
 
 | № | type  | name        | meaning                                     |
 | - | ----- | ----------- | ------------------------------------------- |
 | 1 | uint8 | cmd | 0 - disable, 1 - calibrate, 2 - enable normal charging, 3 - enable extream charging, 4 - enable saving mode, 5 - do nothing |
 
-1. inno_msgs.ChargingStatus is published by this node with constant rate that might be configured using uavcan parameters. The table below describes his fields:
+2. inno_msgs.ChargingStatus is published by this node with constant rate that might be configured using uavcan parameters. The table below describes his fields:
 
 | № | type                    | name        | meaning                                     |
 | - | ----------------------- | ----------- | ------------------------------------------- |
@@ -91,7 +90,7 @@ If node receives start charging command, it goes into `signaling` stage and then
 
 The charging process is divided into 2 main stages. It starts with `charging with constant current (CC)` stage then goes into `charging with constant voltage (CV)`.
 
-If battery voltage more then maximum voltage (battery is charged) or less then some specific voltage (battary is not connected) or data receiving stops in goes into `check finish` stage. After some checks it goes into `finish` or `waiting` stages or even goes into previous stage.
+If battery voltage more then maximum voltage (battery is charged) or less then some specific voltage (battary is not connected) or data receiving stops in goes into `check finish` stage. After some checks it goes into `finish` or `waiting` stages or even goes into previous stage
 
 The whole state machine might be illustarted using following flowchart diagram:
 
