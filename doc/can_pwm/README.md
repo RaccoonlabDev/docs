@@ -7,7 +7,7 @@ This node has 2 main channels (A1 and A2) which are dedicated for direct connect
 2. (experimental) UART channels for getting feedback from [esc flame](https://store.tmotor.com/category.php?id=20) with RPM and voltage,
 3. any other goal in future.
 
-At that moment we have 2 types of such UAVCAN-pwm nodes, so called `Micro` and `Nano`. They are illustrated below.
+At that moment we have 3 types of such UAVCAN-pwm nodes, so called `5A`, `Micro` and `Nano`. They are illustrated below.
 
 ![scheme](can_pwm_nodes.png?raw=true "scheme")
 
@@ -89,7 +89,28 @@ Configuration of mapping can be performed using `uavcan_gui_tool` or even `QGC`.
 
 **Circuit status**
 
-It also sends [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) messages with measured `5V` and `Vin`.
+It also sends 2 [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) messages with measured `5V` and `Vin`.
+
+The first message has `circuit_id=NODE_ID*10 + 0` and following 3 significant fields:
+1. voltage - is the 5V voltage
+2. current - is the max current for last 0.5 second
+3. error_flags - might have ERROR_FLAG_OVERVOLTAGE or ERROR_FLAG_UNDERVOLTAGE or non of them
+
+The second message has `circuit_id=NODE_ID*10 + 1` and following 3 significant fields:
+1. voltage - is the Vin voltage
+2. current - is the average current for last 0.5 second
+3. error_flags - ERROR_FLAG_UNDERVOLTAGE or non of them. There is no ERROR_FLAG_OVERVOLTAGE flag because the expected max Vin voltage is unknown.
+
+Below you can see an example of current consumption with 5V voltage power supply:
+
+![max and avg current plot](current_plot.png?raw=true "max and avg current plot")
+Fig. Max and average current measurement
+
+Here cyan color plot is current in ampers with max filter, yellow is current in ampers with average filter. Picks happens when servo was changed his position.
+
+```
+Note: only `5A` node supports current measurement. All nodes supports 5V and Vin measurement.
+```
 
 **Esc status**
 
