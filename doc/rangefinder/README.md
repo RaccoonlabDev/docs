@@ -1,4 +1,4 @@
-## UAVCAN Rangefinder
+## UAVCAN Rangefinder node
 
 This board is a wrapper under [LW20/C](https://www.mouser.com/datasheet/2/321/28055-LW20-SF20-LiDAR-Manual-Rev-7-1371848.pdf) that allows to use it through UAVCAN network.
 
@@ -12,9 +12,10 @@ It reads measurements from the sensor via i2c and publishes range in meters.
   - [3. Wire](#3-wire)
   - [4. Main function description](#4-main-function-description)
   - [5. Auxiliary functions description](#5-auxiliary-function-description)
-  - [6. Led indication](#6-led-indication)
-  - [7. Usage example on a table](#7-usage-example-on-a-table)
-  - [8. UAV usage example](#8-uav-usage-example)
+  - [6. Parameters](#6-parameters)
+  - [7. Led indication](#7-led-indication)
+  - [8. Usage example on a table](#8-usage-example-on-a-table)
+  - [9. UAV usage example](#9-uav-usage-example)
 
 ## 1. UAVCAN interface
 
@@ -41,14 +42,32 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 
 You can power this board using one of 2 CAN-sockets:
 
-- the little one - it has 5V
-- the big one - it up to 60V
+1. 4-pin CAN-socket (`UCANPHY Micro - JST-GH 4`). This socket is described in [UAVCAN/CAN Physical Layer Specification](https://forum.uavcan.org/t/uavcan-can-physical-layer-specification-v1-0/1471). Short note from the standard below: 
+```
+UAVCAN/CAN Physical Layer Specification note.
+Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal.
+Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not
+exceed 1 A per connector.
+```
+2. 6-pin CAN-socket (`Molex series 502585 connector`: [502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670) and [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600))
+
+```
+Up to 100 V, 2 A per contact
+```
 
 It also has SWD socket that is dedicated for updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
 
 ## 4. Main function description
 
 This node measures and publishes range with adjustable rates (10 hz by default fro both). Publication and measurement rates might be configured using node parameters, but it is recommended to use default values.
+
+## 5. Auxiliary functions description
+
+**Circuit status**
+
+It also sends [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) messages with measured `5V` and `Vin`.
+
+## 6. Parameters
 
 Available list of parameters is shown on the picture below:
 
@@ -61,13 +80,7 @@ Using parameters you may specify type of sensor (now it supports only LW20/C)
 | 0                      | LW20/C                    |
 | 1                      | vl53l0x                   |
 
-## 5. Auxiliary functions description
-
-**Circuit status**
-
-It also sends [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) messages with measured `5V` and `Vin`.
-
-## 6. Led indication
+## 7. Led indication
 
 This board has internal led that may allows you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting number of blinks you can define the code of current status.
 
@@ -80,7 +93,7 @@ This board has internal led that may allows you to understand possible problems.
 | 5                | CRITICAL       | There is a problem on periphery initialization level. Probably you load a wrong firmware. |
 
 
-## 7. Usage example on a table
+## 8. Usage example on a table
 
 It is recommended to debug it with [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool). You can check message sended by this node.
 
@@ -88,6 +101,6 @@ Example of the message shown below.
 
 ![scheme](rangefinder_message.png?raw=true "scheme")
 
-## 8. UAV usage example
+## 9. UAV usage example
 
 (in process)

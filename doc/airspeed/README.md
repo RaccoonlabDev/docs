@@ -12,9 +12,10 @@ It reads measurements from the sensor via i2c and publishes temperature and diff
   - [3. Wire](#3-wire)
   - [4. Main function description](#4-main-function-description)
   - [5. Auxiliary functions description](#5-auxiliary-function-description)
-  - [6. Led indication](#6-led-indication)
-  - [7. Usage example on a table](#7-usage-example-on-a-table)
-  - [8. UAV usage example](#8-uav-usage-example)
+  - [6. Parameters](#6-parameters)
+  - [7. Led indication](#7-led-indication)
+  - [8. Usage example on a table](#8-usage-example-on-a-table)
+  - [9. UAV usage example](#9-uav-usage-example)
 
 ## 1. UAVCAN interface
 
@@ -60,10 +61,6 @@ It also has SWD socket that is dedicated for updating firmware using [programmer
 
 This node measures differential pressure and temperature with high rate (100 hz by default) and publishes averaged data with a low rate (10 hz should be enough for PX4 Autopilot otherwise it will anyway perform average filter). Publication and measurement rates might be configured using node parameters, but it is recommended to use default values.
 
-Available list of parameters is shown on the picture below:
-
-![scheme](airspeed_params.png?raw=true "scheme")
-
 According to `ms4525do datasheet` this node has following range of measured data:
 - differential pressure is from -1 psi to +1 psi or from -6894.757 pa to +6894.757 pa.
 - temperature is from -50 to +150 Celcius or from 223 to 423 Kelvin.
@@ -77,7 +74,13 @@ If we consider temperature ~288 Kelvin and pressure 101325 Pa according to ISA m
 
 It also sends [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) messages with measured `5V` and `Vin`.
 
-## 6. Led indication
+## 6. Parameters
+
+Available list of parameters is shown on the picture below:
+
+![scheme](airspeed_params.png?raw=true "scheme")
+
+## 7. Led indication
 
 There is an internal led that may allows you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting number of blinks you can define the current status of the node.
 
@@ -90,7 +93,7 @@ There is an internal led that may allows you to understand possible problems. It
 | 5                | CRITICAL       | There is a problem on periphery initialization level. Probably you load a wrong firmware. |
 
 
-## 7. Usage example on a table
+## 8. Usage example on a table
 
 You may initially try this device on a table using [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool). You can check message sended by this node.
 
@@ -104,7 +107,7 @@ And plot created in the same conditions:
 
 Here we have an offset in measurements. It might be calibrated during PX4 calibration process.
 
-## 8. UAV usage example
+## 9. UAV usage example
 
 This node has been tested several times on VTOL application.
 

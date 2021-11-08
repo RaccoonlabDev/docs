@@ -9,50 +9,58 @@ This device is mainly intended for developers in robotics (UAV, UGV, AUV, USV, e
 ![programmer_sniffer](programmer_sniffer.png?raw=true "programmer_sniffer")
 
 ## Content
-  - [1. Wire](#1-wire)
-  - [2. Hardware specification](#2-wire)
-  - [3. Wire](#3-wire)
-  - [4. Programmer usage](#4-programmer-usage)
-  - - [4.1. Windows](#41-windows)
-  - - [4.2. Linux](#42-linux)
-  - [5. Sniffer usage](#5-sniffer-usage)
-  - [6. Led indication](#6-led-indication)
-  - [7. Application examples](#7-application-examples)
+  - [1. Hardware specification](#1-wire)
+  - [2. Wire](#2-wire)
+  - [3. Programmer usage](#3-programmer-usage)
+  - - [3.1. Windows](#31-windows)
+  - - [3.2. Linux](#32-linux)
+  - [4. Sniffer usage](#4-sniffer-usage)
+  - [5. Led indication](#5-led-indication)
+  - [6. Application examples](#6-application-examples)
 
-## 1. Wire
-
-This device connects to PC via USB-C interface.
-
-It has 2 types of CAN-intarfaces:
-- `UCANPHY Micro (4 pin)` socket that is standart UAVCAN socket, described in [UAVCAN/CAN Physical Layer Specification](https://forum.uavcan.org/t/uavcan-can-physical-layer-specification-v1-0/1471)
-- `Molex CLIK-Mate 502585-0670 6 pin` socket 
-
-It has also SWD socket.
-
-```
-WARNING: Be carefull, 4-pin CAN and SWD sockets look similar, but wrong connection may cause to some problems. These sockets are marked on the back side of the board.
-```
-
-## 2. Hardware specification
+## 1. Hardware specification
 
 (in process)
 
-## 3. Wire
+## 2. Wire
 
-(in process)
+This device has 4 sockets:
 
-## 4. Programmer usage
+![wire](wire.png?raw=true "wire")
+
+
+1. USB Type-C for connection with PC
+2. 4-pin CAN-socket (`UCANPHY Micro - JST-GH 4`). This socket is described in [UAVCAN/CAN Physical Layer Specification](https://forum.uavcan.org/t/uavcan-can-physical-layer-specification-v1-0/1471). Short note from the standard below: 
+```
+UAVCAN/CAN Physical Layer Specification note.
+Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal.
+Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not
+exceed 1 A per connector.
+```
+3. 6-pin CAN-socket (`Molex series 502585 connector`: [502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670) and [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600))
+
+```
+Up to 100 V, 2 A per contact
+```
+
+4. It also has SWD socket that is dedicated for updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
+
+```
+WARNING: Be carefull, 4-pin CAN and SWD sockets look similar, but wrong connection may cause to some problems. Names of these sockets are marked on the back side of the board.
+```
+
+## 3. Programmer usage
 
 You may program your devices in any way you want. The easiest way in our opinion is to use st-link utility.
 
 
-### 4.1. Windows
+### 3.1. Windows
 
 1. Install `ST-LINK utility` from [the official site](https://www.st.com/en/development-tools/stsw-link004.html)
 2. Use GUI to program a node with desired .bin file
 
 
-### 4.2. Linux
+### 3.2. Linux
 
 1. Install `st-link` using [the instruction from the official github repository](https://github.com/stlink-org/stlink#installation)
 2. Type following to program your device with desired .bin file:
@@ -63,7 +71,7 @@ st-flash write desired_bin_file.bin 0x8000000
 
 where `desired_bin_file.bin` is the the name of binary file.
 
-## 5. Sniffer usage
+## 4. Sniffer usage
 
 You need to connect `programmer-sniffer` with  your UAVCAN node via CAN socket and with your PC via USB.
 
@@ -83,11 +91,11 @@ After that you will get get following window:
 
 ![uavcan_gui_tool](uavcan_gui_tool.png?raw=true "uavcan_gui_tool")
 
-## 6. Led indication
+## 5. Led indication
 
 (in process)
 
-## 7. Application examples
+## 6. Application examples
 
 As an example, this device might be suitable for such application as [UAVCAN HITL simulation](https://github.com/InnopolisAero/innopolis_vtol_dynamics).
 
