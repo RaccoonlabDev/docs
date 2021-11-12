@@ -62,6 +62,10 @@ It also has SWD socket that is dedicated for updating firmware using [programmer
 
 This node primary has 3 features: gps, magnetometer and barometer. You may enable or disable any of them using following UAVCAN parameters `gps_enable`, `mag_enable` and `baro_enable`.
 
+Below you can see an illustration of how it may work in `uavcan_gui_tool`.
+
+![gps_mag_baro](gps_mag_baro_msgs.png?raw=true "gps_mag_baro")
+
 **1. GNSS module**
 
 The node uses [u-blox 8](https://www.u-blox.com/en/product/max-8-series) gnss module. It can work either with `nmea` and [ublox protocol](https://www.u-blox.com/sites/default/files/products/documents/u-blox8-M8_ReceiverDescrProtSpec_%28UBX-13003221%29.pdf) protocol. You may choose desired protocol using UAVCAN parameter `gnss_type`.

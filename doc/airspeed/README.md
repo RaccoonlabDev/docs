@@ -113,4 +113,4 @@ This node has been tested several times on VTOL application.
 
 Here you may see the screenshot from the log from the real flight in FW mode.
 
-![airspeed_plot](px4_log_airspeed_2021_10_18.png?raw=true "airspeed_plot")
+![px4_log_airspeed_2021_11_12](px4_log_airspeed_2021_11_12.png?raw=true "px4_log_airspeed_2021_11_12")

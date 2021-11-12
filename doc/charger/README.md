@@ -2,7 +2,7 @@
 
 This board allows to automatically charge a battery.
 
-![charger](charger.jpg?raw=true "charger")
+![charger](charger.png?raw=true "charger")
 
 ## Content
   - [1. UAVCAN interface](#1-uavcan-interface)

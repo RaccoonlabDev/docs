@@ -2,14 +2,17 @@
 
 UAVCAN-PWM node is dedicated for controlling servos and ESCs. It receives [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) UAVCAN messages from CAN bus and maps it into typical for servos and ESC controllers PWM signal.
 
-This node has 2 main channels (A1 and A2) which are dedicated for direct connection with servos or ESC controllers. It also may have (depending on the board) 2 auxilliary channels (B1 and B2) which might be used for some additional purpose:
-1. just additional can->pwm channels,
-2. (experimental) UART channels for getting feedback from [esc flame](https://store.tmotor.com/category.php?id=20) with RPM and voltage,
-3. any other goal in future.
+This node has 2 channels (A1 and A2) which are dedicated for direct connection with servos or ESC controllers.
 
-At that moment we have 3 types of such UAVCAN-pwm nodes, so called `5A`, `Micro` and `Nano`. They are illustrated below.
+At that moment we have 3 types of such UAVCAN-PWM boards, so called `5A`, `Mini` and `Nano`. They are illustrated below.
 
 ![scheme](can_pwm_nodes.png?raw=true "scheme")
+
+The main features of each board are following:
+1. `5A` board supports output current up to 5 amps and has a current sensor
+2. `Mini` board has additional 2 group of pins which might be used depending of firmware either as additional PWM output channels (named B1, B2) or as UART channels for getting feedback from [esc flame](https://store.tmotor.com/category.php?id=20) with RPM and voltage
+3. `Nano` board is the smallest and chipest node that doesn't has dc-dc
+
 
 ## Content
   - [1. UAVCAN interface](#1-uavcan-interface)
@@ -44,18 +47,9 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 
 (in process)
 
-UAVCAN-PWM micro scheme:
+UAVCAN-PWM mini scheme:
 
-![can_pwm_micro_scheme](can_pwm_micro_scheme.jpg?raw=true "can_pwm_micro_scheme")
-
-
-Difference between 3 types of UAVCAN-PWM nodes:
-
-| № | Name         | Nano | Micro | 5A    |
-| - | ------------ | ---- | ----- | ----- |
-| 1 | Max current  | ?    | ?     | 5A    |
-| 2 |Current sensor| -    | -     | +     |
-| 3 | Channels     | 2    | 2-4   | 2     |
+![can_pwm_mini_scheme](can_pwm_mini_scheme.png?raw=true "can_pwm_mini_scheme")
 
 ## 3. Wire
 
@@ -76,12 +70,10 @@ Up to 100 V, 2 A per contact
 
 It also has SWD socket that is dedicated for updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
 
-![scheme](pinout.png?raw=true "scheme")
-
 
 ## 4. Main function description
 
-This node receives [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) that has an array with up to 20 channels and it is able to process up to 4 of any of them. Each channel is normalized into [-8192, 8191].
+This node receives [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) that has an array with up to 20 channels and it is able to process up to 2 (4) of any of them. Each channel is normalized into [-8192, 8191].
 
 Output for each disared RawCommand channel is PWM signal with frequency 50 Hz and duration from 900 to 2000 us. Typically, 900 us means minimal position of servo or stopped motor on the ESC and 2000 us is a maximum. But this range might be different depending on your actuator and desired angle of control of your servo. You also may want to inverse the output of your servo and set a default position of your servo other than just a min or max, for example a middle.
 
@@ -97,16 +89,16 @@ Fig. UAVCAN->PWM mapping
 
 **Circuit status**
 
-It also sends 2 [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) messages with measured `5V` and `Vin`.
+UAVCAN-PWM node sends 2 [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) messages with measured `5V` and `Vin`.
 
 The first message has `circuit_id=NODE_ID*10 + 0` and following 3 significant fields:
 1. voltage - is the 5V voltage
-2. current - is the max current for last 0.5 second
+2. current - is the max current for last 0.5 second (supported only by `5A` node)
 3. error_flags - might have ERROR_FLAG_OVERVOLTAGE or ERROR_FLAG_UNDERVOLTAGE or non of them
 
 The second message has `circuit_id=NODE_ID*10 + 1` and following 3 significant fields:
 1. voltage - is the Vin voltage
-2. current - is the average current for last 0.5 second
+2. current - is the average current for last 0.5 second (supported only by `5A` node)
 3. error_flags - ERROR_FLAG_UNDERVOLTAGE or non of them. There is no ERROR_FLAG_OVERVOLTAGE flag because the expected max Vin voltage is unknown.
 
 Below you can see an example of current consumption with 5V voltage power supply:
