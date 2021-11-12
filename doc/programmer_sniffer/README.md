@@ -20,7 +20,9 @@ This device is mainly intended for developers in robotics (UAV, UGV, AUV, USV, e
 
 ## 1. Hardware specification
 
-(in process)
+Schematic represented in [this repo](https://github.com/sainquake/UAVCAN-Sniffer-STM-Programmer), and PDF version is [here](https://github.com/sainquake/UAVCAN-Sniffer-STM-Programmer/blob/master/Project%20Outputs%20for%20CAN_SNIFFER/Output.PDF)
+
+![CAD](https://github.com/sainquake/UAVCAN-Sniffer-STM-Programmer/blob/master/CAD/CAN_SNIFFER.JPG?raw=true "CAD")
 
 ## 2. Wire
 
