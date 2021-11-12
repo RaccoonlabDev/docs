@@ -1,4 +1,4 @@
-# Uavcan nodes
+# UAVCAN nodes
 
 This repository has a description of existing [UAVCAN v0](https://legacy.uavcan.org/) nodes and their binaries files.
 
@@ -19,7 +19,7 @@ Following devices are already well tested and are being used in real application
 | 5 | rangefinder | not yet | [link](doc/rangefinder/README.md) |
 | 6 | uavcan-mux          | [link](http://raccoonlab.org/store/tproduct/360882105-436323747071-uavcan-mux) | not yet |
 
-Still have some issues on not tested enough yet:
+Still have some issues or have not tested enough yet:
 | № | Uavcan node name           | Doc link |
 | - | -------------------------- |:--------:|
 | 7 | gps_mag_baro               | [link](doc/gps_mag_baro/README.md) |
@@ -27,7 +27,7 @@ Still have some issues on not tested enough yet:
 | 9 | ui_leds                    | [link](doc/ui_leds/README.md) |
 | 10| internal_combustion_engine | [link](doc/ice/README.md) |
 
-These nodes in the development process yet, but they will go to the testing on real application soon:
+These nodes in the development process yet, but they will go to the testing on real applications soon:
 
 | № | Uavcan node name | Doc link                        |
 | - | ---------------- |:-------------------------------:|
