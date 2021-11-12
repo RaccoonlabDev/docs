@@ -36,7 +36,7 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 
 ## 2. Hardware specification
 
-(in process)
+![airspeed_scheme](airspeed_scheme.jpg?raw=true "airspeed_scheme")
 
 ## 3. Wire
 

@@ -28,9 +28,6 @@ Schematic represented in [this repo](https://github.com/sainquake/UAVCAN-Sniffer
 
 This device has 4 sockets:
 
-![wire](wire.png?raw=true "wire")
-
-
 1. USB Type-C for connection with PC
 2. 4-pin CAN-socket (`UCANPHY Micro - JST-GH 4`). This socket is described in [UAVCAN/CAN Physical Layer Specification](https://forum.uavcan.org/t/uavcan-can-physical-layer-specification-v1-0/1471). Short note from the standard below: 
 ```

@@ -44,6 +44,11 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 
 (in process)
 
+UAVCAN-PWM micro scheme:
+
+![can_pwm_micro_scheme](can_pwm_micro_scheme.jpg?raw=true "can_pwm_micro_scheme")
+
+
 Difference between 3 types of UAVCAN-PWM nodes:
 
 | № | Name         | Nano | Micro | 5A    |
