@@ -9,7 +9,7 @@ This node sets the same color as autopilot has ([ui leds](https://docs.px4.io/ma
   - [2. Hardware specification](#2-hardware-specification)
   - [3. Wire](#3-wire)
   - [4. Main function description](#4-main-function-description)
-  - [5. Auxiliary functions description](#5-auxiliary-function-description)
+  - [5. Auxiliary functions description](#5-auxiliary-functions-description)
   - [6. Led indication](#6-led-indication)
   - [7. Usage example on a table](#7-usage-example-on-a-table)
   - [8. UAV usage example](#8-uav-usage-example)
@@ -116,5 +116,7 @@ This board has an internal led that may allows you to understand possible proble
 
 ## 8. UAV usage example
 
-(not tested in real applications yet)
+Check the video below.
+
+[![ui_leds](https://img.youtube.com/vi/s0HAyvo1ACk/0.jpg)](https://youtu.be/s0HAyvo1ACk)
 
