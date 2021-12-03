@@ -74,11 +74,50 @@ If we consider temperature ~288 Kelvin and pressure 101325 Pa according to ISA m
 
 It also sends [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) messages with measured `5V` and `Vin`.
 
+**Calibration**
+
+By setting `airspeed_calib_request` parameter to 1 the node goes into the calibration mode for 10 seconds where it summarizes all measured differential pressures and in the end divides the sum by the number of measurements. The negative resulted averaged value is writen into the `airspeed_calibration_offset` parameter. This offset is added to the differential pressure of each measurement. During the calibration process the node has `INITIALIZATION` mode. After the initialization process the node doesn't save parameters to the flasm memory, you need to do it manually.
+As an alternative, you may always manually set `airspeed_calibration_offset` parameter.
+
+```
+Note. Using params to start the calibration process is definetely not the best solution. But this is the only way to start it from the QGC side. Current PX4 supports only centralized calibration on the autopilot side.
+```
+
+**Enable/disable**
+
+Normally, you don't need this feature. But it allows you to start and stop publishing via UAVCAN in real time without physical disconnect.
+
+**Software version**
+
+GetNodeInfo response contains software version that allows you to differentiate one firmware from another. See `Node Properties` window in `uavcan gui tool`.
+
+**Hardware version**
+
+Not implemented yet.
+
+**Hardware unique ID**
+
+GetNodeInfo response contains hardware unique ID that allows you to differentiate one board from another. See `Node Properties` window in `uavcan gui tool`.
+
+
 ## 6. Parameters
 
 Available list of parameters is shown on the picture below:
 
 ![scheme](airspeed_params.png?raw=true "scheme")
+
+| № | Param name   | Description |
+| - | ------------ | ----------- |
+| 0 | ID           | You should manually choose the node ID. On the bus few nodes with the same ID should not exist. |
+| 1 | airspeed_enable | 0 - disable data publication, 1 - enable |
+| 2 | airspeed_pub_period | Period of message publication |
+| 3 | airspeed_measurement_period | Period of data measurement |
+| 4 | airspeed_calibration_offset | The publicated differential pressure = measured pressure + this offset |
+| 5 | airspeed_calibration_request | Automatic calibration request. See this feature description for details. |
+| 6 | enable_5v_check | Set ERROR status if 5V voltage is out of range 4.5 - 5.5 V |
+| 7 | enable_vin_check | Set ERROR status if Vin voltage is less then 4.5 V |
+| 8 | name | If specified value != 0, use custom node name. There is no custom names yet, but it might be extended if you need. |
+| 9 | live_minutes | Not implemented yet. |
 
 ## 7. Led indication
 
@@ -105,11 +144,37 @@ And plot created in the same conditions:
 
 ![airspeed_plot](airspeed_plot.png?raw=true "airspeed_plot")
 
-Here we have an offset in measurements. It might be calibrated during PX4 calibration process.
+Here we have an offset in measurements. It might be calibrated during calibration process.
 
 ## 9. UAV usage example
 
 This node has been tested several times on VTOL application.
+
+**PX4 Parameters setting before usage**
+
+Normally, to use it with your PX4-based Autopilot you need to setup following parameters:
+- `UAVCAN_ENABLE`,
+- `UAVCAN_SUB_ASPD` (since 1.13.1).
+It is also reccomended to setup `ASPD_DO_CHECKS`.
+
+**Node parameters setup using QGC**
+
+At that moment the best way to setup the node parameters is to use `MAVLing console`.
+
+By typing `uavcan status` in MAVLink console you should be able to see this device.
+
+To perform calibration on sensor side from QGC you should type:
+1. `uavcan param list 74` - check is calibration feature is supported
+2. `uavcan param set 74 airspeed_calib_request 1` to start calibration
+3. `uavcan param save 74` - to save new calibration parameters.
+
+![airspeed_qgc](airspeed_qgc.png?raw=true "airspeed_qgc")
+
+Here 74 is our node id. It has calibration offset -69.
+
+After that the node is ready for use.
+
+**Flight log example**
 
 Here you may see the screenshot from the log from the real flight in FW mode.
 
