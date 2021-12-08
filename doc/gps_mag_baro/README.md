@@ -79,12 +79,10 @@ Note 1: nmea protocol is not tested well yet. Use ubx protocol instead.
 ```
 Note 2: At this moment you need to manually setup ublox module before usage.
 ```
-**1.2. Setup U-Blox NEO-M8N-0**
+**1.2. Setup U-Blox NEO-M8N-0 bu UART**
 
-[Download](https://www.u-blox.com/en/product/u-center) and install u-center (not u-center 2).
-
-Connect to the module by UART at 9600 by default.
-
+- [Download](https://www.u-blox.com/en/product/u-center) and install u-center (not u-center 2).
+- Connect to the module by UART at 9600 by default.
 - Open View->Configuration view. Go to MSG (Messages), enable "01-07 NAV-PVT" at UART1, disable all other messages. Push "send" at hte bottom of the window to send command. Check that only NAV-PVT goes from module by opening View->Messages View.
 - Again go to Configuration view to PRT (Ports), change the Baudrate to 115200, "send" at the bottom.
 - Recoonect to device at new baudrate.
@@ -92,6 +90,7 @@ Connect to the module by UART at 9600 by default.
 - If everything ok, go to Configuration view to CFG (Configuration), select "Save current configuration", "send" at the bottom.
 
 **1.3 About workflow**
+
 It communicates with gnss module via UART and publishes [uavcan.equipment.gnss.Fix](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#fix). You may either set default publish rate (the same as receiving) by setting `gps_frequency` to 0 or set any other fixed rate.
 
 Below you can see an example of `Fix` message.
