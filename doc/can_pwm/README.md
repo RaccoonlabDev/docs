@@ -8,18 +8,22 @@ At that moment we have 3 types of such UAVCAN-PWM boards, so called `5A`, `Mini`
 
 ![scheme](can_pwm_nodes.png?raw=true "scheme")
 
-The main features of each board are following:
-1. `5A` board supports output current up to 5 amps and has a current sensor
-2. `Mini` board has additional 2 group of pins which might be used depending of firmware either as additional PWM output channels (named B1, B2) or as UART channels for getting feedback from [esc flame](https://store.tmotor.com/category.php?id=20) with RPM and voltage
-3. `Nano` board is the smallest and chipest node that doesn't has dc-dc
+The difference between boards are following:
 
+| № | Criterion            | 5A      | Mini     | Nano          | Module        |
+| - | -------------------- | ------- | -------- | ------------- | ------------- |
+| 1 | devoloping status    | tested  | tested   | testing stage | dev stage     |
+| 1 | dc-dc availability   | yes     | yes      | no            | yes           |
+| 2 | input voltage        | 2S-12S  | 2S-6S    | 4.8-5.6 V     | 2S-12S        |
+| 3 | input current sensor | yes     | no       | no            | no            |
+| 4 | auxilliary pins      | no      | 2        | no            | 2             |
 
 ## Content
   - [1. UAVCAN interface](#1-uavcan-interface)
   - [2. Hardware specification](#2-hardware-specification)
   - [3. Wire](#3-wire)
   - [4. Main function description](#4-main-function-description)
-  - [5. Auxiliary functions description](#5-auxiliary-function-description)
+  - [5. Auxiliary functions description](#5-auxiliary-functions-description)
   - [6. Parameters](#6-parameters)
   - [7. Led indication](#7-led-indication)
   - [8. Usage example on a table](#8-usage-example-on-a-table)
@@ -66,6 +70,10 @@ exceed 1 A per connector.
 
 ```
 Up to 100 V, 2 A per contact
+```
+
+```
+Note: here, the actual input voltage is limited by a specific type of board
 ```
 
 It also has SWD socket that is dedicated for updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
