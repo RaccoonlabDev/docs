@@ -31,7 +31,7 @@
 
 | № | Имя узла Uavcan | Ссылка на документацию
 | - | ---------------- |:-------------------------------:|
-| 11| charger | [ссылка](doc/charger/README.md)|
+| 11| charger | [ссылка](doc/charger/README_ru.md)|
 | 12| pmu_cover | [ссылка](doc/pmu_cover/README_ru.md)|
-| 13| топливный бак | [ссылка](doc/fuel_tank/README.md)| |
+| 13| топливный бак | [ссылка](doc/fuel_tank/README_ru.md)| |
 | 14| инклинометр | еще нет |

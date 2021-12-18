@@ -110,10 +110,10 @@ UAVCAN/CAN Physical Layer Specification Примечание.
 | - | ---------------------- | ------------ |
 | 4 | spark_ignition_offset | Если команда raw больше этого значения, то зажигание будет включено, в противном случае - выключено |
 | 5 | spark_ignition_ch/mode | Индекс канала RawCommand; -1 означает отключение этой функции | 
-| 6 | spark_ignition_min | Depricated. Длительность Pwm соответствует выключенному состоянию.  | 
-| 7 | spark_ignition_max | Depricated. Длительность Pwm соответствует включенному состоянию  | 
-| 7 | spark_ignition_design_max | Depricated| 
-| 8 | spark_ignition_default | Depricated Длительность Pwm соответствует состоянию, когда последние полсекунды нет RawCommand | 
+| 6 | spark_ignition_min | Deprecated. Длительность Pwm соответствует выключенному состоянию.  | 
+| 7 | spark_ignition_max | Deprecated. Длительность Pwm соответствует включенному состоянию  | 
+| 7 | spark_ignition_design_max | Deprecated| 
+| 8 | spark_ignition_default | Deprecated Длительность Pwm соответствует состоянию, когда последние полсекунды нет RawCommand | 
 
 **Параметры стартера**
 
@@ -122,7 +122,7 @@ UAVCAN/CAN Physical Layer Specification Примечание.
 | 9 | starter_offset | Если raw-команда больше этого значения, зажигание будет включено, в противном случае выключено |
 | 10| starter_ch/mode | Индекс канала RawCommand; -1 означает отключение этой функции |
 | 11| starter_min_rpm_treshold | Стартер может быть включен только если обороты меньше этого значения |
-| 12| starter_max_rpm_treshold | Depricated |
+| 12| starter_max_rpm_treshold | Deprecated |
 | 13| starter_try_duration | Параметр алгоритма стартера, описывает период, в течение которого стартер будет пытаться запустить двигатель
 | 14| starter_delay_before_next_try | Параметр алгоритма стартера, описывает период, в течение которого стартер будет ждать перед следующей попыткой |
 
