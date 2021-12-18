@@ -1,6 +1,6 @@
 # UAVCAN Internal Combustion Engine node
 
-This board is dedicated for controlling the internal combsution engine such as [DLE-20](http://rcstv.ru/static/fileunit/107b61373aea5dbedd58c2029d3c781fe909c3d9/DLE%2020%20Hobbico%20Manual%20Best.pdf).
+This board is dedicated to controlling the internal combustion engine such as [DLE-20](http://rcstv.ru/static/fileunit/107b61373aea5dbedd58c2029d3c781fe909c3d9/DLE%2020%20Hobbico%20Manual%20Best.pdf).
 
 It maps particular channels of [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) messages into 3 control signals:
 1. Throttle PWM (frequency 50 Hz and duration from 900 to 2000),
@@ -29,7 +29,7 @@ It returns [uavcan.equipment.ice.reciprocating.Status](https://legacy.uavcan.org
 
 ## 1. UAVCAN interface
 
-This node interracts with following messages:
+This node interacts with the following messages:
 
 | № | type      | message  |
 | - | --------- | -------- |
@@ -37,7 +37,7 @@ This node interracts with following messages:
 | 2 | publisher   | [uavcan.equipment.ice.reciprocating.Status](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#status-4) |
 | 3 | publisher   | [uavcan.equipment.ice.FuelTankStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#fueltankstatus) |
 
-Beside required and hightly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports following application level functions:
+Besides required and highly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports the following application-level functions:
 
 | № | type      | message  |
 | - | --------- | -------- |
@@ -47,17 +47,17 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 
 ## 2. Hardware specification
 
-(in process)
+(in progress)
 
 ## 3. Wire
 
 **Power socket**
 
-This board consumes more power than a typical UAVCAN node, so it is powered using additional socket.
+This board consumes more power than a typical UAVCAN node, so it is powered using an additional socket.
 
 **CAN interface.**
 
-You can connect this board to the CAN bus using on of following sockets:
+You can connect this board to the CAN bus using one of the following sockets:
 
 1. UCANPHY Micro (JST-GH 4).
 ```
@@ -74,7 +74,7 @@ Up to 100 V, 2 A per contact
 
 **Programming socket.**
 
-It also has SWD socket that is dedicated for updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
+It also has an SWD socket that is dedicated to updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
 
 **Inputs and outputs**
 
@@ -83,18 +83,18 @@ It also has SWD socket that is dedicated for updating firmware using [programmer
 3. Spark ignition
 4. Throttle
 
-(in process)
+(in progress)
 
 
 ## 4. Main function description
 
 ### 4.1. Params description
 
-Below you can see the list of existance parameters.
+Below you can see the list of existing parameters.
 
 ![parameters](parameters.png?raw=true "parameters")
 
-In the tables below you can see the detailed description of such parameters.
+In the tables below you can see a detailed description of such parameters.
 
 **Fuel tank parameters**
 
@@ -110,9 +110,9 @@ In the tables below you can see the detailed description of such parameters.
 | - | ---------------------- | ------------ |
 | 4 | spark_ignition_offset  | If raw command more than that value, spark ignition will be turned on, otherwise turned off |
 | 5 | spark_ignition_ch/mode | Index of RawCommand channel; -1 means disable this feature |
-| 6 | spark_ignition_min     | Depricated. Pwm duration corresponded to turned off state |
-| 7 | spark_ignition_max     | Depricated. Pwm duration corresponded to turned on state |
-| 8 | spark_ignition_default | Depricated. Pwm duration corresponded to state when there is no RawCommand for last half second |
+| 6 | spark_ignition_min     | Deprecated. PWM duration corresponded to turned off state |
+| 7 | spark_ignition_max     | Deprecated. PWM duration corresponded to turned on state |
+| 8 | spark_ignition_default | Deprecated. PWM duration corresponded to state when there is no RawCommand for last half-second |
 
 **Starter parameters**
 
@@ -121,9 +121,9 @@ In the tables below you can see the detailed description of such parameters.
 | 9 | starter_offset                | If raw command more than that value, spark ignition will be turned on, otherwise turned off |
 | 10| starter_ch/mode               | Index of RawCommand channel; -1 means disable this feature |
 | 11| starter_min_rpm_treshold      | Starter might be turned on only if rpm less then that value |
-| 12| starter_max_rpm_treshold      | Depricated |
-| 13| starter_try_duration          | Starter algorithm parameter descibed the period during which the starter will try to run the engine |
-| 14| starter_delay_before_next_try | Starter algorithm parameter descibed the period during which the starter will wait before next try |
+| 12| starter_max_rpm_treshold      | Deprecated |
+| 13| starter_try_duration          | Starter algorithm parameter sets the period during which the starter will try to run the engine |
+| 14| starter_delay_before_next_try | Starter algorithm parameter sets the period during which the starter will wait before next try |
 
 **ESC status publication paramters**
 | № | Parameter name | Description  |
@@ -135,9 +135,9 @@ In the tables below you can see the detailed description of such parameters.
 | № | Parameter name   | Description  |
 | - | ---------------- | ------------ |
 | 17| throttle_ch/mode | Index of RawCommand channel; -1 means disable this feature |
-| 18| throttle_min     | Pwm duration corresponded to RawCommand=0 |
-| 19| throttle_max     | Pwm duration corresponded to RawCommand=8191 |
-| 20| throttle_default | Pwm duration corresponded to RawCommand < 0 or when there is no RawCommand for last half second |
+| 18| throttle_min     | PWM duration corresponded to RawCommand=0 |
+| 19| throttle_max     | PWM duration corresponded to RawCommand=8191 |
+| 20| throttle_default | PWM duration corresponded to RawCommand < 0 or when there is no RawCommand for last half second |
 
 ### 4.2. RPM measurement algorithm
 
@@ -148,35 +148,35 @@ In the tables below you can see the detailed description of such parameters.
 ```
 Old algorithm:
 Using interrupts and input capture it remembers the time when last and previous impulses were captured.
-Every 10 ms it calculates the frequncy of impulses using current and previous time and put this value to some ring buffer with size 20.
+Every 10 ms it calculates the frequency of impulses using current and previous time and puts this value to some ring buffer with size 20.
 Every 100 ms it gets median value from this buffer and publishes `esc_status` uavcan msg. This frequency and `esc index` can be modified using parameters.
 ```
 
 ### 4.3. Engine controlling algorithm
 
-The engine is controlled using `starter`, `ignition` and `throttle` are used to control engine. They all use `RawCommand` as control input.
+The engine is controlled using `starter`, `ignition` and `throttle` are used to control the engine. They all use `RawCommand` as a control input.
 
-1. The throttle state is directly controlled by RawCommand. It means that input command value is one-to-one mapped into pwm duration. The lower and higher borders of duration are defined in corresponding parameters.
-2. The engine ignition has 2 states. When it is enabled it has max pwm duration, else it has min duration. The value of RawCommand of corresponding channel higher than some offset means enabled. You can setup offset in parameters.
-3. The starter has 2 states like ignition but logic is a little different. If input channel value is greater than offset, it will perform an attempt to run engine with duration up to certain time. If attempt is unsuccessful, it will turn off for certain time (to signalize that it's unsuccessful), and then try again. If median speed for last second is greater than some certain value it will stop attempt. Durations and offsets can be setup in parameters.
+1. The throttle state is directly controlled by RawCommand. It means that the input command value is one-to-one mapped into PWM duration. The lower and higher borders of duration are defined in corresponding parameters.
+2. The engine ignition has 2 states. When it is enabled it has max pwm duration, else it has min duration. The value of RawCommand of the corresponding channel is higher than some offset means enabled. You can set up offset in parameters.
+3. The starter has 2 states like ignition but the logic is a little different. If the input channel value is greater than offset, it will perform an attempt to run an engine with a duration up to a certain time. If an attempt is unsuccessful, it will turn off for a certain time (to signalize that it's unsuccessful), and then try again. If the median speed for last second is greater than some certain value it will stop attempts. Durations and offsets can be set up in parameters.
 
-In any way, if last RawCommand with corresponding channel value message is received more than 2 seconds ago, all states of controlled devices will be switched to default.
+In any way, if the last RawCommand with corresponding channel value message is received more than 2 seconds ago, all states of controlled devices will be switched to default.
 
 ## 5. Auxiliary functions description
 
-(in process)
+(in progress)
 
 ## 6. Led indication
 
-- when starter is enabled, led is on
-- when starter is disabled, led is off
+- when the starter is enabled, led is on
+- when the starter is disabled, led is off
 
 ## 7. Usage example on a table
 
-(in process)
+(in progress)
 
 ## 8. UAV usage example
 
-This node has been sucessfully tested on VTOL. Here is an example of RPM and RawCommand values collected from one of the flight logs.
+This node has been successfully tested on VTOL. Here is an example of RPM and RawCommand values collected from one of the flight logs.
 
 ![parameters](rpm_from_rc.png?raw=true "parameters")

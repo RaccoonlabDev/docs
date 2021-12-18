@@ -16,7 +16,7 @@ This board allows to automatically charge a battery.
 
 ## 1. UAVCAN interface
 
-This node interracts with following messages:
+This node interacts with the following messages:
 
 | № | type      | message  |
 | - | --------- | -------- |
@@ -26,7 +26,7 @@ This node interracts with following messages:
 | 4 | subscriber   | inno_msgs.charging_control |
 | 5 | subscriber   | [uavcan.equipment.power.BatteryInfo](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#batteryinfo) |
 
-Beside required and hightly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports following application level functions:
+Besides required and highly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports the following application-level functions:
 
 | № | type      | message  |
 | - | --------- | -------- |
@@ -40,9 +40,9 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 
 | № | type  | name        | meaning                                     |
 | - | ----- | ----------- | ------------------------------------------- |
-| 1 | uint8 | cmd | 0 - disable, 1 - calibrate, 2 - enable normal charging, 3 - enable extream charging, 4 - enable saving mode, 5 - do nothing |
+| 1 | uint8 | cmd | 0 - disable, 1 - calibrate, 2 - enable normal charging, 3 - enable extreme charging, 4 - enable saving mode, 5 - do nothing |
 
-2. inno_msgs.ChargingStatus is published by this node with constant rate that might be configured using uavcan parameters. The table below describes his fields:
+2. inno_msgs.ChargingStatus is published by this node with the the constant rate that might be configured using uavcan parameters. The table below describes his fields:
 
 | № | type                    | name        | meaning                                     |
 | - | ----------------------- | ----------- | ------------------------------------------- |
@@ -59,7 +59,7 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 
 ## 2. Hardware specification
 
-(in process)
+(in progress)
 
 ## 3. Wire
 
@@ -78,46 +78,46 @@ exceed 1 A per connector.
 Up to 100 V, 2 A per contact
 ```
 
-It also has SWD socket that is dedicated for updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
+It also has an SWD socket that is dedicated to updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
 
 ## 4. Main function description
 
-This node might be discribed using state machine.
+This node might be described using a state machine.
 
-After boot the node is in the `calibration` stage - it measures dc-dc output current using ADC multiple times and calucates average raw adc value - the offset corresponded to the zero current. After calibration stage the node goes to the `waiting` stage where it is ready for further work. The calibration stage may be repeated only by a specific charing command.
+After boot the node is in the `calibration` stage - it measures dc-dc output current using ADC multiple times and calculates average raw ADC value - the offset corresponded to the zero current. After the calibration stage, the node goes to the `waiting` stage where it is ready for further work. The calibration stage may be repeated only by a specific charing command.
 
-If node receives start charging command, it goes into `signaling` stage and then starts charging process.
+If the node receives start charging command, it goes into the `signaling` stage and then starts charging process.
 
-The charging process is divided into 2 main stages. It starts with `charging with constant current (CC)` stage then goes into `charging with constant voltage (CV)`.
+The charging process is divided into 2 main stages. It starts with `charging with the constant current (CC)` stage then goes into `charging with the constant voltage (CV)`.
 
-If battery voltage more then maximum voltage (battery is charged) or less then some specific voltage (battary is not connected) or data receiving stops in goes into `check finish` stage. After some checks it goes into `finish` or `waiting` stages or even goes into previous stage
+If battery voltage is more than maximum voltage (battery is charged) or less than some specific voltage (battery is not connected) or data receiving stops in goes into `check finish` stage. After some checks, it goes into `finish` or `waiting` stages or even goes into the previous stage
 
-The whole state machine might be illustarted using following flowchart diagram:
+The whole state machine might be illustrated using the following flowchart diagram:
 
 ![charger](state_machine.png?raw=true "charger")
 
-The typical 2-stages charging process might me illustrated using following plot:
+The typical 2-stages charging process might be illustrated using the following plot:
 
 ![scheme](normal_charging_process.png?raw=true "scheme")
 
-During both stages this node uses I-regulator to keep constand current/voltage.
+During both stages, this node uses I-regulator to keep constant current/voltage.
 
-The table with parameters shown below.
+The table with parameters is shown below.
 
 ![scheme](params.png?raw=true "scheme")
 
 ## 5. Auxiliary functions description
 
-(in process)
+(in progress)
 
 ## 6. Led indication
 
-(in process)
+(in progress)
 
 ## 7. Usage example on a table
 
-(in process)
+(in progress)
 
-## 8. Real appilcation usage example
+## 8. Real application usage example
 
-(in process)
+(in progress)

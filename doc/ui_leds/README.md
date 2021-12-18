@@ -16,14 +16,14 @@ This node sets the same color as autopilot has ([ui leds](https://docs.px4.io/ma
 
 ## 1. UAVCAN interface
 
-This node interracts with following messages:
+This node interacts with the following messages:
 
 | № | type      | message  |
 | - | --------- | -------- |
 | 1 | subscriber | [uavcan.equipment.esc.RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) |
 | 2 | subscriber | [uavcan.equipment.indication.LightsCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#lightscommand) |
 
-Beside required and hightly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports following application level functions:
+Besides required and highly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports the following application-level functions:
 
 | № | type      | message  |
 | - | --------- | -------- |
@@ -33,7 +33,7 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 
 ## 2. Hardware specification
 
-(in process)
+(in progress)
 
 ## 3. Wire
 
@@ -52,22 +52,22 @@ exceed 1 A per connector.
 Up to 100 V, 2 A per contact
 ```
 
-It also has SWD socket that is dedicated for updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
+It also has an SWD socket that is dedicated to updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
 
 ## 4. Main function description
 
-(in process)
+(in progress)
 
 Configuration of mapping can be performed using `uavcan_gui_tool` or even `QGC`. Below you can see the table with these params in `uavcan_gui_tool`.
 
 ![params](params.png?raw=true "params")
 
-Table with parameters decsription:
+Table with parameters description:
 
 | № | Parameter name | Description  |
 | - | -------------- | -------- |
-| 1 | rgb_leds_max_intensity | Input uavcan commands linearly slales into intensity from 0 to this value. Max value is 255. |
-| 2 | rgb_leds_id | Id fo uavcan command that will be excepted by the node. By default 0 id corresponds ui led |
+| 1 | rgb_leds_max_intensity | Input uavcan commands linearly scales into intensity from 0 to this value. Max value is 255. |
+| 2 | rgb_leds_id | Id for uavcan command that will be expected by the node. By default 0 id corresponds ui led |
 | 3 | rgb_leds_default_color | The color during arming state. See table below with more info |
 | 4 | rgb_leds_default_color | The type of lighting during arming state. See table below with more info |
 | 5 | rgb_leds_blink_period_ms | Make sense only when `rgb_leds_default_color` is 1 |
@@ -96,23 +96,23 @@ Table with light types:
 
 ## 5. Auxiliary functions description
 
-(in process)
+(in progress)
 
 ## 6. Led indication
 
-This board has an internal led that may allows you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting number of blinks you can define the code of current status.
+This board has an internal led that may allows you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting the number of blinks you can define the code of current status.
 
-| Number of blinks | Uavcan helth   | Description                     |
+| Number of blinks | Uavcan health   | Description                     |
 | ---------------- | -------------- | ------------------------------- |
 | 1                | OK             | Everything is ok.                |
-| 2                | OK             | There is no RawCommand at least for last 0.5 seconds, PWM state is resetet to default state. |
-| 3                | WARNING        | This node can't see any other nodes in UAVCAN network, check your cables. |
-| 4                | ERROR          | There is a problem with circuit voltage, look at circuit status message to get details. It may happend when you power it from SWD, otherwise be carefull with power supply. |
-| 5                | CRITICAL       | There is a problem on periphery initialization level. Probably you load wrong firmware. |
+| 2                | OK             | There is no RawCommand at least for the last 0.5 seconds, the PWM state is reset to default state. |
+| 3                | WARNING        | This node can't see any other nodes in the UAVCAN network, check your cables. |
+| 4                | ERROR          | There is a problem with circuit voltage, look at the circuit status message to get details. It may happen when you power it from SWD, otherwise, be careful with the power supply. |
+| 5                | CRITICAL       | There is a problem with the periphery initialization level. Probably you load the wrong firmware. |
 
 ## 7. Usage example on a table
 
-(in process)
+(in progress)
 
 ## 8. UAV usage example
 

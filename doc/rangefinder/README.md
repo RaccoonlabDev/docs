@@ -1,8 +1,8 @@
 ## UAVCAN Rangefinder node
 
-This board is a wrapper under [LW20/C](https://www.mouser.com/datasheet/2/321/28055-LW20-SF20-LiDAR-Manual-Rev-7-1371848.pdf) that allows to use it through UAVCAN network.
+This board is a wrapper under [LW20/C](https://www.mouser.com/datasheet/2/321/28055-LW20-SF20-LiDAR-Manual-Rev-7-1371848.pdf) that allows to use it through the UAVCAN network.
 
-It reads measurements from the sensor via i2c and publishes range in meters.
+It reads measurements from the sensor via i2c and publishes the range in meters.
 
 ![rangefinder](rangefinder.jpg?raw=true "rangefinder")
 
@@ -19,14 +19,14 @@ It reads measurements from the sensor via i2c and publishes range in meters.
 
 ## 1. UAVCAN interface
 
-This node interracts with following messages:
+This node interacts with the following messages:
 
 | № | type      | message  |
 | - | --------- | -------- |
 | 1 | publisher   | [uavcan.equipment.range_sensor.Measurement](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#measurement) |
 | 2 | publisher   | [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) |
 
-Beside required and hightly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports following application level functions:
+Besides required and highly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports the following application-level functions:
 
 | № | type      | message  |
 | - | --------- | -------- |
@@ -36,7 +36,7 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 
 ## 2. Hardware specification
 
-(in process)
+(in progress)
 
 ## 3. Wire
 
@@ -55,11 +55,11 @@ exceed 1 A per connector.
 Up to 100 V, 2 A per contact
 ```
 
-It also has SWD socket that is dedicated for updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
+It also has an SWD socket that is dedicated to updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
 
 ## 4. Main function description
 
-This node measures and publishes range with adjustable rates (10 hz by default fro both). Publication and measurement rates might be configured using node parameters, but it is recommended to use default values.
+This node measures and publishes range with adjustable rates (10 Hz by default for both). Publication and measurement rates might be configured using node parameters, but it is recommended to use default values.
 
 ## 5. Auxiliary functions description
 
@@ -69,11 +69,11 @@ It also sends [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/S
 
 ## 6. Parameters
 
-Available list of parameters is shown on the picture below:
+The list of parameters is shown in the picture below:
 
 ![scheme](rangefinder_params.png?raw=true "scheme")
 
-Using parameters you may specify type of sensor (now it supports only LW20/C)
+Using parameters you may specify the type of sensor (now it supports only LW20/C)
 
 | rangefinder_type value | corresponded sensor type  |
 | ---------------------- | ------------------------- |
@@ -82,20 +82,20 @@ Using parameters you may specify type of sensor (now it supports only LW20/C)
 
 ## 7. Led indication
 
-This board has internal led that may allows you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting number of blinks you can define the code of current status.
+This board has an internal led that may allow you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting the number of blinks you can define the code of current status.
 
-| Number of blinks | Uavcan helth   | Description                     |
+| Number of blinks | Uavcan health   | Description                     |
 | ---------------- | -------------- | ------------------------------- |
 | 1                | OK             | Everything is ok.                |
-| 2                | OK             | There is no RawCommand at least for last 0.5 seconds (it's not a problem for this board, just in case). |
-| 3                | WARNING        | This node can't see any other nodes in UAVCAN network, check your cables or there there no incoming data from the sensor. |
-| 4                | ERROR          | There is a problem with circuit voltage, look at circuit status message to get details. It may happend when you power it from SWD, otherwise be carefull with power supply. This check might be turned off using params. |
-| 5                | CRITICAL       | There is a problem on periphery initialization level. Probably you load a wrong firmware. |
+| 2                | OK             | There is no RawCommand at least for the last 0.5 seconds (it's not a problem for this board, just in case). |
+| 3                | WARNING        | This node can't see any other nodes in UAVCAN network, check your cables, or there is no incoming data from the sensor. |
+| 4                | ERROR          | There is a problem with circuit voltage, look at circuit status message to get details. It may happen when you power it from SWD, otherwise, be careful with the power supply. This check might be turned off using params. |
+| 5                | CRITICAL       | There is a problem with the periphery initialization level. Probably you load the wrong firmware. |
 
 
 ## 8. Usage example on a table
 
-It is recommended to debug it with [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool). You can check message sended by this node.
+It is recommended to debug it with [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool). You can check the message sent by this node.
 
 Example of the message shown below.
 
@@ -103,4 +103,4 @@ Example of the message shown below.
 
 ## 9. UAV usage example
 
-(in process)
+(in progress)

@@ -1,10 +1,10 @@
 # UAVCAN-PWM node
 
-UAVCAN-PWM node is dedicated for controlling servos and ESCs. It receives [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) UAVCAN messages from CAN bus and maps it into typical for servos and ESC controllers PWM signal.
+UAVCAN-PWM node is dedicated to controlling servos and ESCs. It receives [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) UAVCAN messages from the CAN bus and maps it into typical for servos and ESC controllers PWM signal.
 
-This node has 2 channels (A1 and A2) which are dedicated for direct connection with servos or ESC controllers.
+This node has 2 channels (A1 and A2) which are dedicated to direct connection with servos or ESC controllers.
 
-At that moment we have 3 types of such UAVCAN-PWM boards, so called `5A`, `Mini` and `Nano`. They are illustrated below.
+At that moment we have 3 types of such UAVCAN-PWM boards, the so-called `5A`, `Mini`, and `Nano`. They are illustrated below.
 
 ![scheme](can_pwm_nodes.png?raw=true "scheme")
 
@@ -12,7 +12,7 @@ The difference between boards are following:
 
 | № | Criterion            | 5A      | Mini     | Nano          | Module        |
 | - | -------------------- | ------- | -------- | ------------- | ------------- |
-| 1 | devoloping status    | tested  | tested   | testing stage | dev stage     |
+| 1 | development status    | tested  | tested   | testing stage | dev stage     |
 | 1 | dc-dc availability   | yes     | yes      | no            | yes           |
 | 2 | input voltage        | 2S-12S  | 2S-6S    | 4.8-5.6 V     | 2S-12S        |
 | 3 | input current sensor | yes     | no       | no            | no            |
@@ -31,7 +31,7 @@ The difference between boards are following:
 
 ## 1. UAVCAN interface
 
-This node interracts with following messages:
+This node interacts with the following messages:
 
 | № | type      | message  |
 | - | --------- | -------- |
@@ -39,7 +39,7 @@ This node interracts with following messages:
 | 2 | publisher   | [uavcan.equipment.esc.Status](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#status-2) |
 | 3 | publisher   | [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) |
 
-Beside required and hightly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports following application level functions:
+Besides required and highly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports the following application-level functions:
 
 | № | type      | message  |
 | - | --------- | -------- |
@@ -49,7 +49,7 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 
 ## 2. Hardware specification
 
-(in process)
+(in progress)
 
 UAVCAN-PWM mini scheme:
 
@@ -76,18 +76,18 @@ Up to 100 V, 2 A per contact
 Note: here, the actual input voltage is limited by a specific type of board
 ```
 
-It also has SWD socket that is dedicated for updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
+It also has an SWD socket that is dedicated to updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
 
 
 ## 4. Main function description
 
-This node receives [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) that has an array with up to 20 channels and it is able to process up to 2 (4) of any of them. Each channel is normalized into [-8192, 8191].
+This node receives [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) that has an array with up to 20 channels and it can process up to 2 (4) of any of them. Each channel is normalized into [-8192, 8191].
 
-Output for each disared RawCommand channel is PWM signal with frequency 50 Hz and duration from 900 to 2000 us. Typically, 900 us means minimal position of servo or stopped motor on the ESC and 2000 us is a maximum. But this range might be different depending on your actuator and desired angle of control of your servo. You also may want to inverse the output of your servo and set a default position of your servo other than just a min or max, for example a middle.
+Output for each desired RawCommand channel is PWM signal with frequency 50 Hz and duration from 900 to 2000 us. Typically, 900 us means the minimal position of servo or stopped motor on the ESC and 2000 us is a maximum. But this range might be different depending on your actuator and desired angle of control of your servo. You also may want to inverse the output of your servo and set a default position of your servo other than just a min or max, for example, a middle.
 
-Configuration of such mapping might be done using 4 parameters: `channel`, `min`, `max` and `def` which exist for each PWM-channel. They are described in `6. Parameters` section.
+Configuration of such mapping might be done using 4 parameters: `channel`, `min`, `max`, and `def` which exist for each PWM-channel. They are described in `6. Parameters` section.
 
-Below you can see visualization of this mapping.
+Below you can see the visualization of this mapping.
 
 ![mapping](can_pwm_mapping.png?raw=true "mapping")
 
@@ -101,12 +101,12 @@ UAVCAN-PWM node sends 2 [uavcan.equipment.power.CircuitStatus](https://legacy.ua
 
 The first message has `circuit_id=NODE_ID*10 + 0` and following 3 significant fields:
 1. voltage - is the 5V voltage
-2. current - is the max current for last 0.5 second (supported only by `5A` node)
+2. current - is the max current for the last 0.5 seconds (supported only by `5A` node)
 3. error_flags - might have ERROR_FLAG_OVERVOLTAGE or ERROR_FLAG_UNDERVOLTAGE or non of them
 
 The second message has `circuit_id=NODE_ID*10 + 1` and following 3 significant fields:
 1. voltage - is the Vin voltage
-2. current - is the average current for last 0.5 second (supported only by `5A` node)
+2. current - is the average current for the last 0.5 seconds (supported only by `5A` node)
 3. error_flags - ERROR_FLAG_UNDERVOLTAGE or non of them. There is no ERROR_FLAG_OVERVOLTAGE flag because the expected max Vin voltage is unknown.
 
 Below you can see an example of current consumption with 5V voltage power supply:
@@ -114,44 +114,44 @@ Below you can see an example of current consumption with 5V voltage power supply
 ![max and avg current plot](current_plot.png?raw=true "max and avg current plot")
 Fig. Max and average current measurement
 
-Here cyan color plot is current in ampers with max filter, yellow is current in ampers with average filter. Picks happens when servo was changed his position.
+Here the cyan color plot is current in ampers with max filter, yellow is current in ampers with average filter. Picks happens when servo was changed his position.
 
 ```
-Note: only `5A` node supports current measurement. All nodes supports 5V and Vin measurement.
+Note: only `5A` node supports current measurement. All nodes support 5V and Vin measurement.
 ```
 
 **Esc status**
 
-If you use esc firmware, it will sends [uavcan.equipment.esc.Status](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#status-2) message with rpm, voltage and current given as feedback from `esc flame` via uart.
+If you use esc firmware, it will send [uavcan.equipment.esc.Status](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#status-2) message with rpm, voltage and current given as feedback from `esc flame` via uart.
 
 ## 6. Parameters
 
-Below you can see a picture from `uavcan_gui_tool` with whole list of parameters.
+Below you can see a picture from `uavcan_gui_tool` with a whole list of parameters.
 
 ![scheme](can_pwm_params.png?raw=true "scheme")
 
 **UAVCAN->PWM mapping configuration**
 
-Mainly parameters are dedicated for UAVCAN-PWM mapping configuration. Here we have 2 or 4 groups `A1`, `A2`, `B1`, `B2` of parameters. Below you can see a table with their description:
+Mainly parameters are dedicated to UAVCAN-PWM mapping configuration. Here we have 2 or 4 groups `A1`, `A2`, `B1`, `B2` of parameters. Below you can see a table with their description:
 
 | № | Parameter name | Description  |
 | - | -------------- | -------- |
-| 1 | channel        | Specify here a desired `RawCommand` channel you want to map into particular PWM pin. Default value -1 means disable. |
+| 1 | channel        | Specify here a desired `RawCommand` channel you want to map into a particular PWM pin. Default value -1 means disable. |
 | 2 | min            | PWM duration when RawCommand = 0. |
 | 3 | max            | PWM duration when RawCommand = 8191. |
-| 4 | def            | PWM duration when RawCommand < 0 or when there is no RawCommand for few seconds. |
+| 4 | def            | PWM duration when RawCommand < 0 or when there is no RawCommand for a few seconds. |
 
 **Power check**
 
 Such parameters as `enable_5v_check` and `enable_vin_check` are dedicated for enabling/disabling 5V and Vin check:
-- If 5V check is enabled, the node state will be `ERROR` if 5V voltage is less than 4.5V or bigger than 5.5V
-- If Vin check is enabled, the node state will be `ERROR` if 5V voltage is less than 4.5V.
+- If the 5V check is enabled, the node state will be `ERROR` if the 5V voltage is less than 4.5V or bigger than 5.5V
+- If Vin check is enabled, the node state will be `ERROR` if the 5V voltage is less than 4.5V.
 
 **Node name customization**
 
-By default this node have general purpose name `inno.can.pwm_node`. This name might be changed to more specific name by changing the parameter `name`.
+By default this node have general purpose name `inno.can.pwm_node`. This name might be changed to a more specific name by changing the parameter `name`.
 
-List of avaliable names shown below.
+The list of available names is shown below.
 
 | Param value | Node name                 |
 | ----------- | ------------------------- |
@@ -169,23 +169,23 @@ List of avaliable names shown below.
 | 11          | inno.servos.elevators     |
 | 12          | inno.servos.rudders       |
 
-You should send the corresponded number of your desired name, store parameter inside the node and restart it.
+You should send the corresponded number of your desired name, store the parameter inside the node and, restart it.
 
 ## 7. Led indication
 
-This board has an internal led that may allows you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting number of blinks you can define the code of current status.
+This board has an internal led that may allow you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting the number of blinks you can define the code of current status.
 
-| Number of blinks | Uavcan helth   | Description                     |
+| Number of blinks | Uavcan health   | Description                     |
 | ---------------- | -------------- | ------------------------------- |
 | 1                | OK             | Everything is ok.                |
-| 2                | OK             | There is no RawCommand at least for last 0.5 seconds, PWM state is resetet to default state. |
+| 2                | OK             | There is no RawCommand at least for the last 0.5 secons, PWM state is reset to the default state. |
 | 3                | WARNING        | This node can't see any other nodes in UAVCAN network, check your cables. |
-| 4                | ERROR          | There is a problem with circuit voltage, look at circuit status message to get details. It may happend when you power it from SWD, otherwise be carefull with power supply. |
-| 5                | CRITICAL       | There is a problem on periphery initialization level. Probably you load wrong firmware. |
+| 4                | ERROR          | There is a problem with circuit voltage, look at the circuit status message to get details. It may happen when you power it from SWD, otherwise, be careful with a power supply. |
+| 5                | CRITICAL       | There is a problem on the periphery initialization level. Probably you load the wrong firmware. |
 
 ## 8. Usage example on a table
 
-It is recommended to debug it with [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool). You can setup parameters, connect servo to one of the channels and check it using `ESC panel` as shown below.
+It is recommended to debug it with [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool). You can set up parameters, connect the servo to one of the channels, and check it using `ESC panel` as shown below.
 
 ![esc_panel](esc_panel.png?raw=true "esc_panel")
 
