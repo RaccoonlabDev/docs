@@ -18,9 +18,9 @@ This board is a bridge between UAVCAN/CAN and UDP/WiFi.
 
 ## 1. UAVCAN interface
 
-This node doesn't send any messages and subscribes on all of them.
+This node doesn't send any messages and subscribes to all of them.
 
-Beside required and hightly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports following application level functions:
+Besides required and highly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports the following application-level functions:
 
 | № | type      | message  |
 | - | --------- | -------- |
@@ -30,16 +30,16 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 
 ## 2. Hardware specification
 
-(in process)
+(in progress)
 
 ## 3. Wire
 
 You can power this board using one of 2 CAN-sockets:
 
-- the little one - it has 5V
-- the big one - it up to 60V
+- the little one - has 5V
+- the big one - up to 60V
 
-(in process)
+(in progress)
 
 ## 4. Main function description
 
@@ -53,30 +53,30 @@ This node is suitable for remote configuration UAVCAN network nodes or logging d
 
 ## 6. Led indication
 
-This board has 2 leds. One in dedicated for STM32 microcontroller, another one is for EPS8266.
+This board has 2 LEDs. One is dedicated to the STM32 microcontroller, another one is for EPS8266.
 
-Both leds that allows you to understand possible problems. They blink from 1 to 5 times for 2 seconds, then waits for 2 seconds. By counting number of blinks you can define the code of current status.
+Both LEDs allow you to understand possible problems. They blink from 1 to 5 times for 2 seconds, then wait for 2 seconds. By counting the number of blinks you can define the code of current status.
 
 STM32 blinks meaning:
 
-| Number of blinks | Uavcan helth   | Description                     |
+| Number of blinks | Uavcan health   | Description                     |
 | ---------------- | -------------- | ------------------------------- |
 | 1                | OK             | UART and CAN are receiving and working |
 | 2                | WARNING        | There is no RX data from uart |
 | 3                | WARNING        | There is no RX data from CAN |
 | 4                | WARNING        | There is no RX data at all |
-| 5                | CRITICAL       | There is a problem on periphery initialization level. Probably you load wrong firmware. |
+| 5                | CRITICAL       | There is a problem with the periphery initialization level. Probably you load the wrong firmware. |
 
 ## 7. Usage example on a table
 
-(in process)
+(in progress)
 
 ## 8. UAV usage example
 
-(in process)
+(in progress)
 
 ## 9. Performance tests
 
-At that moment this board supports stream up to 1200 messages per second. This limit will be increased soon after some optimization.
+At that moment this board supports streaming up to 1200 messages per second. This limit will be increased soon after some optimization.
 
 ![frames_rate](frames_rate.png?raw=true "frames_rate")
