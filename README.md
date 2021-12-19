@@ -19,19 +19,21 @@ Following devices are already well tested and are being used in real application
 | 5 | rangefinder | not yet | [English](doc/rangefinder/README.md) \| [Русский](doc/rangefinder/README_ru.md) |
 | 6 | uavcan-mux          | [link](http://raccoonlab.org/store/tproduct/360882105-436323747071-uavcan-mux) | not yet |
 
-Still have some issues or have not tested enough yet:
-| № | Uavcan node name           | Doc link |
-| - | -------------------------- |:--------:|
-| 7 | gps_mag_baro               | [English](doc/gps_mag_baro/README.md) \| [Русский](doc/gps_mag_baro/README_ru.md)|
-| 8 | wifi node                  | [English](doc/wifi_bridge/README.md) \| [Русский](doc/wifi_bridge/README_ru.md)|
-| 9 | ui_leds                    | [English](doc/ui_leds/README.md) \| [Русский](doc/ui_leds/README_ru.md)|
-| 10| internal_combustion_engine | [English](doc/ice/README.md) \| [Русский](doc/ice/README_ru.md)|
+Performed well in real flights, but there was a smaller testing period:
+
+| № | Uavcan node name           | Store link           | Doc link |
+| - | ------------------------------------------------- |:-----------------:|:-----------------:|
+| 7 | gps_mag_baro               | [link](http://raccoonlab.org/store/tproduct/390642159-682763205441-uavcan-gps-magnetometer-and-barometer-se) | [English](doc/gps_mag_baro/README.md) \| [Русский](doc/gps_mag_baro/README_ru.md)|
+| 8 | wifi node                  | [link](http://raccoonlab.org/store/tproduct/390642159-465045641231-uavcan-wifi-bridge-node) | [English](doc/wifi_bridge/README.md) \| [Русский](doc/wifi_bridge/README_ru.md)|
+| 9 | ui_leds                    | [link](http://raccoonlab.org/store/tproduct/390642159-922336910131-uavcan-rgb-ui-led) | [English](doc/ui_leds/README.md) \| [Русский](doc/ui_leds/README_ru.md)|
+| 10| internal_combustion_engine |not yet | [English](doc/ice/README.md) \| [Русский](doc/ice/README_ru.md)|
+| 11| pmu        |not yet | [English](doc/pmu_cover/README.md) \| [Русский](doc/pmu_cover/README_ru.md) |
+
 
 These nodes in the development process yet, but they will go to the testing on real applications soon:
 
 | № | Uavcan node name | Doc link                        |
 | - | ---------------- |:-------------------------------:|
-| 11| charger          | [English](doc/charger/README.md) \| [Русский](doc/charger/README_ru.md)  |
-| 12| pmu_cover        | [English](doc/pmu_cover/README.md) \| [Русский](doc/pmu_cover/README_ru.md) |
+| 12| charger          | [English](doc/charger/README.md) \| [Русский](doc/charger/README_ru.md)  |
 | 13| fuel_tank        | [English](doc/fuel_tank/README.md) \| [Русский](doc/fuel_tank/README_ru.md)|
 | 14| inclinometer     | not yet                         |
