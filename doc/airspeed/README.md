@@ -1,6 +1,6 @@
 ## UAVCAN Airspeed node
 
-This board is a wrapper under [MS4525DO airspeed sensor](https://www.te.com/commerce/DocumentDelivery/DDEController?Action=showdoc&DocId=Data+Sheet%7FMS4525DO%7FB2%7Fpdf%7FEnglish%7FENG_DS_MS4525DO_B2.pdf%7FCAT-BLPS0002) that allows to use it through UAVCAN network.
+This board is a wrapper under [MS4525DO airspeed sensor](https://www.te.com/commerce/DocumentDelivery/DDEController?Action=showdoc&DocId=Data+Sheet%7FMS4525DO%7FB2%7Fpdf%7FEnglish%7FENG_DS_MS4525DO_B2.pdf%7FCAT-BLPS0002) that allows to use it through the UAVCAN network.
 
 It reads measurements from the sensor via i2c and publishes temperature and differential pressure.
 
@@ -19,14 +19,14 @@ It reads measurements from the sensor via i2c and publishes temperature and diff
 
 ## 1. UAVCAN interface
 
-This node interracts with following messages:
+This node interacts with the following messages:
 
 | № | type      | message  |
 | - | --------- | -------- |
 | 1 | publisher   | [uavcan.equipment.air_data.RawAirData](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawairdata) |
 | 2 | publisher   | [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) |
 
-Beside required and hightly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports following application level functions:
+Beside required and highly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports the following application-level functions:
 
 | № | type      | message  |
 | - | --------- | -------- |
@@ -55,17 +55,17 @@ exceed 1 A per connector.
 Up to 100 V, 2 A per contact
 ```
 
-It also has SWD socket that is dedicated for updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
+It also has an SWD socket that is dedicated to updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
 
 ## 4. Main function description
 
-This node measures differential pressure and temperature with high rate (100 hz by default) and publishes averaged data with a low rate (10 hz should be enough for PX4 Autopilot otherwise it will anyway perform average filter). Publication and measurement rates might be configured using node parameters, but it is recommended to use default values.
+This node measures differential pressure and temperature with high rate (100 Hz by default) and publishes averaged data with a low rate (10 Hz should be enough for PX4 Autopilot otherwise it will anyway perform average filter). Publication and measurement rates might be configured using node parameters, but it is recommended to use default values.
 
-According to `ms4525do datasheet` this node has following range of measured data:
+According to `ms4525do datasheet`, this node has the following range of measured data:
 - differential pressure is from -1 psi to +1 psi or from -6894.757 pa to +6894.757 pa.
 - temperature is from -50 to +150 Celcius or from 223 to 423 Kelvin.
 
-If we consider temperature ~288 Kelvin and pressure 101325 Pa according to ISA model differential pressure interval above should be enough for up to 100 m/sec airspeed that is suitable for wide area of small VTOL application.
+If we consider temperature ~288 Kelvin and pressure 101325 Pa according to the ISA model differential pressure interval above should be enough for up to 100 m/sec airspeed that is suitable for a wide area of small VTOL application.
 
 
 ## 5. Auxiliary functions description
@@ -76,20 +76,20 @@ It also sends [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/S
 
 **Calibration**
 
-By setting `airspeed_calib_request` parameter to 1 the node goes into the calibration mode for 10 seconds where it summarizes all measured differential pressures and in the end divides the sum by the number of measurements. The negative resulted averaged value is writen into the `airspeed_calibration_offset` parameter. This offset is added to the differential pressure of each measurement. During the calibration process the node has `INITIALIZATION` mode. After the initialization process the node doesn't save parameters to the flasm memory, you need to do it manually.
+By setting `airspeed_calib_request` parameter to 1 the node goes into the calibration mode for 10 seconds where it summarizes all measured differential pressures and in the end divides the sum by the number of measurements. The negative resulted averaged value is written into the `airspeed_calibration_offset` parameter. This offset is added to the differential pressure of each measurement. During the calibration process, the node has `INITIALIZATION` mode. After the initialization process, the node doesn't save parameters to the flash memory, you need to do it manually.
 As an alternative, you may always manually set `airspeed_calibration_offset` parameter.
 
 ```
-Note. Using params to start the calibration process is definetely not the best solution. But this is the only way to start it from the QGC side. Current PX4 supports only centralized calibration on the autopilot side.
+Note. Using params to start the calibration process is not the best solution. But this is the only way to start it from the QGC side. Current PX4 supports only centralized calibration on the autopilot side.
 ```
 
 **Enable/disable**
 
-Normally, you don't need this feature. But it allows you to start and stop publishing via UAVCAN in real time without physical disconnect.
+Normally, you don't need this feature. But it allows you to start and stop publishing via UAVCAN in real-time without physical disconnect.
 
 **Software version**
 
-GetNodeInfo response contains software version that allows you to differentiate one firmware from another. See `Node Properties` window in `uavcan gui tool`.
+GetNodeInfo response contains a software version that allows you to differentiate one firmware from another. See `Node Properties` window in `UaVCAN GUI tool`.
 
 **Hardware version**
 
@@ -97,46 +97,46 @@ Not implemented yet.
 
 **Hardware unique ID**
 
-GetNodeInfo response contains hardware unique ID that allows you to differentiate one board from another. See `Node Properties` window in `uavcan gui tool`.
+GetNodeInfo response contains hardware unique ID that allows you to differentiate one board from another. See `Node Properties` window in `UaVCAN GUI tool`.
 
 
 ## 6. Parameters
 
-Available list of parameters is shown on the picture below:
+The list of parameters is shown in the picture below:
 
 ![scheme](airspeed_params.png?raw=true "scheme")
 
 | № | Param name   | Description |
 | - | ------------ | ----------- |
-| 0 | ID           | You should manually choose the node ID. On the bus few nodes with the same ID should not exist. |
+| 0 | ID           | You should manually choose the node ID. On the bus, a few nodes with the same ID should not exist. |
 | 1 | airspeed_enable | 0 - disable data publication, 1 - enable |
 | 2 | airspeed_pub_period | Period of message publication |
 | 3 | airspeed_measurement_period | Period of data measurement |
-| 4 | airspeed_calibration_offset | The publicated differential pressure = measured pressure + this offset |
+| 4 | airspeed_calibration_offset | The published differential pressure = measured pressure + this offset |
 | 5 | airspeed_calibration_request | Automatic calibration request. See this feature description for details. |
 | 6 | enable_5v_check | Set ERROR status if 5V voltage is out of range 4.5 - 5.5 V |
-| 7 | enable_vin_check | Set ERROR status if Vin voltage is less then 4.5 V |
-| 8 | name | If specified value != 0, use custom node name. There is no custom names yet, but it might be extended if you need. |
+| 7 | enable_vin_check | Set ERROR status if Vin voltage is less than 4.5 V |
+| 8 | name | If specified value != 0, use custom node name. There are no custom names yet, but it might be extended if you need it. |
 | 9 | live_minutes | Not implemented yet. |
 
 ## 7. Led indication
 
-There is an internal led that may allows you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting number of blinks you can define the current status of the node.
+There is an internal led that may allow you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting a number of blinks you can define the current status of the node.
 
-| Number of blinks | Uavcan helth   | Description                     |
+| Number of blinks | Uavcan health   | Description                     |
 | ---------------- | -------------- | ------------------------------- |
 | 1                | OK             | Everything is ok.                |
-| 2                | OK             | There is no RawCommand at least for last 0.5 seconds (it's ok, just in case). |
+| 2                | OK             | There is no RawCommand at least for the last 0.5 seconds (it's ok, just in case). |
 | 3                | WARNING        | This node can't see any other nodes in UAVCAN network, check your cables. |
-| 4                | ERROR          | There is a problem with circuit voltage, look at circuit status message to get details. It may happend when you power it from SWD since it has only 3.3 V, otherwise be carefull with power supply. This check might be turned off using params. |
-| 5                | CRITICAL       | There is a problem on periphery initialization level. Probably you load a wrong firmware. |
+| 4                | ERROR          | There is a problem with circuit voltage, look at the circuit status message to get details. It may happen when you power it from SWD since it has only 3.3 V, otherwise, be careful with the power supply. This check might be turned off using params. |
+| 5                | CRITICAL       | There is a problem with the periphery initialization level. Probably you load the wrong firmware. |
 
 
 ## 8. Usage example on a table
 
-You may initially try this device on a table using [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool). You can check message sended by this node.
+You may initially try this device on a table using [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool). You can check the message sent by this node.
 
-Here you can see an example of a message when a devices is on a table and there is no wind.
+Here you can see an example of a message when a device is on a table and there is no wind.
 
 ![scheme](airspeed_message.png?raw=true "scheme")
 
@@ -144,35 +144,35 @@ And plot created in the same conditions:
 
 ![airspeed_plot](airspeed_plot.png?raw=true "airspeed_plot")
 
-Here we have an offset in measurements. It might be calibrated during calibration process.
+Here we have an offset in measurements. It might be calibrated during the calibration process.
 
 ## 9. UAV usage example
 
-This node has been tested several times on VTOL application.
+This node has been tested several times on the VTOL application.
 
 **PX4 Parameters setting before usage**
 
-Normally, to use it with your PX4-based Autopilot you need to setup following parameters:
+Normally, to use it with your PX4-based Autopilot you need to set up the following parameters:
 - `UAVCAN_ENABLE`,
 - `UAVCAN_SUB_ASPD` (since 1.13.1).
-It is also reccomended to setup `ASPD_DO_CHECKS`.
+It is also recommended to set up `ASPD_DO_CHECKS`.
 
 **Node parameters setup using QGC**
 
-At that moment the best way to setup the node parameters is to use `MAVLing console`.
+At that moment the best way to set up the node parameters is to use `MAVLing console`.
 
 By typing `uavcan status` in MAVLink console you should be able to see this device.
 
-To perform calibration on sensor side from QGC you should type:
+To perform calibration on the sensor side from QGC you should type:
 1. `uavcan param list 74` - check is calibration feature is supported
 2. `uavcan param set 74 airspeed_calib_request 1` to start calibration
 3. `uavcan param save 74` - to save new calibration parameters.
 
 ![airspeed_qgc](airspeed_qgc.png?raw=true "airspeed_qgc")
 
-Here 74 is our node id. It has calibration offset -69.
+Here 74 is our node id. It has a calibration offset -69.
 
-After that the node is ready for use.
+After that, the node is ready for use.
 
 **Flight log example**
 

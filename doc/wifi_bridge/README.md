@@ -1,6 +1,6 @@
 ## UAVCAN WiFi Sniffer node
 
-This device is dedicated for wireless sniffering UAVCAN networks. It establishes connection between CAN-network using one of 2 CAN connectors from the one side and specified WiFi network through UDP from the other side.
+This device is dedicated to wireless sniffering UAVCAN networks. It establishes connection between CAN-network using one of 2 CAN connectors from the one side and specified WiFi network through UDP from the other side.
 
 It might be a safer alternative for [wire UAVCAN sniffer](https://github.com/InnopolisAero/inno_uavcan_node_binaries/blob/master/doc/programmer_sniffer/README.md).
 
@@ -27,7 +27,7 @@ The second version of this node will appear soon.
 
 This node doesn't send any specific messages.
 
-Beside required and hightly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports following application level functions:
+Besides required and highly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports the following application-level functions:
 
 | № | type      | message  |
 | - | --------- | -------- |
@@ -37,7 +37,7 @@ Beside required and hightly recommended functions such as `NodeStatus` and `GetN
 
 ## 2. Hardware specification
 
-(in process)
+(in progress)
 
 ## 3. Wire
 
@@ -85,24 +85,23 @@ By sending [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specifi
 
 ## 7. Led indication
 
-This board has 2 leds. One in dedicated for STM32 microcontroller, another one is for ESP8266.
+This board has 2 LEDs. One in dedicated to the STM32 microcontroller, another one is for ESP8266.
 
-Both leds that allows you to understand possible problems. They blink from 1 to 5 times for 2 seconds, then waits for 2 seconds. By counting number of blinks you can define the code of current status.
+Both LEDs allow you to understand possible problems. They blink from 1 to 5 times for 2 seconds, then wait for 2 seconds. By counting the number of blinks you can define the code of current status.
 
 STM32 blinks meaning:
 
-| Number of blinks | Uavcan helth   | Description                     |
+| Number of blinks | Uavcan health   | Description                     |
 | ---------------- | -------------- | ------------------------------- |
 | 1                | OK             | UART and CAN are receiving and working |
 | 2                | WARNING        | There is no RX data from uart |
 | 3                | WARNING        | There is no RX data from CAN |
 | 4                | WARNING        | There is no RX data at all |
-| 5                | CRITICAL       | There is a problem on periphery initialization level. Probably you load wrong firmware. |
+| 5                | CRITICAL       | There is a problem with the periphery initialization level. Probably you load the wrong firmware. |
 
 ## 8. Usage example on a table
 
 Below you can see an example of bus monitor plot with connected device that was published with frame rate 1500 frames per second. 
-
 ![frames_rate_1500.png](frames_rate_1500.png?raw=true "frames_rate_1500.png")
 
 ## 9. UAV usage example
@@ -121,4 +120,3 @@ This board has following performance characteristics:
 The response time is limited by time required for ESP8266 to send an UDP package.
 The bandwidth is limited by uart frequency that is 1000000 bit/sec. According to SLCAN each CAN frame is encoded into 27 bytes. So, maximum frame rate is 3703 frames per second.
 ```
-
