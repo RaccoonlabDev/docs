@@ -13,6 +13,9 @@ This board has 3 types of sensors:
   - [2. Hardware specification](#2-hardware-specification)
   - [3. Wire](#3-wire)
   - [4. Main function description](#4-main-function-description)
+  - - [4.1 GNSS Module](#41-gnss-module)
+  - - [4.2 Barometer](#42-barometer)
+  - - [4.3 Magnetometer](#43-magnetometer)
   - [5. Auxiliary functions description](#5-auxiliary-function-description)
   - [6. Parameters](#6-parameters)
   - [7. Led indication](#7-led-indication)
@@ -41,22 +44,18 @@ Besides required and highly recommended functions such as `NodeStatus` and `GetN
 
 ## 3. Wire
 
-You can power this board using one of 2 CAN-sockets:
+This board has 3 connectors which are described in the table below.
 
-1. UCANPHY Micro (JST-GH 4).
-```
-UAVCAN/CAN Physical Layer Specification note.
-Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal.
-Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not
-exceed 1 A per connector.
-```
-2. 6-pin Molex series 502585 connector ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670) and [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600))
+| № | Connector | Description |
+| - | --------- | ----------- |
+| 1 | UCANPHY Micro (JST-GH 4) | Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal. Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not exceed 1 A per connector. |
+| 2 | 6-pin Molex  ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670), [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | Contacts support up to 100 V, 2 A per contact. But the board may work only with 2S-6S. |
+| 3 | SWD | STM32 firmware updating using [programmer-sniffer](doc/programmer_sniffer/README.md). |
 
 ```
-Up to 100 V, 2 A per contact
+WARNING: Be careful, 4-pin CAN and SWD connectors look similar, but the wrong connection may cause some problems.
+Names of these connectors are marked on the backside of the board.
 ```
-
-It also has an SWD socket that is dedicated to updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
 
 ## 4. Main function description
 
@@ -66,20 +65,23 @@ Below you can see an illustration of how it may work in `uavcan_gui_tool`.
 
 ![gps_mag_baro](gps_mag_baro_msgs.png?raw=true "gps_mag_baro")
 
-**1. GNSS module**
+### 4.1. GNSS module
 
 The node uses [u-blox 8](https://www.u-blox.com/en/product/max-8-series) GNSS module. It can work either with `NMEA` or [ublox](https://www.u-blox.com/sites/default/files/products/documents/u-blox8-M8_ReceiverDescrProtSpec_%28UBX-13003221%29.pdf) protocol. You may choose desired protocol using UAVCAN parameter `gnss_type`.
-
-During ubx protocol mode, it parses only `UbxNavPvt` message.
 
 ```
 Note 1: nmea protocol is not tested well yet. Use ubx protocol instead.
 ```
 
 ```
-Note 2: At this moment you need to manually set up the ublox module before usage.
+Note 2: During ubx protocol mode, it parses only `UbxNavPvt` message becase it has all necessary information to fill it into Fix message. Turn off all other package.
 ```
-**1.2. Setup U-Blox NEO-M8N-0 bu UART**
+
+```
+Note 3: At this moment you need to manually set up the ublox module before usage.
+```
+
+**How to setup U-Blox NEO-M8N-0 bu UART**
 
 - [Download](https://www.u-blox.com/en/product/u-center) and install u-center (not u-center 2).
 - Connect to the module by UART at 9600 by default.
@@ -89,7 +91,7 @@ Note 2: At this moment you need to manually set up the ublox module before usage
 - Go to Configuration view to RATE (Rates), set Measurement Period to 60 ms, "send" at the bottom.
 - If everything ok, go to Configuration view to CFG (Configuration), select "Save current configuration", "send" at the bottom.
 
-**1.3 About workflow**
+**About workflow**
 
 It communicates with the GNSS module via UART and publishes [uavcan.equipment.gnss.Fix](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#fix). You may either set the default publish rate (the same as receiving) by setting `gps_frequency` to 0 or set any other fixed rate.
 
@@ -97,7 +99,15 @@ Below you can see an example of the `Fix` message.
 
 ![gps_msg](gps_msg.png?raw=true "gps_msg")
 
-**2. Barometer**
+**Performance**
+
+The raw GNSS-module needs 8.7 ms to send a UbxNavPvt package via uart (the baud rate is 115200, a package length is 100 bytes).
+
+This board as a wrapper under GNSS-module needs ~12 ms to get this package via UART, process it and send to CAN-bus.
+
+It means that the time overhead compared to raw module is only ~4ms.
+
+### 4.2. Barometer
 
 The node uses [BMP280](https://cdn-shop.adafruit.com/datasheets/BST-BMP280-DS001-11.pdf) barometer. Communication with the sensor is carried out using I2C. It publishes 2 messages:
 - [uavcan.equipment.air_data.StaticPressure](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#staticpressure)
@@ -114,7 +124,7 @@ Control measurement settings:
 ![baro_plot](baro_plot.png?raw=true "baro_plot")
 
 
-**3. Magnetometer**
+### 4.3. Magnetometer
 
 The node supports 2 types of magnetometers: [RM3100](https://ekb.terraelectronica.ru/pdf/show?pdf_file=%252Fds%252Fpdf%252FR%252FRM3100.pdf) and [HMC5883L](https://cdn-shop.adafruit.com/datasheets/HMC5883L_3-Axis_Digital_Compass_IC.pdf). You may choose the one you need at runtime using UAVCAN parameters.
 
@@ -128,7 +138,7 @@ Before the first measurement, this node performs initialization for the chosen m
 - number of samples is 2 (1 is the default),
 - the sensor field range is ± 1.3 Ga (by default), so digital resolution is 0.92 mG/LSb.
 
-2. [RM3100](https://ekb.terraelectronica.ru/pdf/show?pdf_file=%252Fds%252Fpdf%252FR%252FRM3100.pdf) and [HMC5883L](https://cdn-shop.adafruit.com/datasheets/HMC5883L_3-Axis_Digital_Compass_IC.pdf)
+2. [RM3100](https://ekb.terraelectronica.ru/pdf/show?pdf_file=%252Fds%252Fpdf%252FR%252FRM3100.pdf)
 - SPI bus
 - Continuous Measurement Mode,
 - the measurement rate is 75 Hz (37 Hz is the default),
@@ -152,13 +162,23 @@ Also, it has external LEDs. They show the system state at this moment.
 
 ## 6. Parameters
 
-(in progress)
+The list of parameters is shown in the table below:
 
-![gps_mag_baro_params](gps_mag_baro_params.png?raw=true "gps_mag_baro_params")
+|Idx| Name             | Type    |Default| Min | Max | Desctiption |
+| - | ---------------- | ------- | ----- | --- | --- | ----------- |
+| 0 | ID               | integer | 71    | 0   | 100 | Node identifier |
+| 1 | gps_enable       | integer | 1     | 0   | 1   | 0 means disable, 1 means enable gps |
+| 2 | gps_type         | integer | 0     | 0   | 2   | 0 means ublox, 1 means nmea (not supported yet), 2 means ublox emulation (debug only) |
+| 3 | gps_pub_period   | integer | 0     | 0   | 2000| 0 means publish whith receiving rate, 1-2000 means fixed rate in milliseconds |
+| 4 | mag_enable       | integer | 1     | 0   | 1   | 0 means disable, 1 means enable magnetometer |
+| 5 | mag_type         | integer | 0     | 0   | 1   | 0 means RM3100, 1 means HMC5883L |
+| 6 | mag_pub_frequency| integer | 75    | 1   | 75  | Publish rate. Note that this value is actually limited be the sensor type (mag_type) |
+| 7 | baro_enable      | integer | 1     | 0   | 1   | 0 means disable, 1 means enable barometer |
+| 8 |baro_pub_frequency| integer | 50    | 1   | 50  | Publish rate |
+| 9 | enable_5v_check  | integer | 1     | 0   | 1   | Set ERROR status if 5V voltage is out of range 4.5 - 5.5 V |
+| 10| enable_vin_check | integer | 0     | 0   | 1   | Set ERROR status if Vin voltage is less than 4.5 V |
+| 11| name             | integer | 0     | 0   | 100 | Custom name of the node. Might be implemented by request. |
 
-```
-Note: actual publish frequency might be less than desired. For example, if you choose 75 Hz, it might be 71-72. It is related to error when rounding integers. It's ok.
-```
 
 ## 7. Led indication
 
