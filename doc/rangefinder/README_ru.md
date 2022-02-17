@@ -1,10 +1,9 @@
 ## UAVCAN-дальномер
 
-Эта плата является преобразователем для датчика [LW20/C](https://www.mouser.com/datasheet/2/321/28055-LW20-SF20-LiDAR-Manual-Rev-7-1371848.pdf) (или аналога), которая позволяет использовать этот датчик на шине UAVCAN.
-
-Она считывает измерения с датчика через интерфейс i2c и публикует дальность в метрах в шину.
+Плата UAVCAN-дальномер включает в себя реализацию драйверов для взаимодействия по i2c/uart с дальномерами, такими как [LW20/C](https://www.mouser.com/datasheet/2/321/28055-LW20-SF20-LiDAR-Manual-Rev-7-1371848.pdf), [TF-Luna](https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf). Считанные и измерения с датчика отправляются по шине UAVCAN.
 
 ![rangefinder](rangefinder.jpg?raw=true "rangefinder")
+Рис. Прототип, использующий lightware LW20
 
 ## Содержание
   - [1. Интерфейс UAVCAN](#1-uavcan-interface)
@@ -19,14 +18,14 @@
 
 ## 1. Интерфейс UAVCAN <a name="1-uavcan-interface"></a> 
 
-Этот узел взаимодействует посредством следующих сообщений:
+Узел публикует следующие сообщения:
 
 | № | тип | сообщение |
 | - | --------- | -------- |
 | 1 | publisher | [uavcan.equipment.range_sensor.Measurement](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#measurement) |
 | 2 | publisher | [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) |
 
-Помимо необходимых и очень рекомендуемых функций, таких как `NodeStatus` и `GetNodeInfo`, этот узел также поддерживает следующие функции прикладного уровня:
+Помимо необходимых и очень рекомендуемых функций, таких как `NodeStatus` и `GetNodeInfo`, узел также поддерживает следующие функции прикладного уровня:
 
 | № | тип | сообщение |
 | - | --------- | -------- |
@@ -38,24 +37,21 @@
 
 (в процессе)
 
+![scheme](../can_pwm/can_pwm_mini_scheme.png?raw=true "scheme")
+
 ## 3. Подключение <a name="3-wire"></a> 
 
-Вы можете запитать эту плату, используя один из 2 CAN-разъемов:
+На плате имеется 3 разъема, описание которых преставлено в таблице ниже.
 
-1. 4-контактный CAN-разъем (`UCANPHY Micro - JST-GH 4`). Этот разъем описан в [UAVCAN/CAN Physical Layer Specification](https://forum.uavcan.org/t/uavcan-can-physical-layer-specification-v1-0/1471). Краткое примечание из стандарта ниже: 
-```
-Примечание спецификации физического уровня UAVCAN/CAN.
-Устройства, подающие питание на шину, должны обеспечивать 4,9-5,5 В на линии питания шины, номинальное напряжение 5,0 В.
-Устройства, получающие питание от шины, должны ожидать 4,0-5,5 В на линии питания шины. Ток не должен
-превышать 1 А на каждый разъем.
-```
-2. 6-контактный CAN-разъем (``разъем 502585 серии Molex``: [502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670) и [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600))
+| № | Разъем | Описание |
+| - | --------- | ----------- |
+| 1 | UCANPHY Micro (JST-GH 4) | Примечание спецификации физического уровня UAVCAN/CAN. Устройства, подающие питание на шину, должны обеспечивать 4,9-5,5 В на линии питания шины, номинальное напряжение 5,0 В. Устройства, получающие питание от шины, должны ожидать 4,0-5,5 В на линии питания шины. Ток не должен превышать 1 А на каждый разъем. |
+| 2 | 6-контактный разъем Molex серии 502585 ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670) и [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | Разъем поддерживает до 100 В, 2 A на контакт, но плата работает только с 2S-6S. |
+| 3 | SWD | Предназначен для обновления прошивки с помощью устройства [programmer-sniffer](doc/programmer_sniffer/README.md). |
 
 ```
-До 100 В, 2 A на контакт
+ВНИМАНИЕ: Будьте осторожны, 4-пиновый CAN и SWD разъемы выглядят одинакого, но на линиях питания у них разное напряжение. Не перепутайте их. Их названия всегда есть на одной из сторон платы.
 ```
-
-Он также имеет SWD разъем, предназначенный для обновления прошивки с помощью устройства [programmer-sniffer](doc/programmer_sniffer/README.md).
 
 ## 4. Описание основных функций <a name="4-main-function-description"></a> 
 
@@ -69,16 +65,27 @@
 
 ## 6. Параметры <a name="6-parameters"></a> 
 
-Доступный список параметров показан на рисунке ниже:
+Доступный список параметров показан в таблице ниже:
 
-![схема](rangefinder_params.png?raw=true "параметры")
+|Idx| Name             | Type    |Default| Min | Max | Desctiption |
+| - | ---------------- | ------- | ----- | --- | --- | ----------- |
+| 0 | ID               | integer | 73    | 0   | 100 | Идентификатор узла |
+| 1 | log_level        | integer | 3     | 0   | 4   | Узел будет отправлять отладочные сообщения с уровнем не ниже, чем указан в данном параметре. 0 - debug, 1 - info, 2 - warn, 3 - error, 4 - отключить отправку отладочных сообщений |
+| 2 | rng_measurement_period | integer | 100     | 10   | 2000   | Период измерения и публикации сообщений. |
+| 3 | rng_type         | integer | 0     | 0   | 2   | Тип датчика. См. таблицу ниже. |
+| 4 | rng_id           | integer | 0     | 0   | 255  | Идентификатор датчика. См. [uavcan сообщение]([uavcan.equipment.range_sensor.Measurement](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#measurement)) |
+| 5 | enable_5v_check  | integer | 1     | 0   | 1   | Устанавливает статус ERROR если напряжение 5V вне диапазона 4.5 - 5.5 V |
+| 6 | enable_vin_check | integer | 0     | 0   | 1   | Устанавливает статус ERROR если напряжение Vin меньше 4.5 V |
+| 7 | name             | integer | 0     | 0   | 100 | Пользовательское имя узла. Может быть реализовано по запросу. |
 
-С помощью параметров можно указать тип датчика (сейчас поддерживается только LW20/C)
+Using parameters you may specify type of sensor (now it supports only LW20/C)
 
-| rangefinder_type значение | соответствующий тип датчика |
+| rng_type               | Тип датчика               |
 | ---------------------- | ------------------------- |
-| 0 | LW20/C |
-| 1 | vl53l0x |.
+| 0                      | LW20/C (i2c)              |
+| 1                      | TF-Luna (uart)            |
+| 2                      | Garmin lite v3 (i2c)      |
+| 3                      | vl53l0x (i2c)             |
 
 ## 7. Светодиодная индикация <a name="7-led-indication"></a> 
 

@@ -1,10 +1,10 @@
 ## UAVCAN Rangefinder node
 
-This board is a wrapper under [LW20/C](https://www.mouser.com/datasheet/2/321/28055-LW20-SF20-LiDAR-Manual-Rev-7-1371848.pdf) that allows to use it through the UAVCAN network.
+This board has few drivers for communication with such rangefinder as [LW20/C](https://www.mouser.com/datasheet/2/321/28055-LW20-SF20-LiDAR-Manual-Rev-7-1371848.pdf) and [TF-Luna](https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf) via i2c/uart. After reading measurements it sends data through UAVCAN network.
 
-It reads measurements from the sensor via i2c and publishes the range in meters.
 
 ![rangefinder](rangefinder.jpg?raw=true "rangefinder")
+Fig. Prototype based on lightware LW20
 
 ## Content
   - [1. UAVCAN interface](#1-uavcan-interface)
@@ -19,7 +19,7 @@ It reads measurements from the sensor via i2c and publishes the range in meters.
 
 ## 1. UAVCAN interface
 
-This node interacts with the following messages:
+This node interracts with following messages:
 
 | № | type      | message  |
 | - | --------- | -------- |
@@ -36,26 +36,25 @@ Besides required and highly recommended functions such as `NodeStatus` and `GetN
 
 ## 2. Hardware specification
 
-(in progress)
+(in process)
+
+![scheme](../can_pwm/can_pwm_mini_scheme.png?raw=true "scheme")
+
 
 ## 3. Wire
 
-You can power this board using one of 2 CAN-sockets:
+This board has 3 connectors which are described in the table below.
 
-1. 4-pin CAN-socket (`UCANPHY Micro - JST-GH 4`). This socket is described in [UAVCAN/CAN Physical Layer Specification](https://forum.uavcan.org/t/uavcan-can-physical-layer-specification-v1-0/1471). Short note from the standard below: 
-```
-UAVCAN/CAN Physical Layer Specification note.
-Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal.
-Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not
-exceed 1 A per connector.
-```
-2. 6-pin CAN-socket (`Molex series 502585 connector`: [502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670) and [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600))
+| № | Connector | Description |
+| - | --------- | ----------- |
+| 1 | UCANPHY Micro (JST-GH 4) | Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal. Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not exceed 1 A per connector. |
+| 2 | 6-pin Molex  ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670), [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | Contacts support up to 100 V, 2 A per contact. But the board may work only with 2S-6S. |
+| 3 | SWD | STM32 firmware updating using [programmer-sniffer](doc/programmer_sniffer/README.md). |
 
 ```
-Up to 100 V, 2 A per contact
+WARNING: Be careful, 4-pin CAN and SWD connectors look similar, but the wrong connection may cause some problems.
+Names of these connectors are marked on the backside of the board.
 ```
-
-It also has an SWD socket that is dedicated to updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
 
 ## 4. Main function description
 
@@ -69,16 +68,27 @@ It also sends [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/S
 
 ## 6. Parameters
 
-The list of parameters is shown in the picture below:
+The list of parameters is shown in the table below:
 
-![scheme](rangefinder_params.png?raw=true "scheme")
+|Idx| Name             | Type    |Default| Min | Max | Desctiption |
+| - | ---------------- | ------- | ----- | --- | --- | ----------- |
+| 0 | ID               | integer | 73    | 0   | 100 | Node identifier |
+| 1 | log_level        | integer | 3     | 0   | 4   | Minimal log level message which might be sended by this device. 0 - debug, 1 - info, 2 - warn, 3 - error, 4 - disable |
+| 2 | rng_measurement_period | integer | 100     | 10   | 2000   | Period of measurement and publishing |
+| 3 | rng_type         | integer | 0     | 0   | 2   | Defines which sensor to use. See the table below. |
+| 4 | rng_id           | integer | 0     | 0   | 255  | Id of the sensor in the message. |
+| 5 | enable_5v_check  | integer | 1     | 0   | 1   | Set ERROR status if 5V voltage is out of range 4.5 - 5.5 V |
+| 6 | enable_vin_check | integer | 0     | 0   | 1   | Set ERROR status if Vin voltage is less than 4.5 V |
+| 7 | name             | integer | 0     | 0   | 100 | Custom name of the node. Might be implemented by request. |
 
-Using parameters you may specify the type of sensor (now it supports only LW20/C)
+Using parameters you may specify type of sensor (now it supports only LW20/C)
 
-| rangefinder_type value | corresponded sensor type  |
+| rng_type value         | corresponded sensor type  |
 | ---------------------- | ------------------------- |
-| 0                      | LW20/C                    |
-| 1                      | vl53l0x                   |
+| 0                      | LW20/C (i2c)              |
+| 1                      | TF-Luna (uart)            |
+| 2                      | Garmin lite v3 (i2c)      |
+| 3                      | vl53l0x (i2c)             |
 
 ## 7. Led indication
 
