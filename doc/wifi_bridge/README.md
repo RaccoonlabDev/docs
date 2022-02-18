@@ -1,14 +1,16 @@
 ## UAVCAN WiFi Sniffer node
 
-This device is dedicated to wireless sniffering UAVCAN networks. It establishes connection between CAN-network using one of 2 CAN connectors from the one side and specified WiFi network through UDP from the other side.
+WiFi Sniffer is dedicated to wireless sniffering UAVCAN networks. It establishes connection between CAN-network using one of 2 CAN connectors from the one side and specified WiFi network through UDP from the other side.
 
 It might be a safer alternative for [wire UAVCAN sniffer](https://github.com/InnopolisAero/inno_uavcan_node_binaries/blob/master/doc/programmer_sniffer/README.md).
 
-Below you can see an illustartion of the first version of this board.
+At that moment there are 2 illustration of WiFi sniffer boards. Below you can see an illustartion of them.
 
-![Wifi sniffer version 1](wifi_bridge.png?raw=true "Wifi sniffer version 1")
+Version 1.0                |  Version 2.0
+:-------------------------:|:-------------------------:
+![wifi_board_v1](wifi_board_v1.png?raw=true)  |  ![wifi_board_v2](wifi_board_v2.png?raw=true)
 
-The second version of this node will appear soon.
+The second one is cheaper and smaller than the first. It has UART socket instead of USB type-C.
 
 ## Content
   - [1. UAVCAN interface](#1-uavcan-interface)
@@ -37,7 +39,9 @@ Besides required and highly recommended functions such as `NodeStatus` and `GetN
 
 ## 2. Hardware specification
 
-(in progress)
+The board v2.0 has following scheme:
+
+![scheme_v2](scheme_v2.png?raw=true)
 
 ## 3. Wire
 
@@ -120,3 +124,15 @@ This board has following performance characteristics:
 The response time is limited by time required for ESP8266 to send an UDP package.
 The bandwidth is limited by uart frequency that is 1000000 bit/sec. According to SLCAN each CAN frame is encoded into 27 bytes. So, maximum frame rate is 3703 frames per second.
 ```
+
+## 11. How to upload firmware
+
+1. Upload firmware to STM32 using SWD connector.
+
+2. Upload firmware to ESP8266 using UART connector.
+
+Choose an appropriate parameters before uploading.
+
+| № | Hardware version        | First     | Second    |
+| - | ----------------------- | --------- | --------- |
+| 1 | Tools/Crystal Frequency | 26 MHz    | 40 MHz  |
