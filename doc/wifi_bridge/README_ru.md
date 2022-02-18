@@ -51,7 +51,7 @@ WiFi Sniffer представляет из себя мост между UAVCAN/C
 | № | Разъем | Описание |
 | - | --------- | ----------- |
 | 1 | UCANPHY Micro (JST-GH 4) | Устройства, подающие питание на шину, должны обеспечивать 4,9-5,5 В на линии питания шины, номинальное напряжение 5,0 В. Устройства, получающие питание от шины, должны ожидать 4,0-5,5 В на линии питания шины. Ток не должен превышать 1 А на каждый разъем. |
-| 2 | 6-контактный Molex ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670), [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | До 100 В, 2 A на контакт. |
+| 2 | 6-контактный Molex ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670), [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | Разъем поддерживает до 100 В, 2 A на контакт, но плата работает только с 2S-6S. |
 | 3 | SWD | Обновление прошивки STM32 с помощью [programmer-sniffer](doc/programmer_sniffer/README.md). |
 | 4 | Разъем esp8266 | Обновление прошивки Esp8266 с помощью преобразователя usb-uart. |
 

@@ -51,39 +51,23 @@ Besides required and highly recommended functions such as `NodeStatus` and `GetN
 
 ## 3. Wire
 
-**Power socket**
+This board has 4 connectors which may deliver a power to this device. They are described in the table below.
 
-This board consumes more power than a typical UAVCAN node, so it is powered using an additional socket.
+| № | Connector | Description |
+| - | --------- | ----------- |
+| 1 | Power socket | This board consumes more power than a typical UAVCAN node, so it is powered using an additional socket. |
+| 2 | UCANPHY Micro (JST-GH 4) | Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal. Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not exceed 1 A per connector. |
+| 3 | 6-pin Molex  ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670), [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | Contacts support up to 100 V, 2 A per contact. But the board may work only with 2S-6S. |
+| 4 | SWD | STM32 firmware updating using [programmer-sniffer](doc/programmer_sniffer/README.md). |
 
-**CAN interface.**
+It also has following board-specific connectors:
 
-You can connect this board to the CAN bus using one of the following sockets:
-
-1. UCANPHY Micro (JST-GH 4).
-```
-UAVCAN/CAN Physical Layer Specification note.
-Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal.
-Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not
-exceed 1 A per connector.
-```
-2. 6-pin Molex series 502585 connector ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670) and [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600))
-
-```
-Up to 100 V, 2 A per contact
-```
-
-**Programming socket.**
-
-It also has an SWD socket that is dedicated to updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
-
-**Inputs and outputs**
-
-1. Fuel tank sensor
-2. Starter
-3. Spark ignition
-4. Throttle
-
-(in progress)
+| № | Connector        | Description    |
+| - | ---------------- | -------------- |
+| 5 | Fuel tank sensor | in process...  |
+| 6 | Starter          | in process...  |
+| 7 | Spark ignition   | in process...  |
+| 8 | Throttle         | in process...  |
 
 
 ## 4. Main function description
@@ -178,5 +162,3 @@ In any way, if the last RawCommand with corresponding channel value message is r
 ## 8. UAV usage example
 
 This node has been successfully tested on VTOL. Here is an example of RPM and RawCommand values collected from one of the flight logs.
-
-![parameters](rpm_from_rc.png?raw=true "parameters")

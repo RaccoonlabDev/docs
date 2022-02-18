@@ -42,6 +42,16 @@
 | 2 | RPC-service | [uavcan.protocol.RestartNode](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#restartnode)|
 | 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) |
 
+
+## 2. Технические характеристики <a name="2-hardware-specification"></a> 
+
+(раздел дополнятеся)
+
+Габаритный чертеж UAVCAN-Node-Mini:
+
+![scheme](scheme.png?raw=true "scheme")
+
+
 ## 3. Подключение <a name="3-wire"></a> 
  
 На плате имеется 3 разъема, описание которых преставлено в таблице ниже.
@@ -51,10 +61,6 @@
 | 1 | UCANPHY Micro (JST-GH 4) | Примечание спецификации физического уровня UAVCAN/CAN. Устройства, подающие питание на шину, должны обеспечивать 4,9-5,5 В на линии питания шины, номинальное напряжение 5,0 В. Устройства, получающие питание от шины, должны ожидать 4,0-5,5 В на линии питания шины. Ток не должен превышать 1 А на каждый разъем. |
 | 2 | 6-контактный разъем Molex серии 502585 ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670) и [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | Разъем поддерживает до 100 В, 2 A на контакт, но плата работает только с 2S-6S. |
 | 3 | SWD | Предназначен для обновления прошивки с помощью устройства [programmer-sniffer](doc/programmer_sniffer/README.md). |
-
-```
-ВНИМАНИЕ: Будьте осторожны, 4-пиновый CAN и SWD разъемы выглядят одинакого, но на линиях питания у них разное напряжение. Не перепутайте их. Их названия всегда есть на одной из сторон платы.
-```
 
 ## 4. Описание основных функций  <a name="4-main-function-description"></a> 
 

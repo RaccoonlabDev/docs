@@ -51,11 +51,6 @@ This board has 3 connectors which are described in the table below.
 | 2 | 6-pin Molex  ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670), [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | Contacts support up to 100 V, 2 A per contact. But the board may work only with 2S-6S. |
 | 3 | SWD | STM32 firmware updating using [programmer-sniffer](doc/programmer_sniffer/README.md). |
 
-```
-WARNING: Be careful, 4-pin CAN and SWD connectors look similar, but the wrong connection may cause some problems.
-Names of these connectors are marked on the backside of the board.
-```
-
 ## 4. Main function description
 
 This node measures and publishes range with adjustable rates (10 Hz by default for both). Publication and measurement rates might be configured using node parameters, but it is recommended to use default values.

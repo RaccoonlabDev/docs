@@ -42,6 +42,14 @@ Besides required and highly recommended functions such as `NodeStatus` and `GetN
 | 2 | RPC-service | [uavcan.protocol.RestartNode](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#restartnode) |
 | 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) |
 
+## 2. Hardware specification
+
+(in progress)
+
+UAVCAN-PWM mini scheme:
+
+![scheme](scheme.png?raw=true "scheme")
+
 ## 3. Wire
 
 This board has 3 connectors which are described in the table below.
@@ -51,11 +59,6 @@ This board has 3 connectors which are described in the table below.
 | 1 | UCANPHY Micro (JST-GH 4) | Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal. Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not exceed 1 A per connector. |
 | 2 | 6-pin Molex  ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670), [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | Contacts support up to 100 V, 2 A per contact. But the board may work only with 2S-6S. |
 | 3 | SWD | STM32 firmware updating using [programmer-sniffer](doc/programmer_sniffer/README.md). |
-
-```
-WARNING: Be careful, 4-pin CAN and SWD connectors look similar, but the wrong connection may cause some problems.
-Names of these connectors are marked on the backside of the board.
-```
 
 ## 4. Main function description
 
