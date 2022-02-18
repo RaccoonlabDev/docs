@@ -19,7 +19,7 @@ It reads measurements from the sensor via i2c and publishes temperature and diff
 
 ## 1. UAVCAN interface
 
-This node interacts with the following messages:
+This node sends the following messages with fixed rate:
 
 | № | type      | message  |
 | - | --------- | -------- |
@@ -40,28 +40,19 @@ Beside required and highly recommended functions such as `NodeStatus` and `GetNo
 
 ## 3. Wire
 
-You can power this board using one of 2 CAN-sockets:
+This board has 3 connectors which are described in the table below.
 
-1. UCANPHY Micro (JST-GH 4).
-```
-UAVCAN/CAN Physical Layer Specification note.
-Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal.
-Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not
-exceed 1 A per connector.
-```
-2. 6-pin Molex series 502585 connector ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670) and [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600))
-
-```
-Up to 100 V, 2 A per contact
-```
-
-It also has an SWD socket that is dedicated to updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
+| № | Connector | Description |
+| - | --------- | ----------- |
+| 1 | UCANPHY Micro (JST-GH 4) | Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal. Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not exceed 1 A per connector. |
+| 2 | 6-pin Molex  ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670), [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | This wire supports up to 100 V, 2 A per contact, but board's DC-DC is limited by 60V. We recommend using no more than 30V on this bus. |
+| 3 | SWD | STM32 firmware updating using [programmer-sniffer](doc/programmer_sniffer/README.md). |
 
 ## 4. Main function description
 
 This node measures differential pressure and temperature with high rate (100 Hz by default) and publishes averaged data with a low rate (10 Hz should be enough for PX4 Autopilot otherwise it will anyway perform average filter). Publication and measurement rates might be configured using node parameters, but it is recommended to use default values.
 
-According to `ms4525do datasheet`, this node has the following range of measured data:
+According to [MS4525DO datasheet](https://www.te.com/commerce/DocumentDelivery/DDEController?Action=showdoc&DocId=Data+Sheet%7FMS4525DO%7FB2%7Fpdf%7FEnglish%7FENG_DS_MS4525DO_B2.pdf%7FCAT-BLPS0002), the sensor has the following range of measured data:
 - differential pressure is from -1 psi to +1 psi or from -6894.757 pa to +6894.757 pa.
 - temperature is from -50 to +150 Celcius or from 223 to 423 Kelvin.
 
@@ -72,7 +63,15 @@ If we consider temperature ~288 Kelvin and pressure 101325 Pa according to the I
 
 **Circuit status**
 
-It also sends [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) messages with measured `5V` and `Vin`.
+It sends 2 [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) messages with measured `5V` and `Vin`.
+
+The first message has `circuit_id=NODE_ID*10 + 0` and following 2 significant fields:
+1. voltage - is the `5V` voltage
+2. error_flags - might have `ERROR_FLAG_OVERVOLTAGE` or `ERROR_FLAG_UNDERVOLTAGE` or non of them
+
+The second message has `circuit_id=NODE_ID*10 + 1` and following 2 significant fields:
+1. voltage - is the `Vin` voltage
+2. error_flags - `ERROR_FLAG_UNDERVOLTAGE` or non of them. There is no `ERROR_FLAG_OVERVOLTAGE` flag because the expected max `Vin` voltage is unknown.
 
 **Calibration**
 
@@ -85,11 +84,11 @@ Note. Using params to start the calibration process is not the best solution. Bu
 
 **Enable/disable**
 
-Normally, you don't need this feature. But it allows you to start and stop publishing via UAVCAN in real-time without physical disconnect.
+This function allows you to start and stop publishing via UAVCAN in real-time without physical disconnect.
 
 **Software version**
 
-GetNodeInfo response contains a software version that allows you to differentiate one firmware from another. See `Node Properties` window in `UaVCAN GUI tool`.
+`GetNodeInfo` response contains a software version that allows you to differentiate one firmware from another. See `Node Properties` window in `uavcan gui tool`.
 
 **Hardware version**
 
@@ -97,7 +96,7 @@ Not implemented yet.
 
 **Hardware unique ID**
 
-GetNodeInfo response contains hardware unique ID that allows you to differentiate one board from another. See `Node Properties` window in `UaVCAN GUI tool`.
+GetNodeInfo response contains hardware unique ID that allows you to differentiate one board from another. See `Node Properties` window in `uavcan gui tool`.
 
 
 ## 6. Parameters
@@ -159,7 +158,7 @@ It is also recommended to set up `ASPD_DO_CHECKS`.
 
 **Node parameters setup using QGC**
 
-At that moment the best way to set up the node parameters is to use `MAVLing console`.
+At that moment the best way to set up the node parameters is to use `MAVLink console`.
 
 By typing `uavcan status` in MAVLink console you should be able to see this device.
 
