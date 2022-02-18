@@ -6,17 +6,19 @@ This node has 2 channels (A1 and A2) which are dedicated to direct connection wi
 
 At that moment we have 3 types of such UAVCAN-PWM boards, the so-called `5A`, `Mini`, and `Nano`. They are illustrated below.
 
-![scheme](can_pwm_nodes.png?raw=true "scheme")
+| UAVCAN-PWM node 5A | UAVCAN-PWM node Mini | UAVCAN-PWM node Nano |
+| ------- | ------- | -------- |
+| ![](5A.png?raw=true "5A")    | ![](node_mini.png?raw=true "mini")  | ![](node_nano.png?raw=true "nano")   |
 
 The difference between boards are following:
 
-| № | Criterion            | 5A      | Mini     | Nano          | Module        |
-| - | -------------------- | ------- | -------- | ------------- | ------------- |
-| 1 | development status    | tested  | tested   | testing stage | dev stage     |
-| 1 | dc-dc availability   | yes     | yes      | no            | yes           |
-| 2 | input voltage        | 2S-12S  | 2S-6S    | 4.8-5.6 V     | 2S-12S        |
-| 3 | input current sensor | yes     | no       | no            | no            |
-| 4 | auxilliary pins      | no      | 2        | no            | 2             |
+| № | Criterion            | 5A      | Mini     | Nano          |
+| - | -------------------- | ------- | -------- | ------------- |
+| 1 | development status   | tested  | tested   | testing stage |
+| 1 | dc-dc availability   | yes     | yes      | no            |
+| 2 | input voltage        | 2S-12S  | 2S-6S    | 4.8-5.6 V     |
+| 3 | input current sensor | yes     | no       | no            |
+| 4 | auxilliary pins      | no      | 2        | no            |
 
 ## Content
   - [1. UAVCAN interface](#1-uavcan-interface)
@@ -57,27 +59,18 @@ UAVCAN-PWM mini scheme:
 
 ## 3. Wire
 
-You can power this board using one of 2 CAN-sockets:
+This board has 3 connectors which are described in the table below.
 
-1. UCANPHY Micro (JST-GH 4).
-```
-UAVCAN/CAN Physical Layer Specification note.
-Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal.
-Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not
-exceed 1 A per connector.
-```
-2. 6-pin Molex series 502585 connector ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670) and [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600))
+| № | Connector | Description |
+| - | --------- | ----------- |
+| 1 | UCANPHY Micro (JST-GH 4) | Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal. Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not exceed 1 A per connector. |
+| 2 | 6-pin Molex  ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670), [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | Contacts support up to 100 V, 2 A per contact. But the board may work only with 2S-6S. |
+| 3 | SWD | STM32 firmware updating using [programmer-sniffer](doc/programmer_sniffer/README.md). |
 
-```
-Up to 100 V, 2 A per contact
-```
+UAVCAN-PWM also has 2 groups of connectors designed to connect a servo or ESC. An example of connection shown in a picture below.
 
-```
-Note: here, the actual input voltage is limited by a specific type of board
-```
-
-It also has an SWD socket that is dedicated to updating firmware using [programmer-sniffer](doc/programmer_sniffer/README.md) device.
-
+![can_pwm_mini_scheme](servo_connection.jpg?raw=true "can_pwm_mini_scheme")
+Fig. Example of servo connection to a A1 channel of UAVCAN-PWM mini node.
 
 ## 4. Main function description
 

@@ -6,19 +6,21 @@
 
 Разработано 3 варианта таких плат: `Node-Mini`, `Node-Nano` и `PWM-5A`.
 
-Внешний вид трех модификаций UAVCAN Node:
+Внешний вид трех модификаций UAVCAN-PWM узла представлен в таблице ниже.
 
-![scheme](can_pwm_nodes.png?raw=true "scheme")
+| UAVCAN-PWM node 5A | UAVCAN-PWM node Mini | UAVCAN-PWM node Nano |
+| ------- | ------- | -------- |
+| ![](5A.png?raw=true "5A")    | ![](node_mini.png?raw=true "mini")  | ![](node_nano.png?raw=true "nano")   |
 
 Сравнение характеристик трёх модификаций представлено в таблице ниже:
     
-| № | Характеристика                 | PWM-5A  | Node-Mini     | Node-Nano     | Module        |
-| - | ------------------------------ | ------- | --------      | ------------- | ------------- |
-| 0 | Стадия разработки              | готова  | готова        | тестируется   | в разработке  |
-| 1 | Наличие DC/DC преобразователя  | есть    | есть          | нет           | есть          |
-| 2 | входное напряжение             | 2S-12S  | 2S-6S         | 4.8-5.6 V     | 2S-12S        |
-| 3 | Датчик тока                    | yes     | no            | нет           | нет           |
-| 4 | Дополнительные пины            | нет     | 2             | нет           | 2             |
+| № | Характеристика                 | PWM-5A  | Node-Mini     | Node-Nano     |
+| - | ------------------------------ | ------- | --------      | ------------- |
+| 0 | Стадия разработки              | готова  | готова        | тестируется   |
+| 1 | Наличие DC/DC преобразователя  | есть    | есть          | нет           |
+| 2 | входное напряжение             | 2S-12S  | 2S-6S         | 4.8-5.6 V     |
+| 3 | Датчик тока                    | есть     | нет            | нет           |
+| 4 | Дополнительные пины            | нет     | 2             | нет           |
 
 ## Содержание
   - [1. Интерфейс UAVCAN](#1-uavcan-interface)
@@ -33,7 +35,7 @@
 
 ## 1. Интерфейс UAVCAN <a name="1-uavcan-interface"></a> 
 
-Этот узел взаимодействует посредством следующих сообщений:
+Узел взаимодействует посредством следующих сообщений:
 
 | № | Тип       | Сообщение  |
 | - | --------- | -------- |
@@ -41,7 +43,7 @@
 | 2 | publisher   | [uavcan.equipment.esc.Status](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#status-2) |
 | 3 | publisher   | [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) |
 
-Помимо необходимых и очень рекомендуемых функций, таких как `NodeStatus` и `GetNodeInfo`, этот узел также поддерживает следующие функции прикладного уровня:
+Помимо необходимых и очень рекомендуемых функций, таких как `NodeStatus` и `GetNodeInfo`, узел также поддерживает следующие функции прикладного уровня:
 
 | № | Тип       | Сообщение |
 | - | --------- | --------  |
@@ -59,27 +61,18 @@
 
 ## 3. Подключение <a name="3-wire"></a> 
 
-Вы можете подать питание на эту плату, используя один из 2 CAN-разъемов:
+На плате имеется 3 разъема, описание которых преставлено в таблице ниже.
 
-1. UCANPHY Micro (JST-GH 4).
-```
-UAVCAN/CAN Physical Layer Specification note.
-Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal.
-Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not
-exceed 1 A per connector.
-```
-2. 6-pin Molex series 502585 connector ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670) and [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600))
+| № | Разъем | Описание |
+| - | --------- | ----------- |
+| 1 | UCANPHY Micro (JST-GH 4) | Примечание спецификации физического уровня UAVCAN/CAN. Устройства, подающие питание на шину, должны обеспечивать 4,9-5,5 В на линии питания шины, номинальное напряжение 5,0 В. Устройства, получающие питание от шины, должны ожидать 4,0-5,5 В на линии питания шины. Ток не должен превышать 1 А на каждый разъем. |
+| 2 | 6-контактный разъем Molex серии 502585 ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670) и [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | Разъем поддерживает до 100 В, 2 A на контакт, но плата работает только с 2S-6S. |
+| 3 | SWD | Предназначен для обновления прошивки с помощью устройства [programmer-sniffer](doc/programmer_sniffer/README.md). |
 
-```
-Up to 100 V, 2 A per contact
-```
+UAVCAN-PWM узел также имеет 2 группы разъемов, предназначенных для подключения серв или ESC, управляемых ШИМ. Пример подключения представлен на рисунке ниже.
 
-```
-Note: here, the actual input voltage is limited by a specific type of board
-```
-
-Кроме того, она имеет разъем SWD, предназначенный для обновления прошивки с помощью устройства [programmer-sniffer](doc/programmer_sniffer/README.md).
-
+![can_pwm_mini_scheme](servo_connection.jpg?raw=true "can_pwm_mini_scheme")
+Рис. Пример подключения сервы к каналу А1 узла UAVCAN-PWM mini
 
 ## 4. Основные функции <a name="4-main-function-description"></a> 
 
