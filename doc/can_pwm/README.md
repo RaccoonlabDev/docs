@@ -1,10 +1,10 @@
 # UAVCAN-PWM node
 
-UAVCAN-PWM node is dedicated to controlling servos and ESCs. It receives [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) UAVCAN messages from the CAN bus and maps it into typical for servos and ESC controllers PWM signal.
+UAVCAN-PWM node is dedicated to controlling servos and ESCs. It receives [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) / [ArrayCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#arraycommand) UAVCAN messages from the CAN bus and maps it into typical for servos and ESC controllers PWM signal.
 
-This node has 2 channels (A1 and A2) which are dedicated to direct connection with servos or ESC controllers.
+This node is capable to work with up to 2 ESC/servo simultaniusly (though UAVCAN-PWM node Mini has 2 auxilliary channels which might be used as PWM as well).
 
-At that moment we have 3 types of such UAVCAN-PWM boards, the so-called `5A`, `Mini`, and `Nano`. They are illustrated below.
+At that moment we have 3 types of such UAVCAN-PWM boards, so-called `5A`, `Mini` and `Nano`. They are illustrated below.
 
 | UAVCAN-PWM node 5A | UAVCAN-PWM node Mini | UAVCAN-PWM node Nano |
 | ------- | ------- | -------- |
@@ -29,7 +29,8 @@ The difference between boards are following:
   - [6. Parameters](#6-parameters)
   - [7. Led indication](#7-led-indication)
   - [8. Usage example on a table](#8-usage-example-on-a-table)
-  - [9. UAV usage example](#9-uav-usage-example)
+  - [9. PX4 integration](#9-px4-integration)
+  - [10. Versions](#10-versions)
 
 ## 1. UAVCAN interface
 
@@ -38,8 +39,9 @@ This node interacts with the following messages:
 | № | type      | message  |
 | - | --------- | -------- |
 | 1 | subscriber | [uavcan.equipment.esc.RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) |
-| 2 | publisher   | [uavcan.equipment.esc.Status](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#status-2) |
-| 3 | publisher   | [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) |
+| 2 | subscriber | [ArrayCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#arraycommand) |
+| 3 | publisher   | [uavcan.equipment.esc.Status](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#status-2) |
+| 4 | publisher   | [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) |
 
 Besides required and highly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports the following application-level functions:
 
@@ -50,8 +52,6 @@ Besides required and highly recommended functions such as `NodeStatus` and `GetN
 | 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) |
 
 ## 2. Hardware specification
-
-(in progress)
 
 UAVCAN-PWM mini scheme:
 
@@ -66,6 +66,8 @@ This board has 3 connectors which are described in the table below.
 | 1 | UCANPHY Micro (JST-GH 4) | Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal. Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not exceed 1 A per connector. |
 | 2 | 6-pin Molex  ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670), [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | Contacts support up to 100 V, 2 A per contact. But the board may work only with 2S-6S. |
 | 3 | SWD | STM32 firmware updating using [programmer-sniffer](doc/programmer_sniffer/README.md). |
+
+
 
 UAVCAN-PWM also has 2 groups of connectors designed to connect a servo or ESC. An example of connection shown in a picture below.
 
@@ -90,7 +92,11 @@ Fig. UAVCAN->PWM mapping
 
 **Circuit status**
 
-UAVCAN-PWM node sends 2 [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) messages with measured `5V` and `Vin`.
+UAVCAN-PWM node as well as any other our nodes measure `5V` and `Vin` voltages and send them in 2 [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) messages.
+
+These voltages might be visualized using our custom [custom uavcan_gui_tool](https://github.com/PonomarevDA/uavcan_gui_tool).
+
+![online_nodes](online_nodes.png?raw=true "online_nodes")
 
 The first message has `circuit_id=NODE_ID*10 + 0` and following 3 significant fields:
 1. voltage - is the 5V voltage
@@ -110,7 +116,7 @@ Fig. Max and average current measurement
 Here the cyan color plot is current in ampers with max filter, yellow is current in ampers with average filter. Picks happens when servo was changed his position.
 
 ```
-Note: only `5A` node supports current measurement. All nodes support 5V and Vin measurement.
+Note: only `5A` node supports current measurement.
 ```
 
 **Esc status**
@@ -182,6 +188,39 @@ It is recommended to debug it with [uavcan_gui_tool](https://github.com/UAVCAN/g
 
 ![esc_panel](esc_panel.png?raw=true "esc_panel")
 
-## 9. UAV usage example
+## 9. PX4 integration
 
-This node is tested multiple times on several multicopters and VTOL.
+You can integrate these nodes with PX4 using following algorithms.
+
+1. According to the [PX4 user guide](https://docs.px4.io/master/en/uavcan/) you need to set `UAVCAN_ENABLE` parameter to `3` value
+2. You need to manually set node id to each nodes you are going to use.
+3. You need to manually configurate nodes channels according to your mixer.
+
+An example of configuration for [Generic Quadcopter](https://dev.px4.io/master/en/airframes/airframe_reference.html#quadrotor-x) airframe that uses 2 motors for each node is shown below:
+
+| Node id | Node name          | A1_channel      | A2_channel     | Description     |
+| ------- | ------------------ | --------------- | -------------- | --------------- |
+| 50      | inno.esc.left (5)  | 1 (rear left)   | 2 (front left) | Left motors     |
+| 51      | inno.esc.right (6) | 0 (front right) | 3 (rear right) | Right motors    |
+
+[Standard VTOL](https://dev.px4.io/master/en/airframes/airframe_reference.html#standard-vtol) airframe with corresponded [vtol_AAERT](https://github.com/PX4/PX4-Autopilot/blob/master/ROMFS/px4fmu_common/mixers/vtol_AAERT.aux.mix) aux mixer might have the same configuration as `Generic Quadcopter` + additional configuration for control surfaces:
+
+| Node id | Node name                      | A1_channel      | A2_channel     | Description     |
+| ------- | ------------------------------ | --------------- | -------------- | --------------- |
+| 60      | inno.servos.aileron_left (9)   | 4               | -1 (unused)    | AUX1: Aileron 1 |
+| 61      | inno.servos.aileron_right (10) | 4               | -1 (unused)    | AUX2: Aileron 2 |
+| 62      | inno.servos.elevators (11)     | 5               | -1 (unused)    | AUX3: Elevator  |
+| 63      | inno.servos.rudders (12)       | 6               | -1 (unused)    | AUX4: Rudder    |
+| 64      | inno.can_pwm (0)               | 7               | -1 (unused)    | AUX5: Throttle  |
+
+Number of used channels for node depends on configuration of your vehicle. You are free to use more nodes for ESC example based on `Generic Quadcopter` or less nodes for servo example based on `Generic Quadcopter` airframe.
+
+## 10. Versions
+
+| Version        | Date         | Description                       |
+| -------------- | ------------ | --------------------------------- |
+| v0.3.0 295786c | Apr 21, 2021 | First released version.           |
+| v0.3.0 0b55576 | May 31, 2021 | Add esc-flame feedback support    |
+| v0.4.0 9b873da | Nov 03, 2021 | Add uavcan-pwm-5a node support    |
+| v0.4.0 946e326 | Nov 17, 2021 | Add ArrayCommand support          |
+| v0.5.0         | 2022         | Add log messages                  |

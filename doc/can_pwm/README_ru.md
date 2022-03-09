@@ -69,6 +69,7 @@
 | 2 | 6-контактный разъем Molex серии 502585 ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670) и [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | Разъем поддерживает до 100 В, 2 A на контакт, но плата работает только с 2S-6S. |
 | 3 | SWD | Предназначен для обновления прошивки с помощью устройства [programmer-sniffer](doc/programmer_sniffer/README.md). |
 
+
 UAVCAN-PWM узел также имеет 2 группы разъемов, предназначенных для подключения серв или ESC, управляемых ШИМ. Пример подключения представлен на рисунке ниже.
 
 ![can_pwm_mini_scheme](servo_connection.jpg?raw=true "can_pwm_mini_scheme")
