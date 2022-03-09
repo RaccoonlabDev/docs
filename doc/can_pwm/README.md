@@ -42,6 +42,7 @@ This node interacts with the following messages:
 | 2 | subscriber | [ArrayCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#arraycommand) |
 | 3 | publisher   | [uavcan.equipment.esc.Status](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#status-2) |
 | 4 | publisher   | [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) |
+| 5 | publisher   | [uavcan.protocol.debug.LogLevel](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#logmessage) |
 
 Besides required and highly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports the following application-level functions:
 
@@ -123,6 +124,26 @@ Note: only `5A` node supports current measurement.
 
 If you use esc firmware, it will send [uavcan.equipment.esc.Status](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#status-2) message with rpm, voltage and current given as feedback from `esc flame` via uart.
 
+**Log messages**
+
+5 second after enabling, the node may publish [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) message with his status.
+
+A visualization of this message in `uavcan_gui_tool` in case of error shown on a picture below.
+
+![log_messages](log_messages.png?raw=true "log_messages")
+
+Fig. Visualization of log messages in uavcan_gui_tool on case of error
+
+At that moment it support only 2 types of messages:
+- If initialization is sucessfull and log level is DEBUG (0), it sends `sys inited` message.
+- If initialization is failed, it always sends the `init failed` message where source field is a clue where error occured every 15 seconds. You should not use this node in such condition. Tipically, firmware or hardware is wrong.
+
+This message might be used in PX4 as [logmessage](https://github.com/PX4/PX4-Autopilot/blob/master/src/drivers/uavcan/logmessage.hpp) feature.
+
+```
+Note: the 5 seconds delay is added to prevent possible flood.
+```
+
 ## 6. Parameters
 
 Below you can see a picture from `uavcan_gui_tool` with a whole list of parameters.
@@ -190,7 +211,7 @@ It is recommended to debug it with [uavcan_gui_tool](https://github.com/UAVCAN/g
 
 ## 9. PX4 integration
 
-You can integrate these nodes with PX4 using following algorithms.
+You can integrate this node with PX4 by performing following steps:
 
 1. According to the [PX4 user guide](https://docs.px4.io/master/en/uavcan/) you need to set `UAVCAN_ENABLE` parameter to `3` value
 2. You need to manually set node id to each nodes you are going to use.
