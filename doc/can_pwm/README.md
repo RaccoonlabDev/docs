@@ -2,7 +2,7 @@
 
 UAVCAN-PWM node is dedicated to controlling servos and ESCs. It receives [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) / [ArrayCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#arraycommand) UAVCAN messages from the CAN bus and maps it into typical for servos and ESC controllers PWM signal.
 
-This node is capable to work with up to 2 ESC/servo simultaniusly (though UAVCAN-PWM node Mini has 2 auxilliary channels which might be used as PWM as well).
+This node is capable to work with 2 ESC/servo simultaniusly (though UAVCAN-PWM node Mini has 2 auxilliary channels which might be used as PWM as well).
 
 At that moment we have 3 types of such UAVCAN-PWM boards, so-called `5A`, [Mini](https://raccoonlab.org/store/tproduct/360882105-682589711231-uavcan-mini-node) and [Micro](https://raccoonlab.org/store/tproduct/390642159-203551776911-uavcan-micro-node). They are illustrated below.
 
@@ -27,7 +27,7 @@ The difference between boards are following:
   - [4. Main function description](#4-main-function-description)
   - [5. Auxiliary functions description](#5-auxiliary-functions-description)
     - [5.1 Circuit status](#51-circuit-status)
-    - [5.2 Esc status](#52-esc-status)
+    - [5.2 Esc flame](#52-esc-flame)
     - [5.3 Node info](#53-node-info)
     - [5.4 Log messages](#54-log-messages)
   - [6. Parameters](#6-parameters)
@@ -38,7 +38,7 @@ The difference between boards are following:
     - [6.5. Voltage checks](#65-voltage-checks)
     - [6.6. Node name customization](#66-node-name-customization)
   - [7. Led indication](#7-led-indication)
-  - [8. Usage example on a table](#8-usage-example-on-a-table)
+  - [8. Debugging on a table](#8-debugging-on-a-table)
   - [9. PX4 integration](#9-px4-integration)
   - [10. Versions](#10-versions)
 
@@ -131,9 +131,24 @@ Here the cyan color plot is current in ampers with max filter, yellow is current
 Note: only `5A` node supports current measurement.
 ```
 
-### 5.2 Esc status
+### 5.2 Esc flame
 
-If you use esc firmware, it will send [uavcan.equipment.esc.Status](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#status-2) message with rpm, voltage and current given as feedback from `esc flame` via uart.
+If you are using [Tmotor esc flame](https://store.tmotor.com/category.php?id=20) it might be possible to get feedback from it via UART port.
+
+In this case, the UAVCAN-PWM node will send [uavcan.equipment.esc.Status](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#status-2) for each of up to 2 activated channels (A1 and A2).
+
+It will fill following field of this message:
+
+| № | Field name | Description |
+| - | --------- | ----------- |
+| 1 | error_count | This field is used for debug only. The value is incremented after receiving of each byte. If it doesn't change, typically your UART connection is broken. |
+| 2 | voltage | Voltage on the regulator. |
+| 3 | rpm | Rotation per minute. |
+| 4 | esc_index | Index of esc. From 0 to 31. |
+
+Other fields such as current and temperature are not supproted.
+
+To enable this feature, your need to load a special firmware called `can_pwm_esc_flame` (or `can_pwm_with_feedback` that is the same).
 
 ### 5.3 Node info
 
@@ -258,7 +273,7 @@ This board has an internal led that may allow you to understand possible problem
 | 4                | ERROR          | There is a problem with circuit voltage, look at the circuit status message to get details. It may happen when you power it from SWD, otherwise, be careful with a power supply. |
 | 5                | CRITICAL       | There is a problem on the periphery initialization level. Probably you load the wrong firmware. |
 
-## 8. Usage example on a table
+## 8. Debugging on a table
 
 It is recommended to debug this node and perform configuration with [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool). This utility allows to easily use full functionallity of this node.
 
@@ -316,7 +331,7 @@ Number of used channels for node depends on configuration of your vehicle. You a
 | Version        | Date         | Description                       |
 | -------------- | ------------ | --------------------------------- |
 | v0.3.0 295786c | Apr 21, 2021 | First released version.           |
-| v0.3.0 0b55576 | May 31, 2021 | Add esc-flame feedback support    |
+| v0.3.2 0b55576 | May 31, 2021 | Add esc-flame feedback support    |
 | v0.4.0 9b873da | Nov 03, 2021 | Add uavcan-pwm-5a node support    |
 | v0.4.0 946e326 | Nov 17, 2021 | Add ArrayCommand support          |
 | v0.5.0         | 2022         | Add log messages                  |
