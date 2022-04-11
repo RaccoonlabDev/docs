@@ -4,15 +4,20 @@ This node sets the same color as autopilot has ([ui leds](https://docs.px4.io/ma
 
 ![ui_leds](ui_leds.jpg?raw=true "ui_leds")
 
+```
+Note: there are different hardware implementation of this board with different number of LEDs. On the picture above you can see only one of them.
+```
+
 ## Content
   - [1. UAVCAN interface](#1-uavcan-interface)
   - [2. Hardware specification](#2-hardware-specification)
   - [3. Wire](#3-wire)
   - [4. Main function description](#4-main-function-description)
   - [5. Auxiliary functions description](#5-auxiliary-functions-description)
-  - [6. Led indication](#6-led-indication)
-  - [7. Usage example on a table](#7-usage-example-on-a-table)
-  - [8. UAV usage example](#8-uav-usage-example)
+  - [6. Parameters](#6-parameters)
+  - [7. Led indication](#7-led-indication)
+  - [8. Debugging on a table](#8-debugging-on-a-table)
+  - [9. PX4 integration](#9-px4-integration)
 
 ## 1. UAVCAN interface
 
@@ -47,9 +52,30 @@ This board has 3 connectors which are described in the table below.
 
 ## 4. Main function description
 
-(in progress)
+The node receives [LightsCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#lightscommand) and [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) and sets the led color corresponded to the UAVCAN parameters.
 
-Configuration of mapping can be performed using `uavcan_gui_tool` or even `QGC`. Below you can see the table with these params in `uavcan_gui_tool`.
+It works in 2 modes:
+1. If there is no [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) or his value is equal or less than zero, the led value will be based on [LightsCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#lightscommand) value. Depending on ID configured in node parameters and PX4 parameters, it might RGB UI led value or some UAVCAN light operation mode. Study [PX4 user manual LED meaning section](https://docs.px4.io/master/en/getting_started/led_meanings.html) and [PX4 UAVCAN parameters](https://docs.px4.io/v1.12/en/advanced_config/parameter_reference.html#uavcan).
+2. Otherwese, the value of LED will be defined by UAVCAN parameter. It might be solid, blinking or pulsing lighting.
+
+See [6. Parameters](#6-parameters) section for mode details.
+
+## 5. Auxiliary functions description
+
+### 5.1 Node info
+
+Every firmware store following info that might be received as a response on NodeInfo request. It stores:
+
+- software version,
+- an unique identifier (will be apeeared in next firmware version).
+
+![node_info](node_info.png?raw=true "node_info")
+
+## 6. Parameters
+
+Below you can see a picture from `gui_tool` with a whole list of parameters.
+
+Configuration of mapping can be performed using `gui_tool` or even `QGC`. Below you can see the table with these params in `gui_tool`.
 
 ![params](params.png?raw=true "params")
 
@@ -58,9 +84,9 @@ Table with parameters description:
 | № | Parameter name | Description  |
 | - | -------------- | -------- |
 | 1 | rgb_leds_max_intensity | Input uavcan commands linearly scales into intensity from 0 to this value. Max value is 255. |
-| 2 | rgb_leds_id | Id for uavcan command that will be expected by the node. By default 0 id corresponds ui led |
-| 3 | rgb_leds_default_color | The color during arming state. See table below with more info |
-| 4 | rgb_leds_default_color | The type of lighting during arming state. See table below with more info |
+| 2 | rgb_leds_id | Id for uavcan command that will be expected by the node. By default 0 id corresponds ui led. |
+| 3 | rgb_leds_default_color | The color during arming state. See table below with more info. |
+| 4 | rgb_leds_light_type | The type of lighting during arming state. It might be solid, blink or pulsing lighing. See table below with more info. |
 | 5 | rgb_leds_blink_period_ms | Make sense only when `rgb_leds_default_color` is 1 |
 | 6 | rgb_leds_blink_duty_cycle_pct | Make sense only when `rgb_leds_default_color` is 1 |
 
@@ -85,11 +111,7 @@ Table with light types:
 | 1 | blink       |
 | 2 | pulsing     |
 
-## 5. Auxiliary functions description
-
-(in progress)
-
-## 6. Led indication
+## 7. Led indication
 
 This board has an internal led that may allows you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting the number of blinks you can define the code of current status.
 
@@ -101,13 +123,16 @@ This board has an internal led that may allows you to understand possible proble
 | 4                | ERROR          | There is a problem with circuit voltage, look at the circuit status message to get details. It may happen when you power it from SWD, otherwise, be careful with the power supply. |
 | 5                | CRITICAL       | There is a problem with the periphery initialization level. Probably you load the wrong firmware. |
 
-## 7. Usage example on a table
+## 8. Debugging on a table
 
-(in progress)
+Since `gui_tool` doesn't support sending [LightsCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#lightscommand), it is recommended to debug the node with Autopilot. You can use this utility only for parameter configuration. Go to the [9. PX4 integration](#9-px4-integration) section.
 
-## 8. UAV usage example
+## 9. PX4 integration
 
-Check the video below.
+You can integrate this node with PX4 by performing following steps:
+1. According to the PX4 user guide the `UAVCAN_ENABLE` must be set to one of the non-zero values.
+2. You need to manually set node id to each nodes you are going to use.
+3. You might be interested in configuration the following parameters as well: `UAVCAN_LGT_ANTCL`, `UAVCAN_LGT_LAND`, `UAVCAN_LGT_NAV`, `UAVCAN_LGT_STROB`.
 
 [![ui_leds](https://img.youtube.com/vi/s0HAyvo1ACk/0.jpg)](https://youtu.be/s0HAyvo1ACk)
 
