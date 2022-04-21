@@ -2,7 +2,7 @@
 
 Эта плата предназначена для измерения уровня топлива.
 
-Она публикует [uavcan.equipment.ice.FuelTankStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#fueltankstatus).
+Она публикует [uavcan.equipment.ice.FuelTankStatus](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#fueltankstatus).
 
 **Пример сообщения**
 

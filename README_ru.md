@@ -1,6 +1,6 @@
 # Узлы UAVCAN
 
-Этот репозиторий содержит описание существующих нодов (узлов) [UAVCAN v0](https://legacy.uavcan.org/) и двоичные файлы их прошивок.
+Этот репозиторий содержит описание существующих нодов (узлов) [DroneCAN (UAVCAN)](https://dronecan.github.io/) и бинарные файлы их прошивок.
 
 Последние вы можете найти в разделе [Releases](https://github.com/InnopolisAero/inno_uavcan_node_binaries/releases).
 

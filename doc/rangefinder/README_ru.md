@@ -22,16 +22,16 @@
 
 | № | тип | сообщение |
 | - | --------- | -------- |
-| 1 | publisher | [uavcan.equipment.range_sensor.Measurement](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#measurement) |
-| 2 | publisher | [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) |
+| 1 | publisher | [uavcan.equipment.range_sensor.Measurement](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#measurement) |
+| 2 | publisher | [uavcan.equipment.power.CircuitStatus](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#circuitstatus) |
 
 Помимо необходимых и очень рекомендуемых функций, таких как `NodeStatus` и `GetNodeInfo`, узел также поддерживает следующие функции прикладного уровня:
 
 | № | тип | сообщение |
 | - | --------- | -------- |
-| 1 | RPC-service | [uavcan.protocol.param](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#uavcanprotocolparam) |
-| 2 | RPC-service | [uavcan.protocol.RestartNode](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#restartnode) |
-| 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) |
+| 1 | RPC-service | [uavcan.protocol.param](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#uavcanprotocolparam) |
+| 2 | RPC-service | [uavcan.protocol.RestartNode](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#restartnode) |
+| 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#gettransportstats) |
 
 ## 2. Спецификация оборудования <a name="2-hardware-specification"></a> 
 
@@ -57,7 +57,7 @@
 
 **Состояние цепи**
 
-Узел также посылает сообщения [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) с измеренными `5V` и `Vin`.
+Узел также посылает сообщения [uavcan.equipment.power.CircuitStatus](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#circuitstatus) с измеренными `5V` и `Vin`.
 
 ## 6. Параметры <a name="6-parameters"></a> 
 
@@ -69,7 +69,7 @@
 | 1 | log_level        | integer | 3     | 0   | 4   | Узел будет отправлять отладочные сообщения с уровнем не ниже, чем указан в данном параметре. 0 - debug, 1 - info, 2 - warn, 3 - error, 4 - отключить отправку отладочных сообщений |
 | 2 | rng_measurement_period | integer | 100     | 10   | 2000   | Период измерения и публикации сообщений. |
 | 3 | rng_type         | integer | 0     | 0   | 2   | Тип датчика. См. таблицу ниже. |
-| 4 | rng_id           | integer | 0     | 0   | 255  | Идентификатор датчика. См. [uavcan сообщение]([uavcan.equipment.range_sensor.Measurement](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#measurement)) |
+| 4 | rng_id           | integer | 0     | 0   | 255  | Идентификатор датчика. См. [uavcan сообщение]([uavcan.equipment.range_sensor.Measurement](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#measurement)) |
 | 5 | enable_5v_check  | integer | 1     | 0   | 1   | Устанавливает статус ERROR если напряжение 5V вне диапазона 4.5 - 5.5 V |
 | 6 | enable_vin_check | integer | 0     | 0   | 1   | Устанавливает статус ERROR если напряжение Vin меньше 4.5 V |
 | 7 | name             | integer | 0     | 0   | 100 | Пользовательское имя узла. Может быть реализовано по запросу. |

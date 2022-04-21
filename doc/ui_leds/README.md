@@ -25,16 +25,16 @@ This node interacts with the following messages:
 
 | № | type      | message  |
 | - | --------- | -------- |
-| 1 | subscriber | [uavcan.equipment.esc.RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) |
-| 2 | subscriber | [uavcan.equipment.indication.LightsCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#lightscommand) |
+| 1 | subscriber | [uavcan.equipment.esc.RawCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#rawcommand) |
+| 2 | subscriber | [uavcan.equipment.indication.LightsCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#lightscommand) |
 
 Besides required and highly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports the following application-level functions:
 
 | № | type      | message  |
 | - | --------- | -------- |
-| 1 | RPC-service | [uavcan.protocol.param](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#uavcanprotocolparam) |
-| 2 | RPC-service | [uavcan.protocol.RestartNode](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#restartnode) |
-| 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) |
+| 1 | RPC-service | [uavcan.protocol.param](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#uavcanprotocolparam) |
+| 2 | RPC-service | [uavcan.protocol.RestartNode](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#restartnode) |
+| 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#gettransportstats) |
 
 ## 2. Hardware specification
 
@@ -52,10 +52,10 @@ This board has 3 connectors which are described in the table below.
 
 ## 4. Main function description
 
-The node receives [LightsCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#lightscommand) and [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) and sets the led color corresponded to the UAVCAN parameters.
+The node receives [LightsCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#lightscommand) and [RawCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#rawcommand) and sets the led color corresponded to the UAVCAN parameters.
 
 It works in 2 modes:
-1. If there is no [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) or his value is equal or less than zero, the led value will be based on [LightsCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#lightscommand) value. Depending on ID configured in node parameters and PX4 parameters, it might RGB UI led value or some UAVCAN light operation mode. Study [PX4 user manual LED meaning section](https://docs.px4.io/master/en/getting_started/led_meanings.html) and [PX4 UAVCAN parameters](https://docs.px4.io/v1.12/en/advanced_config/parameter_reference.html#uavcan).
+1. If there is no [RawCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#rawcommand) or his value is equal or less than zero, the led value will be based on [LightsCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#lightscommand) value. Depending on ID configured in node parameters and PX4 parameters, it might RGB UI led value or some UAVCAN light operation mode. Study [PX4 user manual LED meaning section](https://docs.px4.io/master/en/getting_started/led_meanings.html) and [PX4 UAVCAN parameters](https://docs.px4.io/v1.12/en/advanced_config/parameter_reference.html#uavcan).
 2. Otherwese, the value of LED will be defined by UAVCAN parameter. It might be solid, blinking or pulsing lighting.
 
 See [6. Parameters](#6-parameters) section for mode details.
@@ -125,7 +125,7 @@ This board has an internal led that may allows you to understand possible proble
 
 ## 8. Debugging on a table
 
-Since `gui_tool` doesn't support sending [LightsCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#lightscommand), it is recommended to debug the node with Autopilot. You can use this utility only for parameter configuration. Go to the [9. PX4 integration](#9-px4-integration) section.
+Since `gui_tool` doesn't support sending [LightsCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#lightscommand), it is recommended to debug the node with Autopilot. You can use this utility only for parameter configuration. Go to the [9. PX4 integration](#9-px4-integration) section.
 
 ## 9. PX4 integration
 

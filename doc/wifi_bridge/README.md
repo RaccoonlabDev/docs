@@ -33,9 +33,9 @@ Besides required and highly recommended functions such as `NodeStatus` and `GetN
 
 | № | type      | message  |
 | - | --------- | -------- |
-| 1 | RPC-service | [uavcan.protocol.param](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#uavcanprotocolparam) |
-| 2 | RPC-service | [uavcan.protocol.RestartNode](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#restartnode) |
-| 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) |
+| 1 | RPC-service | [uavcan.protocol.param](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#uavcanprotocolparam) |
+| 2 | RPC-service | [uavcan.protocol.RestartNode](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#restartnode) |
+| 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#gettransportstats) |
 
 ## 2. Hardware specification
 
@@ -77,11 +77,11 @@ GetNodeInfo response contains hardware unique ID that allows you to differentiat
 
 **Restart**
 
-By sending [uavcan.protocol.RestartNode](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#restartnode) request this node might be restarted.
+By sending [uavcan.protocol.RestartNode](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#restartnode) request this node might be restarted.
 
 **GetTransportStats**
 
-By sending [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) request this node will response the message with number of transmitted and received frames.
+By sending [uavcan.protocol.GetTransportStats](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#gettransportstats) request this node will response the message with number of transmitted and received frames.
 
 ## 6. Parameters
 
@@ -107,6 +107,18 @@ STM32 blinks meaning:
 
 Below you can see an example of bus monitor plot with connected device that was published with frame rate 1500 frames per second. 
 ![frames_rate_1500.png](frames_rate_1500.png?raw=true "frames_rate_1500.png")
+
+## 8.1. How to debug it
+
+You can see the debug messages by connection to the board via USB port. The debug messages might be obrain using any serial monitor programs. An example for ubuntu based on `minicom` utility shown below:
+
+```bash
+sudo apt-get install minicom
+```
+
+1. By typing `sudo minicom -s` and choosing `Serial port setup` configurate 1000000 baud rate for your serial port, let's say `ttyUSB0`.
+2. Don't forget to press `Save setup as dfl`
+3. Press `Exit` and it will go into monitor mode
 
 ## 9. UAV usage example
 

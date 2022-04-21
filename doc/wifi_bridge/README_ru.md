@@ -34,9 +34,9 @@ WiFi Sniffer представляет из себя мост между UAVCAN/C
 
 | № | тип | сообщение |
 | - | --------- | -------- |
-| 1 | RPC-service | [uavcan.protocol.param](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#uavcanprotocolparam) |
-| 2 | RPC-service | [uavcan.protocol.RestartNode](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#restartnode) |
-| 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) |
+| 1 | RPC-service | [uavcan.protocol.param](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#uavcanprotocolparam) |
+| 2 | RPC-service | [uavcan.protocol.RestartNode](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#restartnode) |
+| 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#gettransportstats) |
 
 ## 2. Спецификация оборудования <a name="2-hardware-specification"></a> 
 
@@ -82,11 +82,11 @@ WiFi Sniffer представляет из себя мост между UAVCAN/C
 
 **Перезагрузка**
 
-Отправив запрос [uavcan.protocol.RestartNode](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#restartnode), данный узел может быть перезапущен.
+Отправив запрос [uavcan.protocol.RestartNode](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#restartnode), данный узел может быть перезапущен.
 
 **GetTransportStats**.
 
-При отправке запроса [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) данный узел ответит сообщением с количеством переданных и принятых кадров.
+При отправке запроса [uavcan.protocol.GetTransportStats](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#gettransportstats) данный узел ответит сообщением с количеством переданных и принятых кадров.
 
 ## 6. Параметры
 

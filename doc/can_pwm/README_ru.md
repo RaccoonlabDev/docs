@@ -1,6 +1,6 @@
 # Узлы UAVCAN-Node
 
-Узлы UAVCAN Node предназначены, прежде всего, для управления сервоприводами и регуляторами моторов (ESC). Они принимают UAVCAN сообщения [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) от шины CAN и преобразуют их сигнал PWM для управления сервоприводами и регуляторами ESC.
+Узлы UAVCAN Node предназначены, прежде всего, для управления сервоприводами и регуляторами моторов (ESC). Они принимают UAVCAN сообщения [RawCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#rawcommand) от шины CAN и преобразуют их сигнал PWM для управления сервоприводами и регуляторами ESC.
 
 Узел имеет 2 канала (A1 и A2), которые предназначены для прямого соединения с сервоприводами или контроллерами ESC.
 
@@ -39,17 +39,17 @@
 
 | № | Тип       | Сообщение  |
 | - | --------- | -------- |
-| 1 | subscriber | [uavcan.equipment.esc.RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) |
-| 2 | publisher   | [uavcan.equipment.esc.Status](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#status-2) |
-| 3 | publisher   | [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) |
+| 1 | subscriber | [uavcan.equipment.esc.RawCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#rawcommand) |
+| 2 | publisher   | [uavcan.equipment.esc.Status](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#status-2) |
+| 3 | publisher   | [uavcan.equipment.power.CircuitStatus](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#circuitstatus) |
 
 Помимо необходимых и очень рекомендуемых функций, таких как `NodeStatus` и `GetNodeInfo`, узел также поддерживает следующие функции прикладного уровня:
 
 | № | Тип       | Сообщение |
 | - | --------- | --------  |
-| 1 | RPC-service | [uavcan.protocol.param](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#uavcanprotocolparam) |
-| 2 | RPC-service | [uavcan.protocol.RestartNode](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#restartnode) |
-| 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) |
+| 1 | RPC-service | [uavcan.protocol.param](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#uavcanprotocolparam) |
+| 2 | RPC-service | [uavcan.protocol.RestartNode](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#restartnode) |
+| 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#gettransportstats) |
 
 ## 2. Технические характеристики <a name="2-hardware-specification"></a> 
 
@@ -77,7 +77,7 @@ UAVCAN-PWM узел также имеет 2 группы разъемов, пр�
 
 ## 4. Основные функции <a name="4-main-function-description"></a> 
 
-Узел получает сообщение UAVCAN [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand), которое имеет массив до 20 каналов и может обрабатывать до 2 (4) из них. Каждый канал нормализован в диапазоне [-8192, 8191].
+Узел получает сообщение UAVCAN [RawCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#rawcommand), которое имеет массив до 20 каналов и может обрабатывать до 2 (4) из них. Каждый канал нормализован в диапазоне [-8192, 8191].
 Выходом для каждого заданного канала RawCommand является сигналом ШИМ с частотой 50 Гц и длительностью от 900 до 2000 мкс. Обычно 900 мкс означает минимальное положение сервопривода или остановленного двигателя на ESC, а 2000 мкс – максимальное управляющее воздействие. Но этот диапазон может отличаться в зависимости от вашего мотора или желаемого угла управления вашим сервоприводом. Вы также можете инвертировать выход вашего сервопривода и установить положение сервопривода по умолчанию, отличное от минимального или максимального, например, среднее.
 
 Конфигурация сопоставления (мапинга) команды RawCommand и выходного уровня может быть выполнена с использованием 4 параметров: `channel`, `min`, `max` и `def`, которые существуют для каждого канала ШИМ, как подробнее показано в разделе `6. Параметры`.
@@ -92,7 +92,7 @@ UAVCAN-PWM узел также имеет 2 группы разъемов, пр�
 
 **Состояние цепи CircuitStatus**
 
-Узел UAVCAN-node отправляет 2 сообщения [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) с измеренными `5V` и `Vin`.
+Узел UAVCAN-node отправляет 2 сообщения [uavcan.equipment.power.CircuitStatus](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#circuitstatus) с измеренными `5V` и `Vin`.
 
 Первое сообщение имеет идентификатор `circuit_id=NODE_ID*10 + 0` и следующие 3 значимых поля:
 1. voltage - напряжение 5В
@@ -118,7 +118,7 @@ UAVCAN-PWM узел также имеет 2 группы разъемов, пр�
 
 **Состояние ESC**
 
-Если вы используете прошивку ESC, она будет посылать сообщение [uavcan.equipment.esc.Status](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#status-2) с оборотами, напряжением и током в качестве обратной связи от `esc flame` через uart.
+Если вы используете прошивку ESC, она будет посылать сообщение [uavcan.equipment.esc.Status](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#status-2) с оборотами, напряжением и током в качестве обратной связи от `esc flame` через uart.
 
 ## 6. Параметры <a name="6-parameters"></a> 
 

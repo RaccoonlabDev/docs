@@ -2,12 +2,12 @@
 
 Эта плата предназначена для управления двигателем внутреннего сгорания, таким как [DLE-20](http://rcstv.ru/static/fileunit/107b61373aea5dbedd58c2029d3c781fe909c3d9/DLE%2020%20Hobbico%20Manual%20Best.pdf).
 
-Она отображает определенные каналы сообщений [RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand) в 3 управляющих сигнала:
+Она отображает определенные каналы сообщений [RawCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#rawcommand) в 3 управляющих сигнала:
 1. ШИМ дроссельной заслонки (частота 50 Гц и длительность от 900 до 2000),
 2. Выходной пин GPIO зажигания.
 3. Выходной контакт GPIO стартера.
 
-Плата возвращает [uavcan.equipment.ice.reciprocating.Status](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#status-4) с оборотами и состоянием двигателя и [uavcan.equipment.ice.FuelTankStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#fueltankstatus) с уровнем топлива в баке на основе:
+Плата возвращает [uavcan.equipment.ice.reciprocating.Status](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#status-4) с оборотами и состоянием двигателя и [uavcan.equipment.ice.FuelTankStatus](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#fueltankstatus) с уровнем топлива в баке на основе:
 1. Датчик оборотов (датчик Холла, таймер),
 2. датчик топливного бака (MS4525DO, i2c).
 
@@ -33,17 +33,17 @@
 
 | № | тип | сообщение |
 | - | --------- | -------- |
-| 1 | subscriber | [uavcan.equipment.esc.RawCommand](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#rawcommand)|
-| 2 | publisher | [uavcan.equipment.ice.reciprocating.Status](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#status-4) |
-| 3 | publisher | [uavcan.equipment.ice.FuelTankStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#fueltankstatus)| |
+| 1 | subscriber | [uavcan.equipment.esc.RawCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#rawcommand)|
+| 2 | publisher | [uavcan.equipment.ice.reciprocating.Status](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#status-4) |
+| 3 | publisher | [uavcan.equipment.ice.FuelTankStatus](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#fueltankstatus)| |
 
 Помимо необходимых и очень рекомендуемых функций, таких как `NodeStatus` и `GetNodeInfo`, этот узел также поддерживает следующие функции прикладного уровня:
 
 | № | тип | сообщение |
 | - | --------- | -------- |
-| 1 | RPC-service | [uavcan.protocol.param](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#uavcanprotocolparam)|
-| 2 | RPC-service | [uavcan.protocol.RestartNode](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#restartnode)|
-| 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) |
+| 1 | RPC-service | [uavcan.protocol.param](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#uavcanprotocolparam)|
+| 2 | RPC-service | [uavcan.protocol.RestartNode](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#restartnode)|
+| 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#gettransportstats) |
 
 ## 2. Спецификация оборудования <a name="2-hardware-specification"></a> 
 

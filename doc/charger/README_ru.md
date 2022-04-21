@@ -22,17 +22,17 @@
 | - | --------- | -------- |
 | 1 | publisher | inno_msgs.charging_status |
 | 2 | publisher | inno_msgs.charging_response |
-| 3 | publisher | [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) | [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) |
+| 3 | publisher | [uavcan.equipment.power.CircuitStatus](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#circuitstatus) | [uavcan.equipment.power.CircuitStatus](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#circuitstatus) |
 | 4 | subscriber | inno_msgs.charging_control | |
-| 5 | subscriber | [uavcan.equipment.power.BatteryInfo](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#batteryinfo) |
+| 5 | subscriber | [uavcan.equipment.power.BatteryInfo](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#batteryinfo) |
 
 Помимо необходимых и очень рекомендуемых функций, таких как `NodeStatus` и `GetNodeInfo`, этот узел также поддерживает следующие функции прикладного уровня:
 
 | № | тип | сообщение |
 | - | --------- | -------- |
-| 1 | потребитель услуг | [uavcan.protocol.param](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#uavcanprotocolparam)|
-2 | 2 | потребитель услуг | [uavcan.protocol.RestartNode](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#restartnode)|
-| 3 | потребитель услуг | [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) |
+| 1 | потребитель услуг | [uavcan.protocol.param](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#uavcanprotocolparam)|
+2 | 2 | потребитель услуг | [uavcan.protocol.RestartNode](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#restartnode)|
+| 3 | потребитель услуг | [uavcan.protocol.GetTransportStats](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#gettransportstats) |
 
 **Описание нестандартных сообщений**
 

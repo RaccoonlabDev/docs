@@ -1,6 +1,6 @@
 # UAVCAN nodes
 
-This repository has a description of existing [UAVCAN v0](https://legacy.uavcan.org/) nodes and their binaries files.
+This repository has a description of existing [DroneCAN (UAVCAN)](https://dronecan.github.io/) nodes and their binaries files.
 
 Last binaries files you can find in the [Releases section](https://github.com/InnopolisAero/inno_uavcan_node_binaries/releases).
 

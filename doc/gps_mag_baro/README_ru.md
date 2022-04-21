@@ -28,19 +28,19 @@
 
 | № | тип | сообщение |
 | - | --------- | -------- |
-| 1 | publisher | [uavcan.equipment.gnss.Fix](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#fix) |
-| 2 | publisher | [uavcan.equipment.air_data.StaticPressure](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#staticpressure) |
-| 3 | publisher | [uavcan.equipment.air_data.StaticPressure](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#staticpressure) |
-| 4 | publisher | [uavcan.equipment.ahrs.MagneticFieldStrength](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#magneticfieldstrength)| |
-| 5 | publisher | [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus)|
+| 1 | publisher | [uavcan.equipment.gnss.Fix](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#fix) |
+| 2 | publisher | [uavcan.equipment.air_data.StaticPressure](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#staticpressure) |
+| 3 | publisher | [uavcan.equipment.air_data.StaticPressure](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#staticpressure) |
+| 4 | publisher | [uavcan.equipment.ahrs.MagneticFieldStrength](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#magneticfieldstrength)| |
+| 5 | publisher | [uavcan.equipment.power.CircuitStatus](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#circuitstatus)|
 
 Помимо необходимых и очень рекомендуемых функций, таких как `NodeStatus` и `GetNodeInfo`, этот узел также поддерживает следующие функции прикладного уровня:
 
 | № | тип | сообщение |
 | - | --------- | -------- |
-| 1 | RPC-service | [uavcan.protocol.param](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#uavcanprotocolparam)|
-| 2 | RPC-service | [uavcan.protocol.RestartNode](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#restartnode)|
-| 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) |
+| 1 | RPC-service | [uavcan.protocol.param](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#uavcanprotocolparam)|
+| 2 | RPC-service | [uavcan.protocol.RestartNode](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#restartnode)|
+| 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#gettransportstats) |
 
 
 ## 2. Технические характеристики <a name="2-hardware-specification"></a> 
@@ -99,7 +99,7 @@
 
 **Работа**
 
-Модуль связывается с модулем gnss через UART и публикует [uavcan.equipment.gnss.Fix](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#fix). Вы можете либо установить скорость публикации по умолчанию (такую же, как при приеме), установив `gps_frequency` в 0, либо установить любую другую фиксированную скорость.
+Модуль связывается с модулем gnss через UART и публикует [uavcan.equipment.gnss.Fix](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#fix). Вы можете либо установить скорость публикации по умолчанию (такую же, как при приеме), установив `gps_frequency` в 0, либо установить любую другую фиксированную скорость.
 
 Ниже приведен пример сообщения `Fix`.
 
@@ -116,8 +116,8 @@ GNSS-модулю требуется 8.7 мс, чтобы отправить п�
 ### 4.2. Barometer
 
 В узле используется барометр [BMP280](https://cdn-shop.adafruit.com/datasheets/BST-BMP280-DS001-11.pdf). Связь с датчиком осуществляется с помощью I2C. Он публикует 2 сообщения:
-- [uavcan.equipment.air_data.StaticPressure](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#staticpressure)
-- [uavcan.equipment.air_data.StaticTemperature](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#statictemperature).
+- [uavcan.equipment.air_data.StaticPressure](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#staticpressure)
+- [uavcan.equipment.air_data.StaticTemperature](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#statictemperature).
 
 Настройки контрольных измерений:
 - передискретизация давления - 8: высокое разрешение, 19 бит / 0,33 Па
@@ -152,7 +152,7 @@ GNSS-модулю требуется 8.7 мс, чтобы отправить п�
 - количество циклов - 200 (по умолчанию), коэффициент усиления - 75 LSB/мкТл, чувствительность - 13 нТл,
 - диапазон измерения поля от -800 до +800 мкТл.
 
-Оба магнитометра публикуют [uavcan.equipment.ahrs.MagneticFieldStrength](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#magneticfieldstrength).
+Оба магнитометра публикуют [uavcan.equipment.ahrs.MagneticFieldStrength](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#magneticfieldstrength).
 
 Ниже приведен пример исходных данных магнитометра HMC5883L.
 

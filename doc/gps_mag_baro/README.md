@@ -28,19 +28,19 @@ This node interacts with the following messages:
 
 | № | type      | message  |
 | - | --------- | -------- |
-| 1 | publisher   | [uavcan.equipment.gnss.Fix](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#fix) |
-| 2 | publisher   | [uavcan.equipment.air_data.StaticPressure](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#staticpressure) |
-| 3 | publisher   | [uavcan.equipment.air_data.StaticTemperature](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#statictemperature) |
-| 4 | publisher   | [uavcan.equipment.ahrs.MagneticFieldStrength](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#magneticfieldstrength) |
-| 5 | publisher   | [uavcan.equipment.power.CircuitStatus](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#circuitstatus) |
+| 1 | publisher   | [uavcan.equipment.gnss.Fix](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#fix) |
+| 2 | publisher   | [uavcan.equipment.air_data.StaticPressure](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#staticpressure) |
+| 3 | publisher   | [uavcan.equipment.air_data.StaticTemperature](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#statictemperature) |
+| 4 | publisher   | [uavcan.equipment.ahrs.MagneticFieldStrength](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#magneticfieldstrength) |
+| 5 | publisher   | [uavcan.equipment.power.CircuitStatus](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#circuitstatus) |
 
 Besides required and highly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports the following application-level functions:
 
 | № | type      | message  |
 | - | --------- | -------- |
-| 1 | RPC-service | [uavcan.protocol.param](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#uavcanprotocolparam) |
-| 2 | RPC-service | [uavcan.protocol.RestartNode](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#restartnode) |
-| 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#gettransportstats) |
+| 1 | RPC-service | [uavcan.protocol.param](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#uavcanprotocolparam) |
+| 2 | RPC-service | [uavcan.protocol.RestartNode](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#restartnode) |
+| 3 | RPC-service | [uavcan.protocol.GetTransportStats](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#gettransportstats) |
 
 ## 2. Hardware specification
 
@@ -96,7 +96,7 @@ Note 3: At this moment you need to manually set up the ublox module before usage
 
 **About workflow**
 
-It communicates with the GNSS module via UART and publishes [uavcan.equipment.gnss.Fix](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#fix). You may either set the default publish rate (the same as receiving) by setting `gps_frequency` to 0 or set any other fixed rate.
+It communicates with the GNSS module via UART and publishes [uavcan.equipment.gnss.Fix](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#fix). You may either set the default publish rate (the same as receiving) by setting `gps_frequency` to 0 or set any other fixed rate.
 
 Below you can see an example of the `Fix` message.
 
@@ -113,8 +113,8 @@ It means that the time overhead compared to raw module is only ~4ms.
 ### 4.2. Barometer
 
 The node uses [BMP280](https://cdn-shop.adafruit.com/datasheets/BST-BMP280-DS001-11.pdf) barometer. Communication with the sensor is carried out using I2C. It publishes 2 messages:
-- [uavcan.equipment.air_data.StaticPressure](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#staticpressure)
-- [uavcan.equipment.air_data.StaticTemperature](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#statictemperature)
+- [uavcan.equipment.air_data.StaticPressure](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#staticpressure)
+- [uavcan.equipment.air_data.StaticTemperature](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#statictemperature)
 
 Control measurement settings:
 - pressure oversampling is 8: high resolution, 19 bit / 0.33 Pa
@@ -149,7 +149,7 @@ Before the first measurement, this node performs initialization for the chosen m
 - cycle count is 200 (by default), so the gain is 75 LSB/µT, sensitivity is 13 nT,
 - field Measurement Range is from -800 to +800 uT.
 
-Both magnetometers publish [uavcan.equipment.ahrs.MagneticFieldStrength](https://legacy.uavcan.org/Specification/7._List_of_standard_data_types/#magneticfieldstrength).
+Both magnetometers publish [uavcan.equipment.ahrs.MagneticFieldStrength](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#magneticfieldstrength).
 
 Below you may see an example of HMC5883L magnetometer raw data.
 
