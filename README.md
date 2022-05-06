@@ -18,14 +18,15 @@ Following devices are already well tested and are being used in real application
 | 4 | airspeed | [link](http://raccoonlab.org/store/tproduct/360882105-873007485651-uavcan-airspeed-sensor)  | [English](doc/airspeed/README.md) \| [Русский](doc/airspeed/README_ru.md) |
 | 5 | rangefinder | [link](http://raccoonlab.org/store/tproduct/390642159-713915998901-uavcan-rangefinder-adapter) | [English](doc/rangefinder/README.md) \| [Русский](doc/rangefinder/README_ru.md) |
 | 6 | uavcan-mux          | [link](http://raccoonlab.org/store/tproduct/360882105-436323747071-uavcan-mux) | not yet |
+| 7 | gps_mag_baro               | [link](http://raccoonlab.org/store/tproduct/390642159-682763205441-uavcan-gps-magnetometer-and-barometer-se) | [English](doc/gps_mag_baro/README.md) \| [Русский](doc/gps_mag_baro/README_ru.md)|
+| 8 | ui_leds                    | [link](http://raccoonlab.org/store/tproduct/390642159-922336910131-uavcan-rgb-ui-led) | [English](doc/ui_leds/README.md) \| [Русский](doc/ui_leds/README_ru.md)|
+
 
 Performed well in real flights, but there was a smaller testing period:
 
 | № | Uavcan node name           | Store link           | Doc link |
 | - | ------------------------------------------------- |:-----------------:|:-----------------:|
-| 7 | gps_mag_baro               | [link](http://raccoonlab.org/store/tproduct/390642159-682763205441-uavcan-gps-magnetometer-and-barometer-se) | [English](doc/gps_mag_baro/README.md) \| [Русский](doc/gps_mag_baro/README_ru.md)|
-| 8 | wifi node                  | [link](http://raccoonlab.org/store/tproduct/390642159-465045641231-uavcan-wifi-bridge-node) | [English](doc/wifi_bridge/README.md) \| [Русский](doc/wifi_bridge/README_ru.md)|
-| 9 | ui_leds                    | [link](http://raccoonlab.org/store/tproduct/390642159-922336910131-uavcan-rgb-ui-led) | [English](doc/ui_leds/README.md) \| [Русский](doc/ui_leds/README_ru.md)|
+| 9 | wifi node                  | [link](http://raccoonlab.org/store/tproduct/390642159-465045641231-uavcan-wifi-bridge-node) | [English](doc/wifi_bridge/README.md) \| [Русский](doc/wifi_bridge/README_ru.md)|
 | 10| internal_combustion_engine | [link](http://raccoonlab.org/store/tproduct/390642159-178911780121-uavcan-internal-combustion-engine-node) | [English](doc/ice/README.md) \| [Русский](doc/ice/README_ru.md)|
 | 11| pmu        |not yet | [English](doc/pmu_cover/README.md) \| [Русский](doc/pmu_cover/README_ru.md) |
 
