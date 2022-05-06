@@ -27,6 +27,7 @@ This node interacts with the following messages:
 | - | --------- | -------- |
 | 1 | subscriber | [uavcan.equipment.esc.RawCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#rawcommand) |
 | 2 | subscriber | [uavcan.equipment.indication.LightsCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#lightscommand) |
+| 3 | publisher   | [uavcan.protocol.debug.LogMessage](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#logmessage) |
 
 Besides required and highly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports the following application-level functions:
 
@@ -38,7 +39,7 @@ Besides required and highly recommended functions such as `NodeStatus` and `GetN
 
 ## 2. Hardware specification
 
-(in progress)
+![lights_scheme](lights_scheme.png?raw=true "lights_scheme")
 
 ## 3. Wire
 
@@ -67,9 +68,27 @@ See [6. Parameters](#6-parameters) section for mode details.
 Every firmware store following info that might be received as a response on NodeInfo request. It stores:
 
 - software version,
-- an unique identifier (will be apeeared in next firmware version).
+- hardware version (doen't work yet),
+- an unique identifier.
 
 ![node_info](node_info.png?raw=true "node_info")
+
+### 5.2 Log messages
+
+The node may inform you when something happen using [uavcan.protocol.debug.LogMessage](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#logmessage).
+
+At that moments the node may publishes messages only 5 second after enabling. Here we can have one of following messages:
+- If everything is ok, the log level is `DEBUG` and the message is `sys inited`
+- If the node have power problems, the log level is `ERROR`,
+- If the hardware and software diagnostic fails during initialization, you will get a `CRITICAL` level message. This should not happen in normal condition, but if so, don't use it in production. In this case, the node repeats the message each 15 seconds.
+
+A visualization of this message in `uavcan_gui_tool` in case of error shown on a picture below.
+
+![log_messages](log_messages.png?raw=true "log_messages")
+
+Fig. Visualization of log messages in uavcan_gui_tool after initialization with log_level=0
+
+This message might be used in PX4 as [logmessage](https://github.com/PX4/PX4-Autopilot/blob/master/src/drivers/uavcan/logmessage.hpp) feature.
 
 ## 6. Parameters
 
@@ -81,14 +100,16 @@ Configuration of mapping can be performed using `gui_tool` or even `QGC`. Below 
 
 Table with parameters description:
 
-| № | Parameter name | Description  |
-| - | -------------- | -------- |
-| 1 | rgb_leds_max_intensity | Input uavcan commands linearly scales into intensity from 0 to this value. Max value is 255. |
-| 2 | rgb_leds_id | Id for uavcan command that will be expected by the node. By default 0 id corresponds ui led. |
-| 3 | rgb_leds_default_color | The color during arming state. See table below with more info. |
-| 4 | rgb_leds_light_type | The type of lighting during arming state. It might be solid, blink or pulsing lighing. See table below with more info. |
-| 5 | rgb_leds_blink_period_ms | Make sense only when `rgb_leds_default_color` is 1 |
-| 6 | rgb_leds_blink_duty_cycle_pct | Make sense only when `rgb_leds_default_color` is 1 |
+| № | Parameter name | Reboot required | Description  |
+| - | -------------- | --------------- | ------------ |
+| 1 | log_level | true | Specify what level of log can be sent. |
+| 2 | rgb_leds_max_intensity | false | Input uavcan commands linearly scales into intensity from 0 to this value. Max value is 255. |
+| 3 | rgb_leds_id | true | Id for uavcan command that will be expected by the node. By default 0 id corresponds ui led. |
+| 4 | rgb_leds_default_color | false | The color during arming state. See table below with more info. |
+| 5 | rgb_leds_light_type | false | The type of lighting during arming state. It might be solid, blink or pulsing lighing. See table below with more info. |
+| 6 | rgb_leds_num_of_leds | true | Number of leds on the board. |
+| 7 | rgb_leds_blink_period_ms | false | Make sense only when `rgb_leds_default_color` is 1. |
+| 8 | rgb_leds_blink_duty_cycle_pct | false | Make sense only when `rgb_leds_default_color` is 1. |
 
 Table with default colors:
 
@@ -135,4 +156,3 @@ You can integrate this node with PX4 by performing following steps:
 3. You might be interested in configuration the following parameters as well: `UAVCAN_LGT_ANTCL`, `UAVCAN_LGT_LAND`, `UAVCAN_LGT_NAV`, `UAVCAN_LGT_STROB`.
 
 [![ui_leds](https://img.youtube.com/vi/s0HAyvo1ACk/0.jpg)](https://youtu.be/s0HAyvo1ACk)
-
