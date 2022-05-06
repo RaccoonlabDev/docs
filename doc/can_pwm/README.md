@@ -14,11 +14,11 @@ The difference between boards are following:
 
 | № | Criterion            | 5A      | Mini     | Micro         |
 | - | -------------------- | ------- | -------- | ------------- |
-| 1 | development status   | tested  | tested   | testing stage |
 | 1 | dc-dc availability   | yes     | yes      | no            |
 | 2 | input voltage        | 2S-12S  | 2S-6S    | 4.8-5.6 V     |
 | 3 | input current sensor | yes     | no       | no            |
 | 4 | auxilliary pins      | no      | 2        | no            |
+| 5 | Vin voltage sensor   | yes     | yes      | -             |
 
 ## Content
   - [1. UAVCAN interface](#1-uavcan-interface)
@@ -30,13 +30,14 @@ The difference between boards are following:
     - [5.2 Esc flame](#52-esc-flame)
     - [5.3 Node info](#53-node-info)
     - [5.4 Log messages](#54-log-messages)
+    - [5.5 Time to live](#55-time-to-live)
+    - [5.6 Watchdog](#56-watchdog)
+    - [5.7 Flight time recorder](#57-flight-time-recorder)
   - [6. Parameters](#6-parameters)
     - [6.1. Log level](#61-log-level)
     - [6.2. Mapping configuration](#62-mapping-configuration)
-    - [6.3. Power check](#63-power-check)
-    - [6.4. Command type](#64-command-type)
-    - [6.5. Voltage checks](#65-voltage-checks)
-    - [6.6. Node name customization](#66-node-name-customization)
+    - [6.3. Voltage checks](#63-voltage-checks)
+    - [6.4. Node name customization](#64-node-name-customization)
   - [7. Led indication](#7-led-indication)
   - [8. Debugging on a table](#8-debugging-on-a-table)
   - [9. PX4 integration](#9-px4-integration)
@@ -52,7 +53,7 @@ This node interacts with the following messages:
 | 2 | subscriber | [uavcan.equipment.actuator.ArrayCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#arraycommand) |
 | 3 | publisher   | [uavcan.equipment.esc.Status](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#status-2) |
 | 4 | publisher   | [uavcan.equipment.power.CircuitStatus](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#circuitstatus) |
-| 5 | publisher   | [uavcan.protocol.debug.LogLevel](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#logmessage) |
+| 5 | publisher   | [uavcan.protocol.debug.LogMessage](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#logmessage) |
 
 Besides required and highly recommended functions such as `NodeStatus` and `GetNodeInfo` this node also supports the following application-level functions:
 
@@ -87,17 +88,31 @@ Fig. Example of servo connection to a A1 channel of UAVCAN-PWM mini node.
 
 ## 4. Main function description
 
-This node receives [RawCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#rawcommand) that has an array with up to 20 channels and it can process up to 2 (4) of any of them. Each channel is normalized into [-8192, 8191].
+This node receives setpoint that might be represented as [RawCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#rawcommand) or [ArrayCommand]() depending on `command_type` parameter value. The node can process up to 2 (4 for can-mini) setpoints at the same time.
 
-Output for each desired RawCommand channel is PWM signal with frequency 50 Hz and duration from 900 to 2000 us. Typically, 900 us means the minimal position of servo or stopped motor on the ESC and 2000 us is a maximum. But this range might be different depending on your actuator and desired angle of control of your servo. You also may want to inverse the output of your servo and set a default position of your servo other than just a min or max, for example, a middle.
+Output for each desired setpoint is PWM signal with frequency 50 Hz and duration from 900 to 2000 us. Typically, 900 us means the minimal position of servo or stopped motor on the ESC and 2000 us is a maximum. But this range might be different depending on your actuator and desired angle of control of your servo. You also may want to inverse the output of your servo and set a default position of your servo other than just a min or max, for example, a middle.
 
 Configuration of such mapping might be done using 4 parameters: `channel`, `min`, `max`, and `def` which exist for each PWM-channel. They are described in `6. Parameters` section.
+
+**RawCommand mapping**
+
+RawCommand is an array that contains up to 20 setpoints called channels. Each raw command channel is normalized into [-8192, 8191]. Since the node supprots only one direction of rotation, all values below 0 are parsed as default values.
 
 Below you can see the visualization of this mapping.
 
 ![mapping](can_pwm_mapping.png?raw=true "mapping")
 
 Fig. UAVCAN->PWM mapping
+
+**ArrayCommand mapping**
+
+`ArrayCommand` is an array that contains up to 15 messages of type `uavcan.equipment.actuator.Command`. The most important fields of `Command` message are `actuator_id` and `command_value`.
+
+Compared to RawCommand, if you need to send command only to, let's say, actuator with id=15, you don't need to send all other channels from 0 to 14 as well.
+
+Another difference is that ArrayCommand might be normalized in any way. The node supports only unitless type ([-1; +1]).
+
+`ArrayCommand` mapping looks similar to `RawCommand` mapping. If input value is negative, the output PWM value is default.
 
 ## 5. Auxiliary functions description
 
@@ -154,13 +169,21 @@ To enable this feature, your need to load a special firmware called `can_pwm_esc
 
 Every firmware store following info that might be received as a response on NodeInfo request. It stores:
 - software version,
+- hardware version (doen't work yet),
 - an unique identifier.
 
 ![node_info](node_info.png?raw=true "node_info")
 
 ### 5.4 Log messages
 
-5 second after enabling, the node may publish [uavcan.protocol.GetTransportStats](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#gettransportstats) message with his status.
+The node may inform you when something happen using [uavcan.protocol.debug.LogMessage](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#logmessage).
+
+At that moments the node may publishes messages in 2 ways:
+1. 5 second after enabling. Here we can have one of following messages:
+- If everything is ok, the log level is `DEBUG` and the message is `sys inited`
+- If the node have power problems, the log level is `ERROR`,
+- If the hardware and software diagnostic fails during initialization, you will get a `CRITICAL` level message. This should not happen in normal condition, but if so, don't use it in production. In this case, the node repeats the message each 15 seconds.
+2. When TTL timeout occure. This message has log level `WARNING`.
 
 A visualization of this message in `uavcan_gui_tool` in case of error shown on a picture below.
 
@@ -168,21 +191,40 @@ A visualization of this message in `uavcan_gui_tool` in case of error shown on a
 
 Fig. Visualization of log messages in uavcan_gui_tool on case of error
 
-At that moment it support only 2 types of messages:
-- If initialization is sucessfull and log level is DEBUG (0), it sends `sys inited` message.
-- If initialization is failed, it always sends the `init failed` message where source field is a clue where error occured every 15 seconds. You should not use this node in such condition. Tipically, firmware or hardware is wrong.
-
 This message might be used in PX4 as [logmessage](https://github.com/PX4/PX4-Autopilot/blob/master/src/drivers/uavcan/logmessage.hpp) feature.
 
-```
-Note: the 5 seconds delay is added to prevent possible flood.
-```
+### 5.5 Time to live
+
+Every received setpoint has his own time to live timestamp.
+
+If the timeout specified in parameters is exceeded, the setpoint will be equal to default value.
+
+Typically, the value of this parameter should be at least in 2 times more that setpoint publish rate.
+
+### 5.6 Watchdog
+
+The node performs the diagnostic during all of the working time. In case of freeze, it will automatically reboot in 0.6 seconds.
+
+### 5.7 Flight time recorder
+
+The flight time recorder feature allows you to record total time when the node is armed. It might be usefull for application where hardware resource is essential. Some devices such as internal combustion engine is recommended to update in a relatively short period of time, let's say 300-400 hours.
+
+The flight recorded time is stored in flash memory. The limitation of working with flash memory is following:
+- it takes time to erase and write data to the memory,
+- the erasing resource of flash memory is limited.
+Since we don't want to interfare on the node during arm, the tine updating is performed only after 0.5 second after node goes into disarm state.
+
+Since PX4 doesn't support [ArmingStatus](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#armingstatus) yet, the arm/disarm state is estimated by RawCommand. If all values of these commands are zero or negative, it is estimated as disarm. If any of commands values are positive, it is estimated as arm.
 
 ## 6. Parameters
 
-Below you can see a picture from `uavcan_gui_tool` with a whole list of parameters.
+Below you can see a picture from `uavcan_gui_tool` with the latest list of parameters.
+
+The actual list of parameters on your node depends on firmware version.
 
 ![params](params.png?raw=true "params")
+
+Fig. The latest list of parameters
 
 A brief description of all parameters shown in the table below.
 
@@ -190,14 +232,18 @@ A brief description of all parameters shown in the table below.
 | --------- | ---------------- | --------------- | ----------- |
 | 0         | ID               | true            | Node ID     |
 | 1         | log_level        | true            | Specify what level of log can be sent. |
-| 2,6,10,14 | channel          | false           | Specify here a desired command channel you want to map into a particular PWM pin. Default value -1 means disable. |
-| 3,7,11,15 | min              | false           | PWM duration when RawCommand = 0. |
-| 4,8,12,16 | max              | false           | PWM duration when RawCommand = 8191. |
-| 5,9,13,17 | def              | false           | PWM duration when RawCommand < 0 or when there is no RawCommand for a few seconds. |
+| 2,6,10,14 | ch               | false           | Index of setpoint channel. |
+| 3,7,11,15 | min              | false           | PWM duration when setpoint is min. |
+| 4,8,12,16 | max              | false           | PWM duration when setpoint is max. |
+| 5,9,13,17 | def              | false           | PWM duration when setpoint is negative or there is no setpoint at all. |
 | 18        | command_type     | true            | 0 means RawCommand, 1 means ArrayCommand |
-| 19        | enable_5v_check  | false           | Set ERROR status if 5V voltage is out of range 4.5 - 5.5 V |
-| 20        | enable_vin_check | false           | Set ERROR status if Vin voltage is less than 4.5 V |
-| 21        | name             | true            |  |
+| 19        | cmd_ttl_ms       | false           | [Time to live](https://en.wikipedia.org/wiki/Time_to_live) timeout |
+| 20        | enable_5v_check  | false           | Set ERROR status if 5V voltage is out of range 4.5 - 5.5 V |
+| 21        | enable_vin_check | false           | Set ERROR status if Vin voltage is less than 4.5 V |
+| 22        | flight_time_sec  | false           | The total flight time in seconds. |
+| 23        | name             | true            | Name of the node |
+
+The detailed description of some of these parameters is shown in the chapters below.
 
 ### 6.1. Log level
 
@@ -223,21 +269,20 @@ According to the [LogLevel](https://dronecan.github.io/Specification/7._List_of_
 
 Mainly parameters are dedicated to UAVCAN-PWM mapping configuration. Here we have 2 or 4 groups `A1`, `A2`, `B1`, `B2` of parameters. Below you can see a table with their description:
 
-### 6.3. Power check
+| Param name  | Description                                                                             |
+| ----------- | --------------------------------------------------------------------------------------- |
+| xx_ch       | Index of setpoint channel (RawCommand or ArrayCommand). Default value -1 means disable. |
+| xx_min      | PWM duration when setpoint is min (RawCommand is 0 or Command is 0.0)                   |
+| xx_max      | PWM duration when setpoint is max (RawCommand is 8191 or Command is 1.0)                |
+| xx_default  | PWM duration when setpoint is negative or there is no setpoint at all                   |
+
+### 6.3. Voltage checks
 
 Such parameters as `enable_5v_check` and `enable_vin_check` are dedicated for enabling/disabling 5V and Vin check:
 - If the 5V check is enabled, the node state will be `ERROR` if the 5V voltage is less than 4.5V or bigger than 5.5V
 - If Vin check is enabled, the node state will be `ERROR` if the 5V voltage is less than 4.5V.
 
-### 6.4. Command type
-
-Specify which message (RawCommand or ArrayCommand) should be used.
-
-### 6.5. Voltage checks
-
-Enable or disable circuit status checks.
-
-### 6.6. Node name customization
+### 6.4. Node name customization
 
 By default this node have general purpose name `inno.can.pwm_node`. This name might be changed to a more specific name by changing the parameter `name`.
 
@@ -334,4 +379,7 @@ Number of used channels for node depends on configuration of your vehicle. You a
 | v0.3.2 0b55576 | May 31, 2021 | Add esc-flame feedback support    |
 | v0.4.0 9b873da | Nov 03, 2021 | Add uavcan-pwm-5a node support    |
 | v0.4.0 946e326 | Nov 17, 2021 | Add ArrayCommand support          |
-| v0.5.0         | 2022         | Add log messages                  |
+| v0.5.0 45a925f | Feb 07, 2022 | Add LogMessages                   |
+| v0.5.2 b626feb | Mar 30, 2022 | Add Watchdog                      |
+| v0.5.2 c4ab2be | Mar 31, 2022 | Add Flight time recorder          |
+| v0.5.7 f951dc6 | May 06, 2022 | Use individual TTL for each setpoint instead of a single one |
