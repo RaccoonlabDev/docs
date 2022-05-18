@@ -2,7 +2,7 @@
 
 WiFi Sniffer is dedicated to wireless sniffering UAVCAN networks. It establishes connection between CAN-network using one of 2 CAN connectors from the one side and specified WiFi network through UDP from the other side.
 
-It might be a safer alternative for [wire UAVCAN sniffer](https://github.com/InnopolisAero/inno_uavcan_node_binaries/blob/master/doc/programmer_sniffer/README.md).
+It might be a safer alternative for [wire UAVCAN sniffer](https://github.com/InnopolisAero/inno_uavcan_node_binaries/blob/master/docs/guide/programmer_sniffer/README.md).
 
 At that moment there are 2 illustration of WiFi sniffer boards. Below you can see an illustartion of them.
 
@@ -51,7 +51,7 @@ This board has 4 connectors which are described in the table below.
 | - | --------- | ----------- |
 | 1 | UCANPHY Micro (JST-GH 4) | Devices that deliver power to the bus are required to provide 4.9–5.5 V on the bus power line, 5.0 V nominal. Devices that are powered from the bus should expect 4.0–5.5 V on the bus power line. The current shall not exceed 1 A per connector. |
 | 2 | 6-pin Molex  ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670), [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | Contacts support up to 100 V, 2 A per contact. But the board may work only with 2S-6S. |
-| 3 | SWD | STM32 firmware updating using [programmer-sniffer](doc/programmer_sniffer/README.md). |
+| 3 | SWD | STM32 firmware updating using [programmer-sniffer](docs/guide/programmer_sniffer/README.md). |
 | 4 | esp8266 connector | Esp8266 firmware updating using usb-uart converter. |
 
 ## 4. Main function description

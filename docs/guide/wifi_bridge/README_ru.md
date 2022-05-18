@@ -3,7 +3,7 @@
 WiFi Sniffer представляет из себя мост между UAVCAN/CAN и UDP/WiFi.
 
 Устройство предназначено для беспроводного анализа сетей UAVCAN. Оно устанавливает соединение между CAN-сетью с помощью одного из 2 разъемов CAN с одной стороны и указанной WiFi сетью через UDP с другой стороны.
-Может использоваться, как более безопасная альтернатива [проводному UAVCAN снифферу](https://github.com/InnopolisAero/inno_uavcan_node_binaries/blob/master/doc/programmer_sniffer/README_ru.md).
+Может использоваться, как более безопасная альтернатива [проводному UAVCAN снифферу](https://github.com/InnopolisAero/inno_uavcan_node_binaries/blob/master/docs/guide/programmer_sniffer/README_ru.md).
 
 На данный момент есть 2 версии платы. Они проиллюстрированы ниже.
 
@@ -52,7 +52,7 @@ WiFi Sniffer представляет из себя мост между UAVCAN/C
 | - | --------- | ----------- |
 | 1 | UCANPHY Micro (JST-GH 4) | Устройства, подающие питание на шину, должны обеспечивать 4,9-5,5 В на линии питания шины, номинальное напряжение 5,0 В. Устройства, получающие питание от шины, должны ожидать 4,0-5,5 В на линии питания шины. Ток не должен превышать 1 А на каждый разъем. |
 | 2 | 6-контактный Molex ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670), [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | Разъем поддерживает до 100 В, 2 A на контакт, но плата работает только с 2S-6S. |
-| 3 | SWD | Обновление прошивки STM32 с помощью [programmer-sniffer](doc/programmer_sniffer/README.md). |
+| 3 | SWD | Обновление прошивки STM32 с помощью [programmer-sniffer](docs/guide/programmer_sniffer/README.md). |
 | 4 | Разъем esp8266 | Обновление прошивки Esp8266 с помощью преобразователя usb-uart. |
 
 

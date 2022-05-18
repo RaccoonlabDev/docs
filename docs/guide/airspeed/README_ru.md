@@ -46,7 +46,7 @@
 | - | --------- | ----------- |
 | 1 | UCANPHY Micro (JST-GH 4) | Устройства, подающие питание на шину, должны обеспечивать 4,9-5,5 В на линии питания шины, номинальное напряжение 5,0 В. Устройства, получающие питание от шины, должны ожидать 4,0-5,5 В на линии питания шины. Ток не должен превышать 1 А на каждый разъем. |
 | 2 | 6-контактный Molex ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670), [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | Разъем поддерживает дДо 100 В, 2 A на контакт, но DC-DC на плате до 60В. Мы рекомендуем использовать до 30 В на линии. |
-| 3 | SWD | Обновление прошивки STM32 с помощью [programmer-sniffer](doc/programmer_sniffer/README.md). |
+| 3 | SWD | Обновление прошивки STM32 с помощью [programmer-sniffer](docs/guide/programmer_sniffer/README.md). |
 
 ## 4. Описание основных функций <a name="4-main-function-description"></a> 
 
