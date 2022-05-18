@@ -7,11 +7,12 @@ WORKDIR /wiki
 RUN apt-get update && apt-get upgrade -y
 
 # 2. Install requirement
-COPY install.sh             install.sh
+COPY install.sh     install.sh
 RUN ./install.sh
-COPY create.sh create.sh
-COPY docs/ docs/
-COPY package.json package.json
+COPY create.sh      create.sh
+COPY docs/          docs/
+COPY assets/        assets/
+COPY package.json   package.json
 RUN ./create.sh
 
 # Quick Start

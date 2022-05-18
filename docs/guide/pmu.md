@@ -2,7 +2,7 @@
 
 This board monitors the battery (voltage and current) and allows to control charging, source and load. It might be useful for applications where you need to control the power of the drone including the board computer and charging process.
 
-![pmu_cover](pmu_cover.png?raw=true "pmu_cover")
+![pmu_cover](../../assets/pmu_cover/pmu_cover.png?raw=true "pmu_cover")
 
 ## 1. UAVCAN interface
 
@@ -38,13 +38,13 @@ and controls:
 2. enable load (autopilot, motors, etc) (PB7)
 3. enable jetson (PB5)
 
-![battery_info_msg](battery_info_msg.png?raw=true "battery_info_msg")
+![battery_info_msg](../../assets/pmu_cover/battery_info_msg.png?raw=true "battery_info_msg")
 
-![pmu_status_msg](pmu_status_msg.png?raw=true "pmu_status_msg")
+![pmu_status_msg](../../assets/pmu_cover/pmu_status_msg.png?raw=true "pmu_status_msg")
 
 ## 6. Parameters
 
-![pmu_params](pmu_params.png?raw=true "pmu_params")
+![pmu_params](../../assets/pmu_cover/pmu_params.png?raw=true "pmu_params")
 
 ## 8. Usage example on a table
 

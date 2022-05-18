@@ -6,7 +6,7 @@ UAVCAN sniffer and programmer has two devices on one board:
 
 This device is mainly intended for developers in robotics (UAV, UGV, AUV, USV, etc.), working with UAVCAN and PX4/Ardupilot. But it might be used for sniffing CAN-bus and programming other microcontroller as well.
 
-![programmer_sniffer](programmer_sniffer.png?raw=true "programmer_sniffer")
+![programmer_sniffer](../../assets/programmer_sniffer/programmer_sniffer.png?raw=true "programmer_sniffer")
 
 ## 1. Hardware specification
 
@@ -65,13 +65,13 @@ Be careful, don't use SWD instead of CAN socket!
 
 After that, you can use [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool) utility or something other.
 
-![app_setup](app_setup.png?raw=true "app_setup")
+![app_setup](../../assets/programmer_sniffer/app_setup.png?raw=true "app_setup")
 
 In the Application Setup menu you need to set `1000000` to both can bus and adapter baud rates.
 
 After that you will get following window:
 
-![uavcan_gui_tool](uavcan_gui_tool.png?raw=true "uavcan_gui_tool")
+![uavcan_gui_tool](../../assets/programmer_sniffer/uavcan_gui_tool.png?raw=true "uavcan_gui_tool")
 
 ## 5. Led indication
 

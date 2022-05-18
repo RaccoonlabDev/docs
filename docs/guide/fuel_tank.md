@@ -6,8 +6,8 @@ It publishes [uavcan.equipment.ice.FuelTankStatus](https://dronecan.github.io/Sp
 
 **Message example**
 
-![scheme](fuel_tank_message.png?raw=true "msg")
+![scheme](../../assets/fuel_tank/fuel_tank_message.png?raw=true "msg")
 
 **Parameters**
 
-![scheme](fuel_tank_params.png?raw=true "params")
+![scheme](../../assets/fuel_tank/fuel_tank_params.png?raw=true "params")

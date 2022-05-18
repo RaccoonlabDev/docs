@@ -2,7 +2,7 @@
 
 This board allows to automatically charge a battery (up to 4S).
 
-![charger](charger.png?raw=true "charger")
+![charger](../../assets/charger/charger.png?raw=true "charger")
 
 ## 1. UAVCAN interface
 
@@ -60,11 +60,11 @@ If battery voltage is more than maximum voltage (battery is charged) or less tha
 
 The whole state machine might be illustrated using the following flowchart diagram:
 
-![charger](algorithm.png?raw=true "charger")
+![charger](../../assets/charger/algorithm.png?raw=true "charger")
 
 The typical 2-stages charging process might be illustrated using the following plot:
 
-![scheme](normal_charging_process.png?raw=true "scheme")
+![scheme](../../assets/charger/normal_charging_process.png?raw=true "scheme")
 
 During both stages, this node uses I-regulator to keep constant current/voltage.
 
@@ -75,8 +75,6 @@ During both stages, this node uses I-regulator to keep constant current/voltage.
 This node as well as any other our nodes measure `5V` and `Vin` voltages and send them in 2 [uavcan.equipment.power.CircuitStatus](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#circuitstatus) messages.
 
 These voltages might be visualized using our custom [custom uavcan_gui_tool](https://github.com/PonomarevDA/uavcan_gui_tool).
-
-![online_nodes](online_nodes.png?raw=true "online_nodes")
 
 The first message has `circuit_id=NODE_ID*10 + 0` and following 3 significant fields:
 1. voltage - is the 5V voltage
@@ -92,7 +90,7 @@ Every firmware store following info that might be received as a response on Node
 - software version,
 - an unique identifier.
 
-![node_info](node_info.png?raw=true "node_info")
+![node_info](../../assets/charger/node_info.png?raw=true "node_info")
 
 ### 5.3. Log messages
 
@@ -102,7 +100,7 @@ Every firmware store following info that might be received as a response on Node
 
 The table with parameters is shown below.
 
-![scheme](parameters.png?raw=true "scheme")
+![scheme](../../assets/charger/parameters.png?raw=true "scheme")
 
 A description of all parameters shown in the tables below.
 

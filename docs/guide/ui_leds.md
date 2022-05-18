@@ -2,7 +2,7 @@
 
 This node sets the same color as autopilot has ([ui leds](https://docs.px4.io/master/en/getting_started/led_meanings.html#ui-led)) during disarm and sets a specific solid/blinking color ([aviation navigation lights](https://en.wikipedia.org/wiki/Navigation_light#Aviation_navigation_lights)) when armed.
 
-![ui_leds](ui_leds.jpg?raw=true "ui_leds")
+![ui_leds](../../assets/ui_leds/ui_leds.jpg?raw=true "ui_leds")
 
 ```
 Note: there are different hardware implementation of this board with different number of LEDs. On the picture above you can see only one of them.
@@ -28,7 +28,7 @@ Besides required and highly recommended functions such as `NodeStatus` and `GetN
 
 ## 2. Hardware specification
 
-![lights_scheme](lights_scheme.png?raw=true "lights_scheme")
+![lights_scheme](../../assets/ui_leds/lights_scheme.png?raw=true "lights_scheme")
 
 ## 3. Wire
 
@@ -60,7 +60,7 @@ Every firmware store following info that might be received as a response on Node
 - hardware version (doen't work yet),
 - an unique identifier.
 
-![node_info](node_info.png?raw=true "node_info")
+![node_info](../../assets/ui_leds/node_info.png?raw=true "node_info")
 
 ### 5.2 Log messages
 
@@ -73,7 +73,7 @@ At that moments the node may publishes messages only 5 second after enabling. He
 
 A visualization of this message in `uavcan_gui_tool` in case of error shown on a picture below.
 
-![log_messages](log_messages.png?raw=true "log_messages")
+![log_messages](../../assets/ui_leds/log_messages.png?raw=true "log_messages")
 
 Fig. Visualization of log messages in uavcan_gui_tool after initialization with log_level=0
 
@@ -85,7 +85,7 @@ Below you can see a picture from `gui_tool` with a whole list of parameters.
 
 Configuration of mapping can be performed using `gui_tool` or even `QGC`. Below you can see the table with these params in `gui_tool`.
 
-![params](params.png?raw=true "params")
+![params](../../assets/ui_leds/params.png?raw=true "params")
 
 Table with parameters description:
 

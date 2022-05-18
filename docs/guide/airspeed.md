@@ -4,7 +4,7 @@ This board is a wrapper under [MS4525DO airspeed sensor](https://www.te.com/comm
 
 It reads measurements from the sensor via i2c and publishes temperature and differential pressure.
 
-![airspeed](airspeed.png?raw=true "airspeed")
+![airspeed](../../assets/airspeed/airspeed.png?raw=true "airspeed")
 
 ## 1. UAVCAN interface
 
@@ -25,7 +25,7 @@ Beside required and highly recommended functions such as `NodeStatus` and `GetNo
 
 ## 2. Hardware specification
 
-![airspeed_scheme](airspeed_scheme.jpg?raw=true "airspeed_scheme")
+![airspeed_scheme](../../assets/airspeed/airspeed_scheme.jpg?raw=true "airspeed_scheme")
 
 ## 3. Wire
 
@@ -100,7 +100,7 @@ GetNodeInfo response contains hardware unique ID that allows you to differentiat
 
 The list of parameters is shown in the picture below:
 
-![scheme](airspeed_params.png?raw=true "scheme")
+![scheme](../../assets/airspeed/airspeed_params.png?raw=true "scheme")
 
 | № | Param name   | Description |
 | - | ------------ | ----------- |
@@ -133,11 +133,11 @@ A good way to get familiar with this device is to try it on the table using [uav
 
 Below you can see an example of a message when a device is on a table and there is no wind.
 
-![airspeed_message](airspeed_message.png?raw=true "airspeed_message")
+![airspeed_message](../../assets/airspeed/airspeed_message.png?raw=true "airspeed_message")
 
 You can create a real-time plot with raw sensor data. Here it is:
 
-![airspeed_plot](airspeed_plot.png?raw=true "airspeed_plot")
+![airspeed_plot](../../assets/airspeed/airspeed_plot.png?raw=true "airspeed_plot")
 
 As you can see on the plot, the measurement has an offset. Here it is ~76 Pascal. Although this offset may lead to wrong airspeed estimation on the autopilot level, there are few ways how can you take it into account. See [5.2. Calibration](#52-calibration) for details.
 
@@ -189,7 +189,7 @@ To perform calibration on the sensor side from QGC you should type:
 2. `uavcan param set 74 airspeed_calib_request 1` to start calibration
 3. `uavcan param save 74` - to save new calibration parameters.
 
-![airspeed_qgc](airspeed_qgc.png?raw=true "airspeed_qgc")
+![airspeed_qgc](../../assets/airspeed/airspeed_qgc.png?raw=true "airspeed_qgc")
 
 Here 74 is our node id. It has a calibration offset -69.
 
@@ -199,4 +199,4 @@ After that, you need to manually write 0 to `SENS_DPRES_OFF` parameter.
 
 Here you may see the screenshot from the log from the real flight in FW mode.
 
-![px4_log_airspeed_2021_11_12](px4_log_airspeed_2021_11_12.png?raw=true "px4_log_airspeed_2021_11_12")
+![px4_log_airspeed_2021_11_12](../../assets/airspeed/px4_log_airspeed_2021_11_12.png?raw=true "px4_log_airspeed_2021_11_12")

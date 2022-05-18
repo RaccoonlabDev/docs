@@ -8,7 +8,7 @@ At that moment we have 3 types of such UAVCAN-PWM boards, so-called `5A`, [Mini]
 
 | UAVCAN-PWM node 5A | UAVCAN-PWM node Mini | UAVCAN-PWM node Micro |
 | ------- | ------- | -------- |
-| ![](5A.png?raw=true "5A")    | ![](node_mini.png?raw=true "mini")  | ![](node_micro.png?raw=true "micro")   |
+| ![](../../assets/can_pwm/5A.png?raw=true "5A")    | ![](../../assets/can_pwm/node_mini.png?raw=true "mini")  | ![](../../assets/can_pwm/node_micro.png?raw=true "micro")   |
 
 The difference between boards are following:
 
@@ -44,7 +44,7 @@ Besides required and highly recommended functions such as `NodeStatus` and `GetN
 
 UAVCAN-PWM mini scheme:
 
-![can_pwm_mini_scheme](can_pwm_mini_scheme.png?raw=true "can_pwm_mini_scheme")
+![can_pwm_mini_scheme](../../assets/can_pwm/can_pwm_mini_scheme.png?raw=true "can_pwm_mini_scheme")
 
 ## 3. Wire
 
@@ -60,7 +60,7 @@ This board has 3 connectors which are described in the table below.
 
 UAVCAN-PWM also has 2 groups of connectors designed to connect a servo or ESC. An example of connection shown in a picture below.
 
-![can_pwm_mini_scheme](servo_connection.jpg?raw=true "can_pwm_mini_scheme")
+![can_pwm_mini_scheme](../../assets/can_pwm/servo_connection.jpg?raw=true "can_pwm_mini_scheme")
 Fig. Example of servo connection to a A1 channel of UAVCAN-PWM mini node.
 
 ## 4. Main function description
@@ -77,7 +77,7 @@ RawCommand is an array that contains up to 20 setpoints called channels. Each ra
 
 Below you can see the visualization of this mapping.
 
-![mapping](can_pwm_mapping.png?raw=true "mapping")
+![mapping](../../assets/can_pwm/can_pwm_mapping.png?raw=true "mapping")
 
 Fig. UAVCAN->PWM mapping
 
@@ -99,7 +99,7 @@ UAVCAN-PWM node as well as any other our nodes measure `5V` and `Vin` voltages a
 
 These voltages might be visualized using our custom [custom uavcan_gui_tool](https://github.com/PonomarevDA/uavcan_gui_tool).
 
-![online_nodes](online_nodes.png?raw=true "online_nodes")
+![online_nodes](../../assets/can_pwm/online_nodes.png?raw=true "online_nodes")
 
 The first message has `circuit_id=NODE_ID*10 + 0` and following 3 significant fields:
 1. voltage - is the 5V voltage
@@ -113,7 +113,7 @@ The second message has `circuit_id=NODE_ID*10 + 1` and following 3 significant f
 
 Below you can see an example of current consumption with 5V voltage power supply:
 
-![max and avg current plot](current_plot.png?raw=true "max and avg current plot")
+![max and avg current plot](../../assets/can_pwm/current_plot.png?raw=true "max and avg current plot")
 
 Fig. Max and average current measurement
 
@@ -149,7 +149,7 @@ Every firmware store following info that might be received as a response on Node
 - hardware version (doen't work yet),
 - an unique identifier.
 
-![node_info](node_info.png?raw=true "node_info")
+![node_info](../../assets/can_pwm/node_info.png?raw=true "node_info")
 
 ### 5.4 Log messages
 
@@ -164,7 +164,7 @@ At that moments the node may publishes messages in 2 ways:
 
 A visualization of this message in `uavcan_gui_tool` in case of error shown on a picture below.
 
-![log_messages](log_messages.png?raw=true "log_messages")
+![log_messages](../../assets/can_pwm/log_messages.png?raw=true "log_messages")
 
 Fig. Visualization of log messages in uavcan_gui_tool on case of error
 
@@ -199,7 +199,7 @@ Below you can see a picture from `uavcan_gui_tool` with the latest list of param
 
 The actual list of parameters on your node depends on firmware version.
 
-![params](params.png?raw=true "params")
+![params](../../assets/can_pwm/params.png?raw=true "params")
 
 Fig. The latest list of parameters
 
@@ -301,7 +301,7 @@ It is recommended to debug this node and perform configuration with [uavcan_gui_
 
 At the beggining, you may start with devices connection shown on the picure below.
 
-![can_pwm_test_on_table](can_pwm_test_on_table.png?raw=true "can_pwm_test_on_table")
+![can_pwm_test_on_table](../../assets/can_pwm/can_pwm_test_on_table.png?raw=true "can_pwm_test_on_table")
 
 Here, the PWM-mini node is connected with 2 devices:
 - a UAVCAN sniffer via CAN (the sniffer is connected to PC via USB and power the node),
@@ -313,7 +313,7 @@ After running `gui_tool` in non-anonymous mode, the node starts receving CAN-fra
 
 The next step is to open either `ESC panel` or `Actuator panel` as shown below.
 
-![esc_panel](esc_and_actuator_panels.png?raw=true "esc_panel")
+![esc_panel](../../assets/can_pwm/esc_and_actuator_panels.png?raw=true "esc_panel")
 
 Now node should blink only 1 time per the period.
 

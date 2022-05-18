@@ -4,7 +4,7 @@ This board is dedicated to controlling an internal combustion engine such as [DL
 
 Based on input command [RawCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#rawcommand) it activates ignition, starts a starter to run the engine and turn the starter off when the internal combustion engine is working. It measures several engine parameters such as engine rotation speed and sends it to UAVCAN network as [uavcan.equipment.ice.reciprocating.Status](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#status-4) message. It also might be equipped with fuel tank sensor based on differential pressure sensor, so the node will send [uavcan.equipment.ice.FuelTankStatus](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#fueltankstatus) message.
 
-![starter](starter.png?raw=true "starter")
+![starter](../../assets/ice/starter.png?raw=true "starter")
 
 ## 1. UAVCAN interface
 
@@ -100,7 +100,7 @@ This node as well as any other our nodes measure `5V` and `Vin` voltages and sen
 
 These voltages might be visualized using our custom [custom uavcan_gui_tool](https://github.com/PonomarevDA/uavcan_gui_tool).
 
-![online_nodes](online_nodes.png?raw=true "online_nodes")
+![online_nodes](../../assets/ice/online_nodes.png?raw=true "online_nodes")
 
 The first message has `circuit_id=NODE_ID*10 + 0` and following 3 significant fields:
 1. voltage - is the 5V voltage
@@ -118,7 +118,7 @@ Every firmware store following info that might be received as a response on Node
 - software version,
 - an unique identifier.
 
-![node_info](node_info.png?raw=true "node_info")
+![node_info](../../assets/ice/node_info.png?raw=true "node_info")
 
 ### 5.3. Log messages
 
@@ -141,7 +141,7 @@ You might be interesting in checking the last paramer to be sure that the lift e
 
 Below you can see a picture from `gui_tool` with a whole list of parameters.
 
-![parameters](parameters.png?raw=true "parameters")
+![parameters](../../assets/ice/parameters.png?raw=true "parameters")
 
 All paramters are divided into several groups. Their description is provided in the tables balow.
 

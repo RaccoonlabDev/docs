@@ -6,7 +6,7 @@ This board has 3 types of sensors:
 2. Barometer: [BMP280](https://cdn-shop.adafruit.com/datasheets/BST-BMP280-DS001-11.pdf)
 3. Magnetometers: [RM3100](https://ekb.terraelectronica.ru/pdf/show?pdf_file=%252Fds%252Fpdf%252FR%252FRM3100.pdf) and/or [HMC5883L](https://cdn-shop.adafruit.com/datasheets/HMC5883L_3-Axis_Digital_Compass_IC.pdf)
 
-![gps_mag_baro](gps_mag_baro.png?raw=true "gps_mag_baro")
+![gps_mag_baro](../../assets/gps_mag_baro/gps_mag_baro.png?raw=true "gps_mag_baro")
 
 ## 1. UAVCAN interface
 
@@ -34,7 +34,7 @@ Besides required and highly recommended functions such as `NodeStatus` and `GetN
 
 UAVCAN-PWM mini scheme:
 
-![scheme](scheme.png?raw=true "scheme")
+![scheme](../../assets/gps_mag_baro/scheme.png?raw=true "scheme")
 
 ## 3. Wire
 
@@ -52,7 +52,7 @@ This node primary has 3 features: GPS, magnetometer, and barometer. You may enab
 
 Below you can see an illustration of how it may work in `uavcan_gui_tool`.
 
-![gps_mag_baro](gps_mag_baro_msgs.png?raw=true "gps_mag_baro")
+![gps_mag_baro](../../assets/gps_mag_baro/gps_mag_baro_msgs.png?raw=true "gps_mag_baro")
 
 ### 4.1. GNSS module
 
@@ -86,7 +86,7 @@ It communicates with the GNSS module via UART and publishes [uavcan.equipment.gn
 
 Below you can see an example of the `Fix` message.
 
-![gps_msg](gps_msg.png?raw=true "gps_msg")
+![gps_msg](../../assets/gps_mag_baro/gps_msg.png?raw=true "gps_msg")
 
 **Performance**
 
@@ -108,9 +108,9 @@ Control measurement settings:
 - the data rate is up to 50 Hz if standby time is less then 0.5 ms
 - normal mode
 
-![baro_msg](baro_msg.png?raw=true "baro_msg")
+![baro_msg](../../assets/gps_mag_baro/baro_msg.png?raw=true "baro_msg")
 
-![baro_plot](baro_plot.png?raw=true "baro_plot")
+![baro_plot](../../assets/gps_mag_baro/baro_plot.png?raw=true "baro_plot")
 
 
 ### 4.3. Magnetometer
@@ -139,9 +139,9 @@ Both magnetometers publish [uavcan.equipment.ahrs.MagneticFieldStrength](https:/
 
 Below you may see an example of HMC5883L magnetometer raw data.
 
-![mag_HMC5883L_msg](mag_HMC5883L_msg.png?raw=true "mag_HMC5883L_msg")
+![mag_HMC5883L_msg](../../assets/gps_mag_baro/mag_HMC5883L_msg.png?raw=true "mag_HMC5883L_msg")
 
-![mag_HMC5883L_plot](mag_HMC5883L_plot.png?raw=true "mag_HMC5883L_plot")
+![mag_HMC5883L_plot](../../assets/gps_mag_baro/mag_HMC5883L_plot.png?raw=true "mag_HMC5883L_plot")
 
 ## 5. Auxiliary functions description
 

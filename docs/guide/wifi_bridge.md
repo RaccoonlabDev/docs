@@ -8,7 +8,7 @@ At that moment there are 2 illustration of WiFi sniffer boards. Below you can se
 
 Version 1.0                |  Version 2.0
 :-------------------------:|:-------------------------:
-![wifi_board_v1](wifi_board_v1.png?raw=true)  |  ![wifi_board_v2](wifi_board_v2.png?raw=true)
+![wifi_board_v1](../../assets/wifi_bridge/wifi_board_v1.png?raw=true)  |  ![wifi_board_v2](wifi_board_v2.png?raw=true)
 
 The second one is cheaper and smaller than the first. It has UART socket instead of USB type-C.
 
@@ -29,7 +29,7 @@ Besides required and highly recommended functions such as `NodeStatus` and `GetN
 
 The board v2.0 has following scheme:
 
-![scheme_v2](scheme_v2.png?raw=true)
+![scheme_v2](../../assets/wifi_bridge/scheme_v2.png?raw=true)
 
 ## 3. Wire
 
@@ -73,7 +73,7 @@ By sending [uavcan.protocol.GetTransportStats](https://dronecan.github.io/Specif
 
 ## 6. Parameters
 
-![params](params.png?raw=true "params")
+![params](../../assets/wifi_bridge/params.png?raw=true "params")
 
 ## 7. Led indication
 
@@ -94,7 +94,7 @@ STM32 blinks meaning:
 ## 8. Usage example on a table
 
 Below you can see an example of bus monitor plot with connected device that was published with frame rate 1500 frames per second. 
-![frames_rate_1500.png](frames_rate_1500.png?raw=true "frames_rate_1500.png")
+![frames_rate_1500.png](../../assets/wifi_bridge/frames_rate_1500.png?raw=true "frames_rate_1500.png")
 
 ## 8.1. How to debug it
 
@@ -112,7 +112,7 @@ sudo apt-get install minicom
 
 WiFi sniffer has been tested several times with complex VTOL and other application.
 
-![uav_example.png](uav_example.png?raw=true "uav_example.png")
+![uav_example.png](../../assets/wifi_bridge/uav_example.png?raw=true "uav_example.png")
 
 ## 10. Performance
 
