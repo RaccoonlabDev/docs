@@ -1,32 +1,10 @@
-## UAVCAN Airspeed node
+# UAVCAN Airspeed node
 
 This board is a wrapper under [MS4525DO airspeed sensor](https://www.te.com/commerce/DocumentDelivery/DDEController?Action=showdoc&DocId=Data+Sheet%7FMS4525DO%7FB2%7Fpdf%7FEnglish%7FENG_DS_MS4525DO_B2.pdf%7FCAT-BLPS0002) that allows to use it through the UAVCAN network.
 
 It reads measurements from the sensor via i2c and publishes temperature and differential pressure.
 
 ![airspeed](airspeed.png?raw=true "airspeed")
-
-## Content
-  - [1. UAVCAN interface](#1-uavcan-interface)
-  - [2. Hardware specification](#2-hardware-specification)
-  - [3. Wire](#3-wire)
-  - [4. Main function description](#4-main-function-description)
-  - [5. Auxiliary functions description](#5-auxiliary-function-description)
-    - [5.1. Circuit status](#51-circuit-status)
-    - [5.2. Calibration](#52-calibration)
-    - [5.3. Enable/disable](#53-enabledisable)
-    - [5.4. Software version](#54-software-version)
-    - [5.5. Hardware version](#55-hardware-version)
-    - [5.6. Hardware unique ID](#56-hardware-unique-id)
-  - [6. Parameters](#6-parameters)
-  - [7. Led indication](#7-led-indication)
-  - [8. Usage example on a table](#8-usage-example-on-a-table)
-    - [8.1. Calibration using gui_tool](#81-calibration-using-guitool)
-  - [9. UAV usage example](#9-uav-usage-example)
-    - [9.1. PX4 Parameters](#91-px4-parameters)
-    - [9.2. QGC node monitoring](#92-qgc-node-monitoring)
-    - [9.3. Calibration using QGC](#93-calibration-using-qgc)
-    - [9.4. Flight log example](#94-flight-log-example)
 
 ## 1. UAVCAN interface
 

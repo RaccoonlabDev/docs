@@ -1,4 +1,4 @@
-## UAVCAN Gps + Magnetometer + Barometer node
+# UAVCAN Gps+Mag+Baro node
 
 This board has 3 types of sensors:
 
@@ -7,20 +7,6 @@ This board has 3 types of sensors:
 3. Magnetometers: [RM3100](https://ekb.terraelectronica.ru/pdf/show?pdf_file=%252Fds%252Fpdf%252FR%252FRM3100.pdf) and/or [HMC5883L](https://cdn-shop.adafruit.com/datasheets/HMC5883L_3-Axis_Digital_Compass_IC.pdf)
 
 ![gps_mag_baro](gps_mag_baro.png?raw=true "gps_mag_baro")
-
-## Content
-  - [1. UAVCAN interface](#1-uavcan-interface)
-  - [2. Hardware specification](#2-hardware-specification)
-  - [3. Wire](#3-wire)
-  - [4. Main function description](#4-main-function-description)
-  - - [4.1 GNSS Module](#41-gnss-module)
-  - - [4.2 Barometer](#42-barometer)
-  - - [4.3 Magnetometer](#43-magnetometer)
-  - [5. Auxiliary functions description](#5-auxiliary-function-description)
-  - [6. Parameters](#6-parameters)
-  - [7. Led indication](#7-led-indication)
-  - [8. Usage example on a table](#8-usage-example-on-a-table)
-  - [9. UAV usage example](#9-uav-usage-example)
 
 ## 1. UAVCAN interface
 

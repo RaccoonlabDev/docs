@@ -8,17 +8,6 @@ This node sets the same color as autopilot has ([ui leds](https://docs.px4.io/ma
 Note: there are different hardware implementation of this board with different number of LEDs. On the picture above you can see only one of them.
 ```
 
-## Content
-  - [1. UAVCAN interface](#1-uavcan-interface)
-  - [2. Hardware specification](#2-hardware-specification)
-  - [3. Wire](#3-wire)
-  - [4. Main function description](#4-main-function-description)
-  - [5. Auxiliary functions description](#5-auxiliary-functions-description)
-  - [6. Parameters](#6-parameters)
-  - [7. Led indication](#7-led-indication)
-  - [8. Debugging on a table](#8-debugging-on-a-table)
-  - [9. PX4 integration](#9-px4-integration)
-
 ## 1. UAVCAN interface
 
 This node interacts with the following messages:

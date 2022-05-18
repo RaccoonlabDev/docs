@@ -1,24 +1,8 @@
-## UAVCAN Charger node
+# UAVCAN Charger node
 
 This board allows to automatically charge a battery (up to 4S).
 
 ![charger](charger.png?raw=true "charger")
-
-## Content
-  - [1. UAVCAN interface](#1-uavcan-interface)
-  - [2. Hardware specification](#2-hardware-specification)
-  - [3. Wire](#3-wire)
-  - [4. Main function description](#4-main-function-description)
-  - [5. Auxiliary functions description](#5-auxiliary-function-description)
-  - [6. Parameters](#6-parameters)
-    - [6.1. Common parameters](#61-common-parameters)
-    - [6.2. Regulator](#62-regulator)
-    - [6.3. Battery settings](#63-battery-settings)
-    - [6.4. Other](#64-other)
-  - [7. Led indication](#7-led-indication)
-  - [8. Usage example on a table](#8-usage-example-on-a-table)
-  - [9. Real application usage example](#9-real-application-usage-example)
-
 
 ## 1. UAVCAN interface
 

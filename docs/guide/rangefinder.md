@@ -1,21 +1,9 @@
-## UAVCAN Rangefinder node
+# UAVCAN Rangefinder node
 
 This board has few drivers for communication with such rangefinder as [LW20/C](https://www.mouser.com/datasheet/2/321/28055-LW20-SF20-LiDAR-Manual-Rev-7-1371848.pdf) and [TF-Luna](https://files.seeedstudio.com/wiki/Grove-TF_Mini_LiDAR/res/SJ-PM-TF-Luna-A03-Product-Manual.pdf) via i2c/uart. After reading measurements it sends data through UAVCAN network.
 
-
 ![rangefinder](rangefinder.jpg?raw=true "rangefinder")
 Fig. Prototype based on lightware LW20
-
-## Content
-  - [1. UAVCAN interface](#1-uavcan-interface)
-  - [2. Hardware specification](#2-hardware-specification)
-  - [3. Wire](#3-wire)
-  - [4. Main function description](#4-main-function-description)
-  - [5. Auxiliary functions description](#5-auxiliary-function-description)
-  - [6. Parameters](#6-parameters)
-  - [7. Led indication](#7-led-indication)
-  - [8. Usage example on a table](#8-usage-example-on-a-table)
-  - [9. UAV usage example](#9-uav-usage-example)
 
 ## 1. UAVCAN interface
 

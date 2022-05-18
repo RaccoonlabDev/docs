@@ -1,4 +1,4 @@
-## fuel_tank
+# UAVCAN Fuel Tank node
 
 This board is dedicated to measuring the level of fuel.
 

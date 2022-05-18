@@ -1,4 +1,4 @@
-# UAVCAN-PWM node
+# UAVCAN PWM node
 
 UAVCAN-PWM node is dedicated to controlling servos and ESCs. It receives [RawCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#rawcommand) / [ArrayCommand](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#arraycommand) UAVCAN messages from the CAN bus and maps it into typical for servos and ESC controllers PWM signal.
 
@@ -19,29 +19,6 @@ The difference between boards are following:
 | 3 | input current sensor | yes     | no       | no            |
 | 4 | auxilliary pins      | no      | 2        | no            |
 | 5 | Vin voltage sensor   | yes     | yes      | -             |
-
-## Content
-  - [1. UAVCAN interface](#1-uavcan-interface)
-  - [2. Hardware specification](#2-hardware-specification)
-  - [3. Wire](#3-wire)
-  - [4. Main function description](#4-main-function-description)
-  - [5. Auxiliary functions description](#5-auxiliary-functions-description)
-    - [5.1 Circuit status](#51-circuit-status)
-    - [5.2 Esc flame](#52-esc-flame)
-    - [5.3 Node info](#53-node-info)
-    - [5.4 Log messages](#54-log-messages)
-    - [5.5 Time to live](#55-time-to-live)
-    - [5.6 Watchdog](#56-watchdog)
-    - [5.7 Flight time recorder](#57-flight-time-recorder)
-  - [6. Parameters](#6-parameters)
-    - [6.1. Log level](#61-log-level)
-    - [6.2. Mapping configuration](#62-mapping-configuration)
-    - [6.3. Voltage checks](#63-voltage-checks)
-    - [6.4. Node name customization](#64-node-name-customization)
-  - [7. Led indication](#7-led-indication)
-  - [8. Debugging on a table](#8-debugging-on-a-table)
-  - [9. PX4 integration](#9-px4-integration)
-  - [10. Versions](#10-versions)
 
 ## 1. UAVCAN interface
 

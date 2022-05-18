@@ -1,4 +1,4 @@
-## UAVCAN WiFi Sniffer node
+# UAVCAN WiFi Sniffer node
 
 WiFi Sniffer is dedicated to wireless sniffering UAVCAN networks. It establishes connection between CAN-network using one of 2 CAN connectors from the one side and specified WiFi network through UDP from the other side.
 
@@ -11,18 +11,6 @@ Version 1.0                |  Version 2.0
 ![wifi_board_v1](wifi_board_v1.png?raw=true)  |  ![wifi_board_v2](wifi_board_v2.png?raw=true)
 
 The second one is cheaper and smaller than the first. It has UART socket instead of USB type-C.
-
-## Content
-  - [1. UAVCAN interface](#1-uavcan-interface)
-  - [2. Hardware specification](#2-hardware-specification)
-  - [3. Wire](#3-wire)
-  - [4. Main function description](#4-main-function-description)
-  - [5. Auxiliary functions description](#5-auxiliary-function-description)
-  - [6. Parameters](#6-parameters)
-  - [7. Led indication](#7-led-indication)
-  - [8. Usage example on a table](#8-usage-example-on-a-table)
-  - [9. UAV usage example](#9-uav-usage-example)
-  - [10. Performance tests](#10-performance-tests)
 
 
 ## 1. UAVCAN interface

@@ -1,4 +1,4 @@
-## UAVCAN Sniffer and Programmer
+# UAVCAN Sniffer and Programmer
 
 UAVCAN sniffer and programmer has two devices on one board:
 - USB-UAVCAN adapter to connect your PC to UAVCAN bus with SLCAN for real-time monitoring of CAN bus and UAVCAN transfer dissection with [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool)
@@ -7,16 +7,6 @@ UAVCAN sniffer and programmer has two devices on one board:
 This device is mainly intended for developers in robotics (UAV, UGV, AUV, USV, etc.), working with UAVCAN and PX4/Ardupilot. But it might be used for sniffing CAN-bus and programming other microcontroller as well.
 
 ![programmer_sniffer](programmer_sniffer.png?raw=true "programmer_sniffer")
-
-## Content
-  - [1. Hardware specification](#1-wire)
-  - [2. Wire](#2-wire)
-  - [3. Programmer usage](#3-programmer-usage)
-  - - [3.1. Windows](#31-windows)
-  - - [3.2. Linux](#32-linux)
-  - [4. Sniffer usage](#4-sniffer-usage)
-  - [5. Led indication](#5-led-indication)
-  - [6. Application examples](#6-application-examples)
 
 ## 1. Hardware specification
 

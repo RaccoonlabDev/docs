@@ -6,36 +6,6 @@ Based on input command [RawCommand](https://dronecan.github.io/Specification/7._
 
 ![starter](starter.png?raw=true "starter")
 
-## Content
-
-  - [1. UAVCAN interface](#1-uavcan-interface)
-  - [2. Hardware specification](#2-hardware-specification)
-  - [3. Wire](#3-wire)
-  - [4. Main function description](#4-main-function-description)
-    - [4.1. Gas throttle](#41-gas-throttle)
-    - [4.2. Air throttle](#42-air-throttle)
-    - [4.3. Spark Ignition](#43-spark-ignition)
-    - [4.4. Starter](#44-starter)
-    - [4.5. RPM measurement](#45-rpm-measurement)
-    - [4.6. TTL](#46-ttl)
-  - [5. Auxiliary functions description](#5-auxiliary-function-description)
-    - [5.1. Circuit status](#51-circuit-status)
-    - [5.2. Node info](#52-node-info)
-    - [5.3. Log messages](#53-log-messages)
-    - [5.4. Watchdog](#54-watchdog)
-    - [5.5. Stats recorder](#55-stats-recorder)
-  - [6. Parameters](#6-parameters)
-    - [6.1. Common parameters](#61-common-parameters)
-    - [6.2. Spark ignition](#62-spark-ignition)
-    - [6.3. Starter](#63-starter)
-    - [6.4. ESC status](#64-esc-status)
-    - [6.5. Gas throttle](#65-gas-throttle)
-    - [6.6. Circuit status](#66-circuit-status)
-  - [7. Led indication](#7-led-indication)
-  - [8. Debugging on a table](#8-debugging-on-a-table)
-  - [9. PX4 integration](#9-px4-integration)
-
-
 ## 1. UAVCAN interface
 
 This node interacts with the following messages:

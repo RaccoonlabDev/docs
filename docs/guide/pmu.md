@@ -1,19 +1,8 @@
-## UAVCAN PMU node
+# UAVCAN PMU node
 
 This board monitors the battery (voltage and current) and allows to control charging, source and load. It might be useful for applications where you need to control the power of the drone including the board computer and charging process.
 
 ![pmu_cover](pmu_cover.png?raw=true "pmu_cover")
-
-## Content
-  - [1. UAVCAN interface](#1-uavcan-interface)
-  - [2. Hardware specification](#2-hardware-specification)
-  - [3. Wire](#3-wire)
-  - [4. Main function description](#4-main-function-description)
-  - [5. Auxiliary functions description](#5-auxiliary-function-description)
-  - [6. Parameters](#6-parameters)
-  - [7. Led indication](#7-led-indication)
-  - [8. Usage example on a table](#8-usage-example-on-a-table)
-  - [9. UAV usage example](#9-uav-usage-example)
 
 ## 1. UAVCAN interface
 
