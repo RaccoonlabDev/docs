@@ -13,21 +13,23 @@ Based on input command [RawCommand](https://dronecan.github.io/Specification/7._
   - [3. Wire](#3-wire)
   - [4. Main function description](#4-main-function-description)
     - [4.1. Gas throttle](#41-gas-throttle)
-    - [4.2. Spark Ignition](#42-spark-ignition)
-    - [4.3. Starter](#43-starter)
-    - [4.4. RPM measurement](#44-rpm-measurement)
-    - [4.5. Kill switch](#45-kill-switch)
+    - [4.2. Air throttle](#42-air-throttle)
+    - [4.3. Spark Ignition](#43-spark-ignition)
+    - [4.4. Starter](#44-starter)
+    - [4.5. RPM measurement](#45-rpm-measurement)
+    - [4.6. TTL](#46-ttl)
   - [5. Auxiliary functions description](#5-auxiliary-function-description)
     - [5.1. Circuit status](#51-circuit-status)
     - [5.2. Node info](#52-node-info)
     - [5.3. Log messages](#53-log-messages)
     - [5.4. Watchdog](#54-watchdog)
+    - [5.5. Stats recorder](#55-stats-recorder)
   - [6. Parameters](#6-parameters)
     - [6.1. Common parameters](#61-common-parameters)
     - [6.2. Spark ignition](#62-spark-ignition)
     - [6.3. Starter](#63-starter)
     - [6.4. ESC status](#64-esc-status)
-    - [6.5. Throttle](#65-throttle)
+    - [6.5. Gas throttle](#65-gas-throttle)
     - [6.6. Circuit status](#66-circuit-status)
   - [7. Led indication](#7-led-indication)
   - [8. Debugging on a table](#8-debugging-on-a-table)
@@ -74,8 +76,10 @@ It also has following board-specific connectors:
 | 5 | Fuel tank sensor based on MS4525DO | i2c             |
 | 6 | Starter          | GPIO output pin |
 | 7 | Spark ignition   | GPIO output pin |
-| 8 | Throttle (pin 3) | PWM with frequency 50 Hz and duration from 900 to 2000   |
-| 8 | RPM sensor (pin 6) | Input capture |
+| 8 | Gas throttle | PWM with frequency 50 Hz and duration from 900 to 2000   |
+| 9 | Air throttle | PWM with frequency 50 Hz and duration from 900 to 2000   |
+| 10 | RPM sensor | Input capture |
+| 11 | Temperature sensor | One-wire |
 
 ## 4. Main function description
 
@@ -87,23 +91,35 @@ Internally, the node has a safety mechanism called kill-switch. If the setpoint 
 
 ### 4.1. Gas throttle
 
-Gas throttle is responsible for thrust created by an engine. The output PWM is linearly controlled by RawCommand. The lower and higher borders of duration are defined in corresponding parameters. Check correponded parameters in the section [6.5. Throttle](#65-throttle).
+Gas throttle is responsible for thrust created by an engine. The output PWM is linearly controlled by RawCommand. The lower and higher borders of duration are defined in corresponding parameters. Check correponded parameters in the section [6.5. Gas throttle](#65-gas-throttle).
 
-### 4.2. Spark Ignition
+### 4.2. Air throttle
+
+The main function of the air throttle is to supply and regulate the air flow necessary for the formation of the air-fuel mixture.
+
+Typically, we want a bit less air during the starting the internal combustion engine. It is more fuel costly, but the motor may start easilier. Let's call it the `initial` throttle position.
+
+When the motor is already working, we want to maintain a constant optimal fuel to air ratio. In simpliest case it might be just another throttle value called `goal`.
+
+The idea of the suggested air throttle algorithm is to linearly open the air throttle from the `initial` to the `goal` state for a specific period of time and keep it until the new starter iteration starts.
+
+Although the default `goal` state is specified in parameters, an operator may speficied the actual `goal` value in real time during preflight checks using `ArrayCommand` message with the index specifed in parameters.
+
+### 4.3. Spark Ignition
 
 Spark Ignition allows to enable or disable engine. It is controlled by a simple GPIO output pin that has 2 states. If the value of RawCommand of the corresponding channel is higher than some offset, it will be enabled. Otherwise it will be disabled. Check correponded parameters in the section [6.2. Spark ignition](#62-spark-ignition).
 
-### 4.3. Starter
+### 4.4. Starter
 
 Starter allows to automatically run an engine. It is implemented as GPIO output pin, so it has 2 states. If the input channel value is greater than the offset, it will perform an attempt to run an engine with a duration up to a certain time. If an attempt is unsuccessful, it will turn off for a certain time (to signalize that it's unsuccessful), and then try again. If the median speed for last second is greater than some certain value it will stop attempts. Durations and offsets can be set up in parameters. Check correponded parameters in the section [6.3. Starter](#63-starter)
 
-### 4.4. RPM measurement
+### 4.5. RPM measurement
 
 This sensor is based on hall-sensor. It counts the number of impulses for the last short period of time, filtrate the data, fills the [uavcan.equipment.ice.reciprocating.Status](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#status-4) message and sends it.
 
-### 4.5. Kill switch
+### 4.6. TTL
 
-For the safety reasons, if there is no RawCommand for last 0.5 seconds, the node will set all controlled values to the default states. It means, that that Starter will be turned off, Spark Ignition will be disabled and Gas Throttle will be in the default possition according to the specified in parameters value. 
+For the safety reasons, if there is no RawCommand for last `cmd_ttl_ms` millisecons, the node will set all controlled values to the default states. It means, that that Starter will be turned off, Spark Ignition will be disabled and Gas Throttle will be in the default possition according to the specified in parameters value. 
 
 
 ## 5. Auxiliary functions description
@@ -141,6 +157,15 @@ Every firmware store following info that might be received as a response on Node
 ### 5.4. Watchdog
 
 The node constantly performs updating watchdog values. If update is not happed for at least 0.5 seconds, it cause a hardware reset of microcontoller. This feature allows a node to leave a hang state if it is happend.
+
+### 5.5. Stats recorder
+
+The node automatically stores few parameters into the flash memory. Since writing to the flash is time consuming operation that may affect of performance, the saving request is called only after a short amount of time after disarm.
+
+- `flight_time_sec` parameter keeps overall time during ARM,
+- `ice_time_sec` parameter keeps overall time when internal combustion engine is enabled.
+
+You might be interesting in checking the last paramer to be sure that the lift engine operation time has not expired.
 
 ## 6. Parameters
 
@@ -184,14 +209,14 @@ Following parameters are common for any nodes.
 | 8 | esc_pub_period | false           | Period between EscStatus publication. It has info about starter voltage and current |
 | 9 | esc_index      | false           | Index of corresponded EscStatus message; -1 means disable publication |
 
-### 6.5. Throttle
+### 6.5. Gas throttle
 
 | № | Parameter name   | Reboot required | Description  |
 | - | ---------------- | --------------- | ------------ |
-| 10| throttle_ch      | false           | Index of RawCommand channel; -1 means disable this feature |
-| 11| throttle_min     | false           | PWM duration corresponded to RawCommand=0 |
-| 12| throttle_max     | false           | PWM duration corresponded to RawCommand=8191 |
-| 13| throttle_default | false           | PWM duration corresponded to RawCommand < 0 or when there is no RawCommand for last half second |
+| 10| gas_throttle_ch      | false           | Index of RawCommand channel; -1 means disable this feature |
+| 11| gas_throttle_min     | false           | PWM duration corresponded to RawCommand=0 |
+| 12| gas_throttle_max     | false           | PWM duration corresponded to RawCommand=8191 |
+| 13| gas_throttle_default | false           | PWM duration corresponded to RawCommand < 0 or when there is no RawCommand for last half second |
 
 ### 6.6. Circuit status
 
@@ -200,10 +225,28 @@ Following parameters are common for any nodes.
 | 14| enable_5v_check  | false           | Set ERROR status if 5V voltage is out of range 4.5 - 5.5 V |
 | 15| enable_vin_check | false           | Set ERROR status if Vin voltage is less than 4.5 V |
 
+### 6.7. Motor speed measurement filter
+
+It is expected that motor generates a single PWM impulse each rotation.
+
+The algorithm increments a specific variable each time when an imulse occure.
+
+With frequency specidied in `rpm_measurement_frequency` parameter it calculate a difference between previous and current number of impulses and multiply it by 60 to get the raw value of RPM. The frequency should be at least twice less than idle rotations per second of the motor. For an example, for a motor with IDLE speed 1200 RPM, the parameter might be set to 10 or lower.
+
+Optionally, you can specify `rpm_moving_avg_filter_size` other than 1 to enable moving average filter. This is the easiest, fastest and less memory consumption filter algorithm to make RPM readings smoother. The default value has no effect on readings.
+
 ## 7. Led indication
 
-- when the starter is enabled, led is on
-- when the starter is disabled, led is off
+This board has an internal led that may allow you to understand possible problems. It blinks from 1 to 10 times within 4 seconds. By counting the number of blinks you can define the code of current status.
+
+| Number of blinks | Uavcan health   | Description                     |
+| ---------------- | -------------- | ------------------------------- |
+| 1                | OK             | Everything is ok.                |
+| 2                | OK             | There is no RawCommand at least for the last 0.5 seconds (it's not a problem for this board, just in case). |
+| 3                | WARNING        | This node can't see any other nodes in UAVCAN network, check your cables, or there is no incoming data from the sensor. |
+| 4                | ERROR          | There is a problem with circuit voltage, look at circuit status message to get details. It may happen when you power it from SWD, otherwise, be careful with the power supply. This check might be turned off using params. |
+| 5                | CRITICAL       | There is a problem with the periphery initialization level. Probably you load the wrong firmware. |
+
 
 ## 8. Debugging on a table
 
