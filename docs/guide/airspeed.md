@@ -156,13 +156,13 @@ The calibration is done and device is ready for usage.
 
 This node has been tested several times on the VTOL application with autopilot based on PX4 (custom version based on 1.12).
 
-```
+:::warning
 !!!PX4 usage issue!!!
 All current stable versions (1.12.*) have a bug with wrong filter settings for uavcan differential pressure sensor reported [in this issue](https://github.com/PX4/PX4-Autopilot/issues/18151).
-This bug is well described and ways of how to fixe it are suggested here.
-Moremore, the fix is made on master branch and it is most probably that it will appear in further 1.13 version.
+This bug is well described and ways of how to fix it are suggested.
+The fix is made on master branch and it is most probably that it will appear in further 1.13 version.
 For those who is based on 1.12.* version, it is might be an option to make a small (few lines) fix in your custom firmware and it will be fine.
-```
+:::
 
 ### 9.1. PX4 Parameters
 

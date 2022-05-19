@@ -8,7 +8,7 @@ At that moment there are 2 illustration of WiFi sniffer boards. Below you can se
 
 Version 1.0                |  Version 2.0
 :-------------------------:|:-------------------------:
-![wifi_board_v1](../../assets/wifi_bridge/wifi_board_v1.png?raw=true)  |  ![wifi_board_v2](wifi_board_v2.png?raw=true)
+![wifi_board_v1](../../assets/wifi_bridge/wifi_board_v1.png?raw=true)  |  ![wifi_board_v2](../../assets/wifi_bridge/wifi_board_v2.png?raw=true)
 
 The second one is cheaper and smaller than the first. It has UART socket instead of USB type-C.
 

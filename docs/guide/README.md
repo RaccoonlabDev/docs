@@ -8,11 +8,11 @@ This guide constains interface description, user manual and hardware specificati
 
 Primary our devices were tested with PX4 autopilot.
 
-Check [official PX4 documentation](https://docs.px4.io/v1.12/en/uavcan/) for getting specic wire and settings instruction.
+Check [official PX4 documentation](https://docs.px4.io/v1.12/en/uavcan/) for getting the specific wire and settings instruction.
 
 ## Ardupilot compatibility
 
-Check [official Ardupilot documentation](https://ardupilot.org/copter/docs/common-uavcan-setup-advanced.html) for getting specic wire and settings instruction.
+Check [official Ardupilot documentation](https://ardupilot.org/copter/docs/common-uavcan-setup-advanced.html) for the getting specific wire and settings instruction.
 
 
 ## Existing devices
