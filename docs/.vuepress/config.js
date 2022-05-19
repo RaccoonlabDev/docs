@@ -1,4 +1,5 @@
 module.exports = {
+  base: "/inno_uavcan_node_binaries/",
   themeConfig: {
     nav: [
         { text: 'Home', link: '/' },
