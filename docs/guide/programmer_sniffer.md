@@ -26,38 +26,92 @@ This board has 4 connectors which are described in the table below.
 | 4 | SWD | STM32 firmware updating using [programmer-sniffer](docs/guide/programmer_sniffer/README.md). |
 
 
-```
-!!!WARNING!!!
+:::warning
 Be careful, 4-pin CAN and SWD connectors look similar, but the wrong connection may cause some problems. Names of these connectors are marked on the backside of the board.
-```
+:::
+
 
 ## 3. Programmer usage
 
 You may program your devices in any way you want. The easiest way in our opinion is to use st-link utility.
 
+The example of connection is shown below.
+
+![programmer_connection](../../assets/programmer_sniffer/programmer_connection.jpg?raw=true "programmer_connection")
+
+Fig. Example of SWD connection with can-mini node
+
+:::warning
+SWD and CAN sockets look similar and they use the same 4-pin cable. Don't mix them up. Check the right one on the bottom side of the device.
+:::
+
+:::warning
+Be sure that your SWD pins are connected correctly (3.3 to 3.3, GND to GND)
+:::
+
+:::warning
+On the sniffer `VUSB` led should be orange, `3.3` led should be red, `ST-link` led should be blue, and `blink` led should blink with yellow. If they are not, probably you are making something wrong. It also may indicate that the board works incorrectly.
+:::
+
+:::warning
+If your node already has a correct firmware, after such connection it should blink. If it is not, probably the firmware is wrong or the connection is mistaken.
+:::
+
+You can get the desired firmware on [the release section](https://github.com/InnopolisAero/inno_uavcan_node_binaries/releases) 
 
 ### 3.1. Windows
 
 1. Install `ST-LINK utility` from [the official site](https://www.st.com/en/development-tools/stsw-link004.html)
-2. Download desired firmware here https://github.com/InnopolisAero/inno_uavcan_node_binaries/releases
-3. Open `ST-LINK utility`, connect programmer to PC by USB
-4. Connect target device to programmer by SWD, as shown in picture (IMPORTANT! Check right way of connection on picture)
+2. Open `ST-LINK utility`, connect the programmer to the PC via USB
+3. Connect target device to the programmer via SWD connectors as shown on the picture above with respect to the warnings. If you gen an error, check the [Windows issues](#311-windows-issues) section.
 
+4. Choose option `Target -> Connect`. Device should be successfully connected. If you get an error, check the issues below.
 
-5. Choose option `Target -> Connect`. Device should connect, else you can see 2 types of error whitch shown on pictures below.
+<img src="../../assets/programmer_sniffer/uploading_1_connect.jpg" alt="drawing" width="512"/>
 
+5. You should see `Device ID` if everything fine (as shown in picture below)
 
-7. You should see `Devie ID` if everything fine (as shown in picture below)
+<img src="../../assets/programmer_sniffer/uploading_2_connected.jpg" alt="drawing" width="512"/>
 
+6. Choose `file -> open file ...` and navigate to the downloaded firmware .bin as shown in the pictures below
 
-9. Choose `file -> open file ...` and navigate to firmware .bin file dowloaded in p.2
+<img src="../../assets/programmer_sniffer/uploading_3_open_file.jpg" alt="drawing" width="512"/>
 
-pic pic
+<img src="../../assets/programmer_sniffer/uploading_4_choose_file.jpg" alt="drawing" width="512"/>
 
+7. Choose `Target -> Program & Verify ... CTRL+P`
 
-11. Choose `Target -> Program & Verify ... CTRL+P`
-12. You should see `Verification...OK` if everythin is ok.
+<img src="../../assets/programmer_sniffer/uploading_5_programm_and_verify.jpg" alt="drawing" width="512"/>
 
+8. Wait until downloading is in progress
+
+<img src="../../assets/programmer_sniffer/uploading_6_download_in_progress.jpg" alt="drawing" width="512"/>
+
+9. You should see `Verification...OK` if everythin is ok.
+
+<img src="../../assets/programmer_sniffer/uploading_7_verification_ok.jpg" alt="drawing" width="512"/>
+
+At that point, the firmware is succesfully downloaded. You can verify the software version by using `gui_tool`.
+
+#### 3.1.1. Windows issues
+
+Wrong connection may leds to one of 2 following errors:
+
+1. Can not connect to target
+
+<img src="../../assets/programmer_sniffer/issue_cannot_connect_to_target.jpg" alt="drawing" width="512"/>
+
+Programmer is succesfully detected, but your device is not detected via SWD by the programmer. Either SWD connection is not ok, or there is a problem on the target side.
+
+```
+Sometimes it may happend that the 3.3 and GND is connected, but SWDIO and SWCLK are not ok enough. In this case the node blinks because it has a power, but connection is not stable enough to start a programming. Just make more tention by pushing jumpers a little bit and then press `Program & Verify` one more time. 
+```
+
+2. No ST-LINK detected
+
+<img src="../../assets/programmer_sniffer/issue_no_st_link_detected.jpg" alt="drawing" width="512"/>
+
+Either your programmer is not connected to your PC, or it is broken. Check the leds on the programmer device.
 
 ### 3.2. Linux
 
