@@ -39,7 +39,24 @@ You may program your devices in any way you want. The easiest way in our opinion
 ### 3.1. Windows
 
 1. Install `ST-LINK utility` from [the official site](https://www.st.com/en/development-tools/stsw-link004.html)
-2. Use GUI to program a node with desired .bin file
+2. Download desired firmware here https://github.com/InnopolisAero/inno_uavcan_node_binaries/releases
+3. Open `ST-LINK utility`, connect programmer to PC by USB
+4. Connect target device to programmer by SWD, as shown in picture (IMPORTANT! Check right way of connection on picture)
+
+
+5. Choose option `Target -> Connect`. Device should connect, else you can see 2 types of error whitch shown on pictures below.
+
+
+7. You should see `Devie ID` if everything fine (as shown in picture below)
+
+
+9. Choose `file -> open file ...` and navigate to firmware .bin file dowloaded in p.2
+
+pic pic
+
+
+11. Choose `Target -> Program & Verify ... CTRL+P`
+12. You should see `Verification...OK` if everythin is ok.
 
 
 ### 3.2. Linux
