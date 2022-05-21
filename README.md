@@ -11,5 +11,5 @@ The documentation is based on [VuePress](https://vuepress.vuejs.org) Static Site
 Before pushing to the main branch of the repository, it is preffered to start the local server by running the command below and then check [http://localhost:8080](http://localhost:8080):
 
 ```bash
-docker build -t wiki . && docker run --net=host wiki
+docker build -t wiki . && docker run -i -t --net=host wiki
 ```
