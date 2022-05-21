@@ -142,7 +142,27 @@ Other fields such as current and temperature are not supproted.
 
 To enable this feature, your need to load a special firmware called `can_pwm_esc_flame` (or `can_pwm_with_feedback` that is the same).
 
-### 5.3 Node info
+PWM connection for A1 and A2 channels remains the same. Feedback conenction via UART is shown on the picture below.
+
+<img src="../../assets/can_pwm/esc_feedback.png" alt="drawing" width="200"/>
+
+Fig. Pinout for `pwm-mini` node with `can_pwm_with_feedback` firmware
+
+### 5.3 Auxilliary B1, B2 channels
+
+If you load `can_pwm_four_channels` firmware for can-mini node (that is the default one for this board) you are able to use up to 4 channels. Channels A1 and A2 are the main channels (becase they are common for all boards) and B1 and B2 are auxilliary. 
+
+PWM connection for A1 and A2 channels remains the same. Auxilliary channels connection is shown on the picture below.
+
+<img src="../../assets/can_pwm/auxilliary_channels_b1_b2.png" alt="drawing" width="200"/>
+
+Fig. Pinout for `pwm-mini` node with `can_pwm_four_channels` firmware
+
+:::warning
+Since there is no special 5V pin for B1 and B2 channels, you must use external power.
+:::
+
+### 5.4 Node info
 
 Every firmware store following info that might be received as a response on NodeInfo request. It stores:
 - software version,
@@ -297,11 +317,13 @@ This board has an internal led that may allow you to understand possible problem
 
 ## 8. Debugging on a table
 
-It is recommended to debug this node and perform configuration with [uavcan_gui_tool](https://github.com/UAVCAN/gui_tool). This utility allows to easily use full functionallity of this node.
+It is recommended to debug this node and perform configuration with [gui_tool](https://github.com/UAVCAN/gui_tool). This utility allows to easily use full functionallity of this node.
 
 At the beggining, you may start with devices connection shown on the picure below.
 
 ![can_pwm_test_on_table](../../assets/can_pwm/can_pwm_test_on_table.png?raw=true "can_pwm_test_on_table")
+
+Fig. Servo connection to the PWM-node
 
 Here, the PWM-mini node is connected with 2 devices:
 - a UAVCAN sniffer via CAN (the sniffer is connected to PC via USB and power the node),
