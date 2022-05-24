@@ -372,13 +372,42 @@ Number of used channels for node depends on configuration of your vehicle. You a
 
 ## 10. Versions
 
-| Version        | Date         | Description                       |
-| -------------- | ------------ | --------------------------------- |
-| v0.3.0 295786c | Apr 21, 2021 | First released version.           |
-| v0.3.2 0b55576 | May 31, 2021 | Add esc-flame feedback support    |
-| v0.4.0 9b873da | Nov 03, 2021 | Add uavcan-pwm-5a node support    |
-| v0.4.0 946e326 | Nov 17, 2021 | Add ArrayCommand support          |
-| v0.5.0 45a925f | Feb 07, 2022 | Add LogMessages                   |
-| v0.5.2 b626feb | Mar 30, 2022 | Add Watchdog                      |
-| v0.5.2 c4ab2be | Mar 31, 2022 | Add Flight time recorder          |
-| v0.5.7 f951dc6 | May 06, 2022 | Use individual TTL for each setpoint instead of a single one |
+Here is a list with released stable version of the firmwares.
+
+1. PWM-MINI with 4 pwm channels:
+
+| Version | Date         | SHA     | Link     |
+| ------- | ------------ | ------- | -------- |
+| v0.3.0  | Apr 05, 2021 | 04866c1 | [link](https://github.com/InnopolisAero/inno_uavcan_node_binaries/releases/tag/v0.3.0-stable) |
+| v0.3.0.1| Mar 28, 2022 | 699cbd6 | [link](https://github.com/InnopolisAero/inno_uavcan_node_binaries/releases/tag/v0.5.2-stable) |
+
+2. PWM-MINI with esc flame feedback:
+
+| Version | Date         | SHA     | Link     |
+| ------- | ------------ | ------- | -------- |
+| v0.3.2  | May 31, 2021 | 0b55576 | [link](https://github.com/InnopolisAero/inno_uavcan_node_binaries/releases/tag/v0.3.2) |
+| v0.3.2.1| Mar 28, 2022 | 3aaaacf | [link](https://github.com/InnopolisAero/inno_uavcan_node_binaries/releases/tag/v0.5.2-stable) |
+
+3. PWM-MICRO with 2 channels:
+
+| Version | Date         | SHA     | Link     |
+| ------- | ------------ | ------- | -------- |
+| v0.5.2.1| Apr 5, 2022  | a208527 | [link](https://github.com/InnopolisAero/inno_uavcan_node_binaries/releases/tag/v0.5.2-stable) |
+| v0.5.7  | May 06, 2022 | f951dc6 | [link](https://github.com/InnopolisAero/inno_uavcan_node_binaries/releases/tag/v0.5.8-stable) |
+
+History of all changes (including dev):
+
+| Version           | Date         | Description                                                            |
+| ----------------- | ------------ | ---------------------------------------------------------------------- |
+| v0.3.0    04866c1 | Apr 05, 2021 | PWM-MINI with 4 channels first release                                 |
+| v0.3.0.1  699cbd6 | Mar 28, 2022 | PWM-MINI with 4 channels with extended RC channels amount (10 -> 20)   |
+| v0.3.1    295786c | Apr 21, 2021 | Internal refactoring a little bit                                      |
+| v0.3.2    0b55576 | May 31, 2021 | PWM-MINI with esc-flame feedback first release                         |
+| v0.3.2.1  3aaaacf | Mar 28, 2022 | PWM-MINI with esc-flame with extended RC channels amount (10 -> 20)    |
+| v0.4.0    9b873da | Nov 03, 2021 | PWM-5A first release                                                   |
+| v0.4.0    946e326 | Nov 17, 2021 | Add ArrayCommand support                                               |
+| v0.5.0    45a925f | Feb 07, 2022 | Add LogMessages                                                        |
+| v0.5.1    b626feb | Mar 30, 2022 | Add Watchdog                                                           |
+| v0.5.2    c4ab2be | Mar 31, 2022 | Add Flight time recorder                                               |
+| v0.5.2.1  a208527 | Apr 5, 2022  | PWM-MINI with extended RC channels amount (10 -> 20)                   |
+| v0.5.7    f951dc6 | May 06, 2022 | Use individual TTL for each setpoint instead of a single one           |
