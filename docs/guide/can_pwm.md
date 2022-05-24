@@ -42,9 +42,17 @@ Besides required and highly recommended functions such as `NodeStatus` and `GetN
 
 ## 2. Hardware specification
 
-UAVCAN-PWM mini scheme:
+Scheme is shown on the picture below.
 
 ![can_pwm_mini_scheme](../../assets/can_pwm/can_pwm_mini_scheme.png?raw=true "can_pwm_mini_scheme")
+Fig. UAVCAN-PWM mini scheme
+
+:::warning
+ESC Flame issue.
+On the picture above there is a general hardware pinout. In fact, in esc flame software uses UART2 in a single-wire mode where it uses pin named TX2 as RX.
+:::
+
+Please, check [5.2 Esc flame](#52-esc-flame) and [5.3 Auxilliary B1, B2 channels](#53-auxilliary-b1-b2-channels) to get a proper connection way for auxilliary pins.
 
 ## 3. Wire
 
@@ -82,6 +90,10 @@ Below you can see the visualization of this mapping.
 Fig. UAVCAN->PWM mapping
 
 **ArrayCommand mapping**
+
+```
+This feature appeared from v0.4.0.
+```
 
 `ArrayCommand` is an array that contains up to 15 messages of type `uavcan.equipment.actuator.Command`. The most important fields of `Command` message are `actuator_id` and `command_value`.
 
@@ -147,6 +159,8 @@ PWM connection for A1 and A2 channels remains the same. Feedback conenction via 
 <img src="../../assets/can_pwm/esc_feedback.png" alt="drawing" width="200"/>
 
 Fig. Pinout for `pwm-mini` node with `can_pwm_with_feedback` firmware
+
+This feature was tested on [FLAME 80A 12S V2.0](https://store.tmotor.com/goods.php?id=830).
 
 ### 5.3 Auxilliary B1, B2 channels
 
