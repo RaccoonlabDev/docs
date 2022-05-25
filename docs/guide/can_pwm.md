@@ -47,13 +47,6 @@ Scheme is shown on the picture below.
 ![can_pwm_mini_scheme](../../assets/can_pwm/can_pwm_mini_scheme.png?raw=true "can_pwm_mini_scheme")
 Fig. UAVCAN-PWM mini scheme
 
-:::warning
-ESC Flame issue.
-On the picture above there is a general hardware pinout. In fact, in esc flame software uses UART2 in a single-wire mode where it uses pin named TX2 as RX.
-:::
-
-Please, check [5.2 Esc flame](#52-esc-flame) and [5.3 Auxilliary B1, B2 channels](#53-auxilliary-b1-b2-channels) to get a proper connection way for auxilliary pins.
-
 ## 3. Wire
 
 This board has 3 connectors which are described in the table below.
@@ -64,12 +57,12 @@ This board has 3 connectors which are described in the table below.
 | 2 | 6-pin Molex  ([502585-0670](https://www.molex.com/molex/products/part-detail/pcb_receptacles/5025850670), [502578-0600](https://www.molex.com/molex/products/part-detail/crimp_housings/5025780600)) | Contacts support up to 100 V, 2 A per contact. But the board may work only with 2S-6S. |
 | 3 | SWD | STM32 firmware updating using [programmer-sniffer](programmer_sniffer.md). |
 
-
-
-UAVCAN-PWM also has 2 groups of connectors designed to connect a servo or ESC. An example of connection shown in a picture below.
+UAVCAN-PWM has 2 main groups of connectors designed to connect a servo or ESC on the top side of the board. These connectors are used in the same way for all firmwares. An example of connection shown in a picture below.
 
 ![can_pwm_mini_scheme](../../assets/can_pwm/servo_connection.jpg?raw=true "can_pwm_mini_scheme")
 Fig. Example of servo connection to a A1 channel of UAVCAN-PWM mini node.
+
+The board also has auxiliry pins on the bottom side. Depending on the firmware type they might be used in a different way. Please, check [5.2 Esc flame feedback](#52-esc-flame-feedback) and [5.3 Auxilliary B1, B2 channels](#53-auxilliary-b1-b2-channels) to get a proper connection way for them.
 
 ## 4. Main function description
 
@@ -135,9 +128,9 @@ Here the cyan color plot is current in ampers with max filter, yellow is current
 Note: only `5A` node supports current measurement.
 ```
 
-### 5.2 Esc flame
+### 5.2 Esc flame feedback
 
-If you are using [Tmotor esc flame](https://store.tmotor.com/category.php?id=20) it might be possible to get feedback from it via UART port.
+If you use [Tmotor esc flame](https://store.tmotor.com/category.php?id=20) it might be possible to get feedback from it via UART port.
 
 In this case, the UAVCAN-PWM node will send [uavcan.equipment.esc.Status](https://dronecan.github.io/Specification/7._List_of_standard_data_types/#status-2) for each of up to 2 activated channels (A1 and A2).
 
@@ -154,9 +147,9 @@ Other fields such as current and temperature are not supproted.
 
 To enable this feature, your need to load a special firmware called `can_pwm_esc_flame` (or `can_pwm_with_feedback` that is the same).
 
-PWM connection for A1 and A2 channels remains the same. Feedback conenction via UART is shown on the picture below.
+PWM connection for A1 and A2 channels remains the same. Feedback conection via UART is shown on the picture below.
 
-<img src="../../assets/can_pwm/esc_feedback.png" alt="drawing" width="200"/>
+<img src="../../assets/can_pwm/esc_feedback.png" alt="drawing" width="300"/>
 
 Fig. Pinout for `pwm-mini` node with `can_pwm_with_feedback` firmware
 
@@ -168,17 +161,17 @@ If you load `can_pwm_four_channels` firmware for can-mini node (that is the defa
 
 PWM connection for A1 and A2 channels remains the same. Auxilliary channels connection is shown on the picture below.
 
-<img src="../../assets/can_pwm/auxilliary_channels_b1_b2.png" alt="drawing" width="200"/>
+<img src="../../assets/can_pwm/auxilliary_channels_b1_b2.png" alt="drawing" width="300"/>
 
 Fig. Pinout for `pwm-mini` node with `can_pwm_four_channels` firmware
 
 :::warning
-Since there is no special 5V pin for B1 and B2 channels, you must use external power.
+Since there is no special 5V pin for B1 and B2 channels, you must use an external power.
 :::
 
 ### 5.4 Node info
 
-Every firmware store following info that might be received as a response on NodeInfo request. It stores:
+Every firmware stores following info that might be received as a response on NodeInfo request. It stores:
 - software version,
 - hardware version (doen't work yet),
 - an unique identifier.
@@ -211,6 +204,8 @@ Every received setpoint has his own time to live timestamp.
 If the timeout specified in parameters is exceeded, the setpoint will be equal to default value.
 
 Typically, the value of this parameter should be at least in 2 times more that setpoint publish rate.
+
+The default value for nodes that doesn't support configuration via parameters is 0.5 seconds.
 
 ### 5.6 Watchdog
 
@@ -310,12 +305,24 @@ The list of available names is shown below.
 | 6           | inno.esc.right            |
 | 7           | inno.esc.front            |
 | 8           | inno.esc.rear             |
-| 9           | inno.servos.aileron_left  |
-| 10          | inno.servos.aileron_right |
-| 11          | inno.servos.elevators     |
-| 12          | inno.servos.rudders       |
+| 9           | inno.servos.ailerons      |
+| 10          | inno.servos.aileron_left  |
+| 11          | inno.servos.aileron_right |
+| 12          | inno.servos.elevators     |
+| 13          | inno.servos.rudders       |
+| 14          | inno.servos.rudder_left   |
+| 15          | inno.servos.rudder_right  |
+| 16          | inno.servos.flaps_left    |
+| 17          | inno.servos.flaps_right   |
+| 18          | inno.servos.airbrake_left |
+| 19          | inno.servos.airbrake_right|
+| 20          | inno.servos.landing_gear  |
 
 You should send the corresponded number of your desired name, store the parameter inside the node and, restart it.
+
+```
+Custom string name will appear soon.
+```
 
 ## 7. Led indication
 
@@ -411,17 +418,17 @@ Here is a list with released stable version of the firmwares.
 
 History of all changes (including dev):
 
-| Version           | Date         | Description                                                            |
-| ----------------- | ------------ | ---------------------------------------------------------------------- |
-| v0.3.0    04866c1 | Apr 05, 2021 | PWM-MINI with 4 channels first release                                 |
-| v0.3.0.1  699cbd6 | Mar 28, 2022 | PWM-MINI with 4 channels with extended RC channels amount (10 -> 20)   |
-| v0.3.1    295786c | Apr 21, 2021 | Internal refactoring a little bit                                      |
-| v0.3.2    0b55576 | May 31, 2021 | PWM-MINI with esc-flame feedback first release                         |
-| v0.3.2.1  3aaaacf | Mar 28, 2022 | PWM-MINI with esc-flame with extended RC channels amount (10 -> 20)    |
-| v0.4.0    9b873da | Nov 03, 2021 | PWM-5A first release                                                   |
-| v0.4.0    946e326 | Nov 17, 2021 | Add ArrayCommand support                                               |
-| v0.5.0    45a925f | Feb 07, 2022 | Add LogMessages                                                        |
-| v0.5.1    b626feb | Mar 30, 2022 | Add Watchdog                                                           |
-| v0.5.2    c4ab2be | Mar 31, 2022 | Add Flight time recorder                                               |
-| v0.5.2.1  a208527 | Apr 5, 2022  | PWM-MINI with extended RC channels amount (10 -> 20)                   |
-| v0.5.7    f951dc6 | May 06, 2022 | Use individual TTL for each setpoint instead of a single one           |
+| Version           | Date         | Description                                                    |
+| ----------------- | ------------ | -------------------------------------------------------------- |
+| v0.3.0    04866c1 | Apr 05, 2021 | PWM-MINI 4 channels first release                              |
+| v0.3.0.1  699cbd6 | Mar 28, 2022 | PWM-MINI 4 channels with extended RC channels amount to 20     |
+| v0.3.1    295786c | Apr 21, 2021 | Internal refactoring a little bit                              |
+| v0.3.2    0b55576 | May 31, 2021 | PWM-MINI esc-flame feedback first release                      |
+| v0.3.2.1  3aaaacf | Mar 28, 2022 | PWM-MINI esc-flame with extended RC channels amount to 20      |
+| v0.4.0    9b873da | Nov 03, 2021 | PWM-5A first release                                           |
+| v0.4.0    946e326 | Nov 17, 2021 | Add ArrayCommand support                                       |
+| v0.5.0    45a925f | Feb 07, 2022 | Add LogMessages                                                |
+| v0.5.1    b626feb | Mar 30, 2022 | Add Watchdog                                                   |
+| v0.5.2    c4ab2be | Mar 31, 2022 | Add Flight time recorder                                       |
+| v0.5.2.1  a208527 | Apr 5, 2022  | PWM-MINI with extended RC channels amount to 20                |
+| v0.5.7    f951dc6 | May 06, 2022 | Use individual TTL for each setpoint instead of a single one   |
